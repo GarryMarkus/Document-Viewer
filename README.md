@@ -1,34 +1,78 @@
-# GNOME-Style Minimalist Document Reader
+# Document Viewer — Document Reader for Windows
 
-A clean, distraction-free document reader for Windows dedicated to PDFs, inspired by the sleek, clutter-free design philosophy of GNOME environments (like GTK4's "Papers" app). Built with a highly optimized tech stack ensuring zero-bloat.
+A clean, distraction-free PDF reader for Windows, faithfully inspired by GNOME's minimalist aesthetics. Built for speed, minimalism, and a truly native feel.
+
+## Features
+
+### Core Reading Experience
+- **Continuous multi-page scrolling** — all pages rendered vertically, just like a real document viewer
+- **Crisp Headless PDF.js rendering** — renders directly to canvas via Web Worker with full high-DPI scaling support
+- **Smart zoom** — Ctrl+scroll wheel, Ctrl+=/-/0, or circular overlay zoom controls
+- **Selectable Text (OCR)** — full text layer rendering for highlighting, copying, and pasting
+- **Clickable Links** — native support for embedded document hyperlinks and external URLs
+- **Page tracking** — scroll position automatically updates the current page counter
+- **Editable page input** — click the page number in the headerbar and jump to any page
+
+### GNOME-Inspired Design Language
+- **Frameless window** — custom curved corners, transparent background, and no standard Windows chrome
+- **Sleek split headerbar** — slimmed down top bar blending app controls and document info
+- **Dark Mode Support** — full system-wide dark theme toggle, persisted across sessions
+- **Custom Application Icon** — bespoke, minimal icon integration for the executable and taskbar
+- **Native corner masking** — flawless anti-aliased border radius rendering using custom CSS compositing
+- **GNOME thin scrollbars** — overlay-style with rounded thumb
+- **Inter typography** — clean, professional font matching modern design standards
+
+### Sidebar with 4 Tabs
+- **Thumbnails** — real canvas-rendered page previews with accent borders on the current page
+- **Outline** — extracts and renders actual PDF bookmarks/table of contents
+- **Annotations** — placeholder (future feature)
+- **Bookmarks** — placeholder (future feature)
+
+### Native Window Gestures
+- **Drag** — custom drag region on the headerbar
+- **Double-click headerbar** — toggle maximize (automatically squares corners to fit screen)
+- **Drag & drop** — drop any PDF onto the window to open it (with visual dashed-border feedback)
+- **Minimize / Close** — native hovering window controls
+
+### Keyboard Shortcuts
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+O` | Open file |
+| `Ctrl+=` | Zoom in |
+| `Ctrl+-` | Zoom out |
+| `Ctrl+0` | Fit to width |
+| `Ctrl+Scroll` | Smooth zoom |
+| `F11` | Toggle fullscreen |
+| `F9` | Toggle sidebar |
 
 ## Tech Stack
-- **Framework:** Tauri v2 (Replaces Electron, uses native Edge WebView2 + Rust backend)
-- **Frontend:** React + TypeScript + Vite
-- **Styling:** Tailwind CSS v3 (Custom libadwaita-inspired configuration)
-- **Rendering Engine:** PDF.js (Headless rendering to native HTML `<canvas>`)
+- **Framework:** Tauri v2 (Rust backend + Edge WebView2)
+- **Frontend:** React 18 + TypeScript + Vite
+- **Styling:** Tailwind CSS v3
+- **Rendering:** PDF.js (Mozilla)
 
-## What is Done
-- **Frameless Window Architecture:** Bypasses default Windows Fluent UI chrome in favor of custom rounded corners and transparent backgrounds.
-- **Unified Headerbar:** Integrates window controls (close, minimize, maximize), custom drag regions, and double-click to maximize gestures.
-- **Contextual Sidebar:** Beautiful layout divided into content pane and bottom navigation tabs.
-- **Zero-Bloat PDF Rendering:** Parses PDF bytes via Web Worker and paints directly onto a `<canvas>` element (no heavy embedded browser UI).
-- **Floating Action Buttons (FABs):** Glassmorphic zoom controls hovering over the canvas.
-- **File System Integration:** Open PDFs via the headerbar file picker or by dragging and dropping them into the window.
-- **Dynamic Outlines:** Extracts and recursively renders real PDF bookmarks / table of contents into the sidebar.
+## Getting Started
 
-## What is Left to Improve
-- **Continuous Scrolling:** Currently, the canvas strictly renders Page 1. We need to implement a virtualized list to render multiple pages simultaneously as the user scrolls.
-- **Thumbnail Generation:** The Sidebar's "Thumbnails" tab is unlinked. We need to generate low-resolution canvas snapshots of pages to populate this view.
-- **Search Functionality:** Wire up the search tab to utilize PDF.js's text extraction layer for finding keywords within the document.
-- **Bookmarks/History:** Allow users to save their place, remember last opened directories, and store customized zoom preferences.
-- **Performance Optimizations:** While highly optimized, huge multi-hundred-page PDFs will require off-screen canvas rendering to maintain 60FPS.
+### Prerequisites
+- Node.js (v18+)
+- Rust toolchain
+- Visual Studio C++ Build Tools (Windows)
 
-## How to Build
-To build the application installer natively, ensure you have the [Rust toolchain](https://rustup.rs/) installed, then run:
-
+### Development
 ```bash
 npm install
+npm run tauri dev
+```
+
+### Production Build
+```bash
 npm run tauri build
 ```
-The installer will be generated in `src-tauri/target/release/bundle/nsis/`.
+Installer output: `src-tauri/target/release/bundle/nsis/`
+
+## Roadmap
+- [ ] Text search within documents (`Ctrl+F`)
+- [ ] Annotation creation and persistence
+- [ ] Bookmark saving
+- [ ] Print support
+- [ ] Recent files history

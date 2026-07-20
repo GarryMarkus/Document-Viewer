@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,9 +10,154 @@ html, body, #root {
   padding: 0;
   background-color: transparent;
   overflow: hidden;
-  user-select: none;
+  font-family: 'Inter', 'Cantarell', system-ui, -apple-system, sans-serif;
 }
 
+/* ===== LIGHT MODE WINDOW ===== */
 .window-frame {
-  @apply h-full w-full flex flex-col bg-adwaita-bg rounded-window border border-adwaita-border overflow-hidden shadow-2xl;
+  @apply h-full w-full flex flex-col overflow-hidden;
+  background: #f0f0f0;
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12);
+  transition: border-radius 150ms ease;
+}
+
+/* Remove rounded corners when maximized */
+.window-frame.maximized {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Fix PDF text selection visibility */
+.textLayer ::selection {
+  background: rgba(0, 120, 255, 0.4) !important;
+  color: transparent !important;
+}
+.textLayer span::selection {
+  background: rgba(0, 120, 255, 0.4) !important;
+  color: transparent !important;
+}
+
+/* ===== DARK MODE ===== */
+.dark .window-frame {
+  background: #1e1e1e;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+
+/* ===== SCROLLBAR — Light ===== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 100px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.35);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* ===== SCROLLBAR — Dark ===== */
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.3);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* Disable text selection globally for native feel */
+* {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Allow text selection on PDF canvas area */
+.pdf-canvas-area canvas,
+.pdf-canvas-area .textLayer,
+.pdf-canvas-area .annotationLayer {
+  user-select: auto;
+  -webkit-user-select: auto;
+}
+
+/* ===== PDF.js Text Layer ===== */
+.textLayer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  opacity: 0.25;
+  line-height: 1.0;
+  pointer-events: all;
+}
+.textLayer span,
+.textLayer br {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  transform-origin: 0% 0%;
+}
+.textLayer span::selection {
+  background: rgba(53, 132, 228, 0.3);
+}
+.dark .textLayer span::selection {
+  background: rgba(98, 160, 234, 0.4);
+}
+
+/* ===== PDF.js Annotation Layer (clickable links) ===== */
+.annotationLayer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+.annotationLayer section {
+  position: absolute;
+  pointer-events: all;
+}
+.annotationLayer .linkAnnotation > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  pointer-events: all;
+}
+.annotationLayer .linkAnnotation > a:hover {
+  background: rgba(255, 255, 0, 0.15);
+  border-radius: 2px;
+}
+
+/* Smooth transitions globally */
+button, input {
+  transition: background-color 150ms ease, color 150ms ease, box-shadow 150ms ease, opacity 150ms ease;
+}
+
+/* Focus ring for keyboard navigation */
+button:focus-visible {
+  outline: 2px solid #3584e4;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Drag-over visual feedback */
+.drag-over-active {
+  outline: 3px dashed #3584e4;
+  outline-offset: -3px;
 }
