@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  overflow: hidden;
+  user-select: none;
+}
+
+.window-frame {
+  @apply h-full w-full flex flex-col bg-adwaita-bg rounded-window border border-adwaita-border overflow-hidden shadow-2xl;
+}
