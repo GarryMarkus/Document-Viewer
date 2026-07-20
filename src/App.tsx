@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { getCurrentWindow } from '@tauri-apps/api/window';
+import { invoke } from '@tauri-apps/api/core';
 import UnifiedHeaderbar from './components/layout/UnifiedHeaderbar';
 import ContextualSidebar from './components/layout/ContextualSidebar';
 import Canvas from './components/reader/Canvas';
@@ -25,6 +26,28 @@ function App() {
   });
   const [isMaximized, setIsMaximized] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Check for a PDF passed via command line (double-clicking a file in Windows)
+  useEffect(() => {
+    const handleStartupFile = async () => {
+      try {
+        const filePath = await invoke<string | null>('check_startup_file');
+        if (filePath) {
+          const name = filePath.split(/[\\/]/).pop() || "Document.pdf";
+          const fileBytes = await invoke<number[]>('read_file_bytes', { path: filePath });
+          
+          const blob = new Blob([new Uint8Array(fileBytes)], { type: 'application/pdf' });
+          const url = URL.createObjectURL(blob);
+          
+          setFileName(name);
+          setPdfUrl(url);
+        }
+      } catch (e) {
+        console.error("Failed to load startup file:", e);
+      }
+    };
+    handleStartupFile();
+  }, []);
 
   // Dark mode: toggle class on <html> and persist
   useEffect(() => {

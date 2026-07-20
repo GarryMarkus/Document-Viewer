@@ -25,6 +25,10 @@ A clean, distraction-free PDF reader for Windows, faithfully inspired by GNOME's
 ### Engine & Performance
 - **Virtualization Engine** — true lazy-loading via `IntersectionObserver`. Only visible pages and thumbnails are rendered in memory, allowing instant scrolling through massive 1000+ page textbooks without lag.
 
+### OS Integration
+- **Native File Associations** — automatically registers as a PDF viewer during installation.
+- **Deep-linking / Double-click** — native Windows integration captures startup arguments to instantly load PDFs launched from the file explorer.
+
 ### Sidebar with 4 Tabs
 - **Thumbnails** — real canvas-rendered page previews with accent borders on the current page
 - **Outline** — extracts and renders actual PDF bookmarks/table of contents
