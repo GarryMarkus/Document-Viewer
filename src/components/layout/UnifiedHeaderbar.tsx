@@ -13,6 +13,7 @@ interface HeaderProps {
   sidebarVisible?: boolean;
   darkMode?: boolean;
   onToggleDarkMode?: () => void;
+  onShowProperties?: () => void;
 }
 
 export default function UnifiedHeaderbar({ 
@@ -25,6 +26,7 @@ export default function UnifiedHeaderbar({
   sidebarVisible = true,
   darkMode = false,
   onToggleDarkMode,
+  onShowProperties,
 }: HeaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -63,7 +65,7 @@ export default function UnifiedHeaderbar({
         if ((e.target as HTMLElement).closest('button, input')) return;
         appWindow.toggleMaximize();
       }}
-      className={`h-[38px] ${bg} flex items-center shrink-0 select-none border-b ${border} rounded-t-[12px]`}
+      className={`h-[38px] ${bg} flex items-center shrink-0 select-none border-b ${border}`}
     >
       {/* ===== LEFT HALF: App Controls ===== */}
       <div className="flex items-center h-full px-1.5 gap-0.5" data-tauri-drag-region>
@@ -108,6 +110,13 @@ export default function UnifiedHeaderbar({
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
                   )}
                   {darkMode ? 'Light Mode' : 'Dark Mode'}
+                </button>
+                <button 
+                  onClick={() => { onShowProperties?.(); setMenuOpen(false); }}
+                  className={`w-full text-left px-4 py-2 text-sm ${text} ${hover} flex items-center gap-3`}
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  Properties
                 </button>
                 <div className={`border-t my-1 ${darkMode ? 'border-dark-border' : 'border-gray-100'}`} />
                 <button className={`w-full text-left px-4 py-2 text-sm ${text} ${hover} flex items-center gap-3`}>

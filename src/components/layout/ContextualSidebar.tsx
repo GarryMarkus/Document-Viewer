@@ -35,45 +35,55 @@ export default function ContextualSidebar({
   const tabInactive = darkMode ? 'text-dark-text-dim hover:bg-dark-hover hover:text-dark-text' : 'text-adwaita-text-dim hover:bg-adwaita-hover hover:text-adwaita-text';
   const accent = darkMode ? 'border-dark-accent' : 'border-adwaita-accent';
 
-  // Generate thumbnails when document loads
+  const observerRef = React.useRef<IntersectionObserver | null>(null);
+  const pdfRef = React.useRef<any>(null);
+
+  // Load PDF reference once for thumbnails
   useEffect(() => {
     if (!documentUrl || numPages === 0) {
       setThumbnails(new Map());
+      pdfRef.current = null;
       return;
     }
-
-    let cancelled = false;
-    const generateThumbnails = async () => {
-      try {
-        const loadingTask = pdfjsLib.getDocument({ url: documentUrl });
-        const pdf = await loadingTask.promise;
-        
-        for (let i = 1; i <= numPages; i++) {
-          if (cancelled) break;
-          const page = await pdf.getPage(i);
-          const viewport = page.getViewport({ scale: thumbnailScale });
-          
-          const canvas = document.createElement('canvas');
-          canvas.width = viewport.width;
-          canvas.height = viewport.height;
-          const ctx = canvas.getContext('2d');
-          if (!ctx) continue;
-
-          await page.render({ canvasContext: ctx, viewport } as any).promise;
-          
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
-          if (!cancelled) {
-            setThumbnails(prev => new Map(prev).set(i, dataUrl));
-          }
-        }
-      } catch (error) {
-        console.warn('Thumbnail generation error:', error);
-      }
-    };
-
-    generateThumbnails();
-    return () => { cancelled = true; };
+    const loadTask = pdfjsLib.getDocument({ url: documentUrl });
+    loadTask.promise.then(pdf => {
+      pdfRef.current = pdf;
+    }).catch(e => console.warn(e));
   }, [documentUrl, numPages]);
+
+  const generateThumbnail = async (pageNum: number) => {
+    if (!pdfRef.current || thumbnails.has(pageNum)) return;
+    try {
+      const page = await pdfRef.current.getPage(pageNum);
+      const viewport = page.getViewport({ scale: thumbnailScale });
+      const canvas = document.createElement('canvas');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      await page.render({ canvasContext: ctx, viewport } as any).promise;
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
+      setThumbnails(prev => new Map(prev).set(pageNum, dataUrl));
+    } catch (e) {
+      console.warn('Thumb err', e);
+    }
+  };
+
+  const observeThumbnail = React.useCallback((el: HTMLDivElement | null, pageNum: number) => {
+    if (!el || !pdfRef.current) return;
+    if (!observerRef.current) {
+      observerRef.current = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const p = parseInt((entry.target as HTMLElement).dataset.page || '0', 10);
+            if (p > 0) generateThumbnail(p);
+          }
+        });
+      }, { rootMargin: '200% 0px' });
+    }
+    el.dataset.page = pageNum.toString();
+    observerRef.current.observe(el);
+  }, [thumbnails]);
 
   if (!visible) return null;
 
@@ -111,7 +121,9 @@ export default function ContextualSidebar({
                 onClick={() => onPageSelect?.(pageNum)}
                 className="flex flex-col items-center gap-1.5 group"
               >
-                <div className={`border-2 rounded-sm overflow-hidden shadow-sm transition-all ${
+                <div 
+                  ref={(el) => observeThumbnail(el as HTMLDivElement, pageNum)}
+                  className={`border-2 rounded-sm overflow-hidden shadow-sm transition-all ${
                   pageNum === currentPage 
                     ? `${accent} shadow-md` 
                     : `border-transparent ${darkMode ? 'hover:border-dark-border' : 'hover:border-adwaita-border'}`

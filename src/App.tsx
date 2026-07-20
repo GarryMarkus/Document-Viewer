@@ -4,6 +4,7 @@ import UnifiedHeaderbar from './components/layout/UnifiedHeaderbar';
 import ContextualSidebar from './components/layout/ContextualSidebar';
 import Canvas from './components/reader/Canvas';
 import FloatingActionButtons from './components/reader/FloatingActionButtons';
+import PropertiesModal from './components/layout/PropertiesModal';
 
 const appWindow = getCurrentWindow();
 
@@ -17,6 +18,8 @@ function App() {
   const [sidebarVisible, setSidebarVisible] = useState(true);
   const [goToPage, setGoToPage] = useState<number | undefined>(undefined);
   const [isDragging, setIsDragging] = useState(false);
+  const [metadata, setMetadata] = useState<any>(null);
+  const [showProperties, setShowProperties] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('darkMode') === 'true';
   });
@@ -31,6 +34,19 @@ function App() {
       document.documentElement.classList.remove('dark');
     }
     localStorage.setItem('darkMode', String(darkMode));
+    
+    // Dynamically update the runtime window icon based on theme
+    const updateIcon = async () => {
+      try {
+        const iconPath = darkMode ? '/document reader (dark).png' : '/document reader (light).png';
+        const response = await fetch(iconPath);
+        const buffer = await response.arrayBuffer();
+        await appWindow.setIcon(new Uint8Array(buffer));
+      } catch (e) {
+        console.warn("Failed to set dynamic window icon:", e);
+      }
+    };
+    updateIcon();
   }, [darkMode]);
 
   // Track maximized state for rounded corners
@@ -60,6 +76,7 @@ function App() {
       setFileName(file.name);
       setCurrentPage(1);
       setGoToPage(undefined);
+      setMetadata(null);
     }
   }, []);
 
@@ -163,6 +180,7 @@ function App() {
         sidebarVisible={sidebarVisible}
         darkMode={darkMode}
         onToggleDarkMode={() => setDarkMode(d => !d)}
+        onShowProperties={() => setShowProperties(true)}
       />
 
       <div className="flex flex-1 overflow-hidden">
@@ -185,9 +203,10 @@ function App() {
             documentUrl={pdfUrl} 
             goToPage={goToPage}
             darkMode={darkMode}
-            onDocumentLoad={(pages, documentOutline) => {
+            onDocumentLoad={(pages, documentOutline, docMetadata) => {
               setNumPages(pages);
               setOutline(documentOutline);
+              setMetadata(docMetadata);
               setCurrentPage(1);
             }}
             onPageChange={(page) => {
@@ -212,6 +231,15 @@ function App() {
         ref={fileInputRef} 
         onChange={handleFileInputChange} 
         className="hidden" 
+      />
+
+      <PropertiesModal 
+        isOpen={showProperties}
+        onClose={() => setShowProperties(false)}
+        metadata={metadata}
+        fileName={fileName}
+        numPages={numPages}
+        darkMode={darkMode}
       />
     </div>
   );

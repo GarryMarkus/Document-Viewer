@@ -12,7 +12,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
 interface CanvasProps {
   scale: number;
   documentUrl?: string;
-  onDocumentLoad?: (numPages: number, outline: any[]) => void;
+  onDocumentLoad?: (numPages: number, outline: any[], metadata?: any) => void;
   onPageChange?: (page: number) => void;
   goToPage?: number;
   darkMode?: boolean;
@@ -24,6 +24,7 @@ export default function Canvas({ scale, documentUrl, onDocumentLoad, onPageChang
   const wrapperRefs = useRef<Map<number, HTMLDivElement>>(new Map());
   const [pdfDoc, setPdfDoc] = useState<PDFDocumentProxy | null>(null);
   const [numPages, setNumPages] = useState(0);
+  const [defaultPageSize, setDefaultPageSize] = useState({ width: 792, height: 1122 }); // Standard A4-ish
   const renderingRef = useRef<Set<number>>(new Set());
 
   // Load PDF document
@@ -44,11 +45,23 @@ export default function Canvas({ scale, documentUrl, onDocumentLoad, onPageChang
         setPdfDoc(pdf);
         setNumPages(pdf.numPages);
 
+        try {
+          const page1 = await pdf.getPage(1);
+          const viewport = page1.getViewport({ scale: 1.0 });
+          setDefaultPageSize({ width: viewport.width, height: viewport.height });
+        } catch(e) {}
+
         let outline = await pdf.getOutline();
         if (!outline) outline = [];
 
+        let docMetadata = null;
+        try {
+          const meta = await pdf.getMetadata();
+          docMetadata = meta.info;
+        } catch(e) {}
+
         if (onDocumentLoad) {
-          onDocumentLoad(pdf.numPages, outline);
+          onDocumentLoad(pdf.numPages, outline, docMetadata);
         }
       } catch (error) {
         console.warn("Could not load document:", error);
@@ -176,13 +189,37 @@ export default function Canvas({ scale, documentUrl, onDocumentLoad, onPageChang
     }
   }, [pdfDoc, scale]);
 
-  // Re-render all pages when scale or document changes
+  // Lazy render pages when they enter viewport
   useEffect(() => {
-    if (!pdfDoc) return;
+    if (!pdfDoc || numPages === 0 || !containerRef.current) return;
+    
     renderingRef.current.clear();
-    for (let i = 1; i <= numPages; i++) {
-      renderPage(i);
-    }
+    const renderedPages = new Set<number>();
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const pageNumStr = (entry.target as HTMLElement).dataset.page;
+          if (pageNumStr) {
+            const pageNum = parseInt(pageNumStr, 10);
+            if (!renderedPages.has(pageNum)) {
+              renderPage(pageNum);
+              renderedPages.add(pageNum);
+            }
+          }
+        }
+      });
+    }, {
+      root: containerRef.current,
+      rootMargin: '100% 0px 100% 0px', // Pre-render 1 viewport above/below
+      threshold: 0.01
+    });
+
+    wrapperRefs.current.forEach(wrapper => {
+      observer.observe(wrapper);
+    });
+
+    return () => observer.disconnect();
   }, [pdfDoc, scale, numPages, renderPage]);
 
   // Track scroll position to determine current page
@@ -247,11 +284,16 @@ export default function Canvas({ scale, documentUrl, onDocumentLoad, onPageChang
         {Array.from({ length: numPages }, (_, i) => i + 1).map(pageNum => (
           <div 
             key={pageNum} 
+            data-page={pageNum}
             ref={el => {
               if (el) wrapperRefs.current.set(pageNum, el);
               else wrapperRefs.current.delete(pageNum);
             }}
             className="relative shadow-[0_2px_12px_rgba(0,0,0,0.15)] bg-white"
+            style={{
+              width: `${defaultPageSize.width * scale}px`,
+              height: `${defaultPageSize.height * scale}px`
+            }}
           >
             <canvas
               ref={el => {

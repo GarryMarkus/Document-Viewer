@@ -14,13 +14,16 @@ A clean, distraction-free PDF reader for Windows, faithfully inspired by GNOME's
 - **Editable page input** — click the page number in the headerbar and jump to any page
 
 ### GNOME-Inspired Design Language
-- **Frameless window** — custom curved corners, transparent background, and no standard Windows chrome
+- **Frameless window** — custom titlebar with native Windows 11 DWM GPU-composited rounded corners
 - **Sleek split headerbar** — slimmed down top bar blending app controls and document info
 - **Dark Mode Support** — full system-wide dark theme toggle, persisted across sessions
-- **Custom Application Icon** — bespoke, minimal icon integration for the executable and taskbar
-- **Native corner masking** — flawless anti-aliased border radius rendering using custom CSS compositing
+- **Dynamic Application Icon** — runtime executable icon dynamically switches to match the active system theme (Dark/Light)
+- **Document Properties Modal** — clean Adwaita-styled properties dialog detailing PDF metadata (Title, Author, Creator)
 - **GNOME thin scrollbars** — overlay-style with rounded thumb
 - **Inter typography** — clean, professional font matching modern design standards
+
+### Engine & Performance
+- **Virtualization Engine** — true lazy-loading via `IntersectionObserver`. Only visible pages and thumbnails are rendered in memory, allowing instant scrolling through massive 1000+ page textbooks without lag.
 
 ### Sidebar with 4 Tabs
 - **Thumbnails** — real canvas-rendered page previews with accent borders on the current page
@@ -70,9 +73,10 @@ npm run tauri build
 ```
 Installer output: `src-tauri/target/release/bundle/nsis/`
 
-## Roadmap
-- [ ] Text search within documents (`Ctrl+F`)
-- [ ] Annotation creation and persistence
-- [ ] Bookmark saving
-- [ ] Print support
-- [ ] Recent files history
+## Roadmap (Upcoming Features)
+- **[Next Up] Phase 3: Search Engine** — in-document text search (`Ctrl+F`) with a slide-down GNOME-styled search bar and text highlighting
+- [ ] Annotation creation, highlighting, and persistence
+- [ ] Bookmark saving and custom tables of contents
+- [ ] Print support interface
+- [ ] Recent files history list on launch
+- [ ] Presentation mode (Fullscreen paginated view)
