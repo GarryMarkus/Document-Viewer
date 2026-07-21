@@ -38,7 +38,15 @@ export default function Canvas({ scale, documentUrl, onDocumentLoad, onPageChang
     let cancelled = false;
     const loadPdf = async () => {
       try {
-        const loadingTask = pdfjsLib.getDocument({ url: documentUrl });
+        const loadingTask = pdfjsLib.getDocument({ 
+          url: documentUrl,
+          cMapUrl: '/cmaps/',
+          cMapPacked: true,
+          standardFontDataUrl: '/standard_fonts/',
+          wasmUrl: '/wasm/',
+          iccUrl: '/iccs/',
+          isOffscreenCanvasSupported: true,
+        });
         const pdf = await loadingTask.promise;
         if (cancelled) return;
 

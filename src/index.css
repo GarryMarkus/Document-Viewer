@@ -35,7 +35,21 @@ html, body, #root {
 
 /* ===== DARK MODE ===== */
 .dark .window-frame {
-  background: #1e1e1e;
+  background: #1e1e1e; /* Canvas backing */
+}
+
+/* GNOME Popover Carets */
+.popover-caret-up {
+  position: absolute;
+  top: -6px;
+  width: 14px;
+  height: 14px;
+  background: inherit;
+  border-left: inherit;
+  border-top: inherit;
+  transform: rotate(45deg);
+  z-index: -1;
+  border-top-left-radius: 2px;
 }
 
 /* ===== SCROLLBAR — Light ===== */

@@ -7,9 +7,12 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Node
+node_modules/
+
+# Vite build output
+dist/
+dist-ssr/
 *.local
 
 # Editor directories and files
@@ -23,12 +26,19 @@ dist-ssr
 *.sln
 *.sw?
 
-# Tauri
+# Tauri output & configs
 src-tauri/target/
 src-tauri/gen/
 src-tauri/.env
 
-# Local Env
+# Environment
 .env
 .env.local
 .env.*.local
+
+# Automatically generated local copies of PDF.js assets 
+# (Generated via postinstall script, do not commit)
+public/cmaps/
+public/standard_fonts/
+public/wasm/
+public/iccs/

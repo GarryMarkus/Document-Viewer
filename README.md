@@ -5,41 +5,40 @@ A clean, distraction-free PDF reader for Windows, faithfully inspired by GNOME's
 ## Features
 
 ### Core Reading Experience
-- **Continuous multi-page scrolling** — all pages rendered vertically, just like a real document viewer
-- **Crisp Headless PDF.js rendering** — renders directly to canvas via Web Worker with full high-DPI scaling support
-- **Smart zoom** — Ctrl+scroll wheel, Ctrl+=/-/0, or circular overlay zoom controls
-- **Selectable Text (OCR)** — full text layer rendering for highlighting, copying, and pasting
-- **Clickable Links** — native support for embedded document hyperlinks and external URLs
-- **Page tracking** — scroll position automatically updates the current page counter
-- **Editable page input** — click the page number in the headerbar and jump to any page
+- **Continuous Multi-Page Scrolling** — All pages rendered vertically, just like a native document viewer.
+- **Crisp Headless PDF.js Rendering** — Renders directly to canvas via Web Worker with full high-DPI scaling support.
+- **Offline Rendering Engine** — Fully embeds standard PDF fonts, character maps (CMaps), and WASM decoders (JBIG2/JPEG2000) for flawless offline rendering of complex documents without relying on external CDNs.
+- **Smart Zoom** — Use `Ctrl` + Scroll Wheel, `Ctrl` + `=/-/0`, or the sleek circular overlay zoom controls on the canvas.
+- **Selectable Text (OCR)** — Full text layer rendering for highlighting, copying, and pasting.
+- **Clickable Links** — Native support for embedded document hyperlinks and external URLs.
+- **Page Tracking & Navigation** — Scroll position automatically updates the current page counter. Click the page number in the headerbar to manually jump to any page.
 
 ### GNOME-Inspired Design Language
-- **Frameless window** — custom titlebar with native Windows 11 DWM GPU-composited rounded corners
-- **Sleek split headerbar** — slimmed down top bar blending app controls and document info
-- **Dark Mode Support** — full system-wide dark theme toggle, persisted across sessions
-- **Dynamic Application Icon** — runtime executable icon dynamically switches to match the active system theme (Dark/Light)
-- **Document Properties Modal** — clean Adwaita-styled properties dialog detailing PDF metadata (Title, Author, Creator)
-- **GNOME thin scrollbars** — overlay-style with rounded thumb
-- **Inter typography** — clean, professional font matching modern design standards
+- **Frameless Window** — Custom titlebar with native Windows 11 DWM GPU-composited rounded corners.
+- **Sleek Split Headerbar** — Slimmed down top bar blending app controls and document info.
+- **Dark & Light Mode Support** — Toggle between themes natively with UI dynamically updating its aesthetics.
+- **Dynamic Application Icon** — Runtime executable icon dynamically switches to match the active system theme (Dark/Light).
+- **Document Properties Modal** — Clean Adwaita-styled properties dialog detailing PDF metadata (Title, Author, Creator, Page Count).
+- **GNOME Thin Scrollbars** — Overlay-style with rounded thumbs for a minimal, unintrusive feel.
+- **Premium Typography** — Clean, professional font usage matching modern UI standards.
 
 ### Engine & Performance
-- **Virtualization Engine** — true lazy-loading via `IntersectionObserver`. Only visible pages and thumbnails are rendered in memory, allowing instant scrolling through massive 1000+ page textbooks without lag.
+- **Virtualization Engine** — True lazy-loading via `IntersectionObserver`. Only visible pages and thumbnails are rendered in memory, allowing instant scrolling through massive 1000+ page textbooks without lag.
+- **Asset Auto-Bundling** — Heavy static assets (like WASM binaries and fonts) are efficiently resolved during installation without bloating the repository.
 
 ### OS Integration
-- **Native File Associations** — automatically registers as a PDF viewer during installation.
-- **Deep-linking / Double-click** — native Windows integration captures startup arguments to instantly load PDFs launched from the file explorer.
+- **Native File Associations** — Automatically registers as a PDF viewer during installation.
+- **Deep-linking / Double-click** — Native Windows integration captures startup arguments to instantly load PDFs launched directly from the File Explorer.
 
-### Sidebar with 4 Tabs
-- **Thumbnails** — real canvas-rendered page previews with accent borders on the current page
-- **Outline** — extracts and renders actual PDF bookmarks/table of contents
-- **Annotations** — placeholder (future feature)
-- **Bookmarks** — placeholder (future feature)
+### Sidebar Functionality
+- **Thumbnails** — Real canvas-rendered page previews with accent borders highlighting the currently viewed page.
+- **Outline** — Extracts and renders actual PDF bookmarks/table of contents for swift structural navigation.
 
 ### Native Window Gestures
-- **Drag** — custom drag region on the headerbar
-- **Double-click headerbar** — toggle maximize (automatically squares corners to fit screen)
-- **Drag & drop** — drop any PDF onto the window to open it (with visual dashed-border feedback)
-- **Minimize / Close** — native hovering window controls
+- **Custom Drag** — Drag region on the headerbar allows fluid window movement.
+- **Double-Click Headerbar** — Toggle maximize (automatically squares corners to fit the screen).
+- **Drag & Drop** — Drop any PDF onto the window to instantly open it, complete with visual dashed-border feedback.
+- **Native Controls** — Seamlessly integrated Minimize, Maximize, and Close hover controls pinned to the top right.
 
 ### Keyboard Shortcuts
 | Shortcut | Action |
@@ -54,9 +53,9 @@ A clean, distraction-free PDF reader for Windows, faithfully inspired by GNOME's
 
 ## Tech Stack
 - **Framework:** Tauri v2 (Rust backend + Edge WebView2)
-- **Frontend:** React 18 + TypeScript + Vite
+- **Frontend:** React 19 + TypeScript + Vite
 - **Styling:** Tailwind CSS v3
-- **Rendering:** PDF.js (Mozilla)
+- **Rendering:** PDF.js (Mozilla) v6+
 
 ## Getting Started
 
@@ -66,6 +65,8 @@ A clean, distraction-free PDF reader for Windows, faithfully inspired by GNOME's
 - Visual Studio C++ Build Tools (Windows)
 
 ### Development
+1. Clone the repository.
+2. Install dependencies (this will automatically trigger the `postinstall` script to bundle PDF assets).
 ```bash
 npm install
 npm run tauri dev
@@ -75,12 +76,12 @@ npm run tauri dev
 ```bash
 npm run tauri build
 ```
-Installer output: `src-tauri/target/release/bundle/nsis/`
+Installer output: `src-tauri/target/release/bundle/nsis/Document Viewer_1.1.0_x64-setup.exe`
 
-## Roadmap (Upcoming Features)
-- **[Next Up] Phase 3: Search Engine** — in-document text search (`Ctrl+F`) with a slide-down GNOME-styled search bar and text highlighting
-- [ ] Annotation creation, highlighting, and persistence
-- [ ] Bookmark saving and custom tables of contents
-- [ ] Print support interface
-- [ ] Recent files history list on launch
-- [ ] Presentation mode (Fullscreen paginated view)
+## Future Scopes & Roadmap
+- **Search Engine** — In-document text search (`Ctrl+F`) with a slide-down GNOME-styled search bar and text highlighting.
+- **Annotations** — Creation, highlighting, and persistence of custom annotations.
+- **Custom Bookmarks** — Bookmark saving and custom tables of contents.
+- **Print Support** — Native print interface for documents.
+- **Recent Files** — History list of recently opened files upon launch.
+- **Presentation Mode** — Fullscreen paginated view.

@@ -241,7 +241,6 @@ function App() {
             <FloatingActionButtons 
               onZoomIn={() => setScale(s => Math.min(4, s + 0.2))}
               onZoomOut={() => setScale(s => Math.max(0.3, s - 0.2))}
-              onFit={() => setScale(1.0)}
               darkMode={darkMode}
             />
           )}
