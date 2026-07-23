@@ -35,7 +35,7 @@ html, body, #root {
 
 /* ===== DARK MODE ===== */
 .dark .window-frame {
-  background: #1e1e1e; /* Canvas backing */
+  background: #1a1a1a; /* Canvas backing */
 }
 
 /* GNOME Popover Carets */

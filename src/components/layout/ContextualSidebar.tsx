@@ -32,7 +32,6 @@ export default function ContextualSidebar({
   const textDim = darkMode ? 'text-dark-text-dim' : 'text-adwaita-text-dim';
   const hover = darkMode ? 'hover:bg-dark-hover' : 'hover:bg-black/[0.04]';
   const tabInactive = darkMode ? 'text-dark-text-dim hover:bg-dark-hover hover:text-dark-text' : 'text-adwaita-text-dim hover:bg-adwaita-hover hover:text-adwaita-text';
-  const accent = darkMode ? 'border-dark-accent' : 'border-adwaita-accent';
 
   const observerRef = React.useRef<IntersectionObserver | null>(null);
   const pdfRef = React.useRef<any>(null);
@@ -101,7 +100,7 @@ export default function ContextualSidebar({
         <button 
           className={`w-full flex items-center justify-between py-2.5 px-4 text-sm ${text} ${hover} active:bg-black/[0.06] transition-colors`}
           style={{ paddingLeft: `${16 + depth * 16}px` }}
-          onClick={() => onPageSelect && item.dest && onPageSelect(1)}
+          onClick={() => onPageSelect && item.pageNum && onPageSelect(item.pageNum)}
         >
           <span className="truncate mr-3">{item.title}</span>
         </button>
@@ -126,14 +125,18 @@ export default function ContextualSidebar({
               <button 
                 key={pageNum}
                 onClick={() => onPageSelect?.(pageNum)}
-                className="flex flex-col items-center gap-1.5 group"
+                className={`flex flex-col items-center gap-1.5 group p-2 rounded-xl transition-all ${
+                  pageNum === currentPage 
+                    ? (darkMode ? 'bg-[#2a2a2a]' : 'bg-[#d5d5d5]') 
+                    : 'bg-transparent hover:bg-black/[0.04] dark:hover:bg-white/[0.04]'
+                }`}
               >
                 <div 
                   ref={(el) => observeThumbnail(el as HTMLDivElement, pageNum)}
-                  className={`border-2 rounded-sm overflow-hidden shadow-sm transition-all ${
+                  className={`border rounded overflow-hidden shadow-sm transition-all ${
                   pageNum === currentPage 
-                    ? `${accent} shadow-md` 
-                    : `border-transparent ${darkMode ? 'hover:border-dark-border' : 'hover:border-adwaita-border'}`
+                    ? `border-transparent` 
+                    : `border-transparent ${darkMode ? 'border-white/10' : 'border-black/10'}`
                 }`}>
                   {thumbnails.has(pageNum) ? (
                     <img src={thumbnails.get(pageNum)} alt={`Page ${pageNum}`} className="w-full block" />
@@ -143,7 +146,7 @@ export default function ContextualSidebar({
                     </div>
                   )}
                 </div>
-                <span className={`text-xs ${pageNum === currentPage ? `${text} font-medium` : textDim}`}>
+                <span className={`text-xs ${pageNum === currentPage ? `text-white font-medium` : textDim}`}>
                   {pageNum}
                 </span>
               </button>
@@ -178,12 +181,16 @@ export default function ContextualSidebar({
   const tabs: { id: SidebarTab; icon: React.ReactElement; label: string }[] = [
     { id: 'thumbnails', label: 'Thumbnails', icon: (
       <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
       </svg>
     )},
     { id: 'outline', label: 'Outline', icon: (
       <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M7 8h10M7 12h8m-8 4h4" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2H5l-2 2V5z" />
       </svg>
     )},
   ];
@@ -194,13 +201,13 @@ export default function ContextualSidebar({
         {tabContent()}
       </div>
 
-      <div className={`h-12 border-t ${border} flex items-center gap-1 px-4 ${bg} shrink-0`}>
+      <div className={`h-[52px] border-t ${border} flex items-center gap-2 px-4 ${darkMode ? 'bg-[#181818]' : 'bg-[#e0e0e0]'} shrink-0`}>
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`flex-1 h-9 rounded-full flex items-center justify-center transition-all ${
-              activeTab === tab.id ? `${darkMode ? 'bg-white/10' : 'bg-black/5'} shadow-sm ${text}` : tabInactive
+              activeTab === tab.id ? `${darkMode ? 'bg-[#3a3a3a]' : 'bg-white'} shadow-sm ${text}` : tabInactive
             }`}
             title={tab.label}
           >

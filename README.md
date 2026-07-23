@@ -5,12 +5,15 @@ A clean, distraction-free PDF reader for Windows, faithfully inspired by GNOME's
 ## Features
 
 ### Core Reading Experience
-- **Continuous Multi-Page Scrolling** — All pages rendered vertically, just like a native document viewer.
+- **Continuous Multi-Page Scrolling** — Seamless vertical scrolling, toggleable from the View Menu.
+- **Dual Page Mode** — Read like a book with side-by-side page rendering.
+- **Document Rotation** — Instantly rotate documents in 90-degree increments natively.
 - **Crisp Headless PDF.js Rendering** — Renders directly to canvas via Web Worker with full high-DPI scaling support.
 - **Offline Rendering Engine** — Fully embeds standard PDF fonts, character maps (CMaps), and WASM decoders (JBIG2/JPEG2000) for flawless offline rendering of complex documents without relying on external CDNs.
 - **Smart Zoom** — Use `Ctrl` + Scroll Wheel, `Ctrl` + `=/-/0`, or the sleek circular overlay zoom controls on the canvas.
 - **Selectable Text (OCR)** — Full text layer rendering for highlighting, copying, and pasting.
 - **Clickable Links** — Native support for embedded document hyperlinks and external URLs.
+- **Native Print** — Full document printing integration seamlessly hooked up.
 - **Page Tracking & Navigation** — Scroll position automatically updates the current page counter. Click the page number in the headerbar to manually jump to any page.
 
 ### GNOME-Inspired Design Language
@@ -48,6 +51,9 @@ A clean, distraction-free PDF reader for Windows, faithfully inspired by GNOME's
 | `Ctrl+-` | Zoom out |
 | `Ctrl+0` | Fit to width |
 | `Ctrl+Scroll` | Smooth zoom |
+| `Ctrl+P` | Print document |
+| `Ctrl+Right` | Rotate Right 90° |
+| `Ctrl+Left` | Rotate Left 90° |
 | `F11` | Toggle fullscreen |
 | `F9` | Toggle sidebar |
 
@@ -76,12 +82,11 @@ npm run tauri dev
 ```bash
 npm run tauri build
 ```
-Installer output: `src-tauri/target/release/bundle/nsis/Document Viewer_1.1.0_x64-setup.exe`
+Installer output: `src-tauri/target/release/bundle/nsis/Document Viewer_1.2.0_x64-setup.exe`
 
 ## Future Scopes & Roadmap
 - **Search Engine** — In-document text search (`Ctrl+F`) with a slide-down GNOME-styled search bar and text highlighting.
 - **Annotations** — Creation, highlighting, and persistence of custom annotations.
 - **Custom Bookmarks** — Bookmark saving and custom tables of contents.
-- **Print Support** — Native print interface for documents.
 - **Recent Files** — History list of recently opened files upon launch.
 - **Presentation Mode** — Fullscreen paginated view.

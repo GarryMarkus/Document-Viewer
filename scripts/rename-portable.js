@@ -8,7 +8,7 @@ const rootDir = path.join(__dirname, '..');
 
 const releaseDir = path.join(rootDir, 'src-tauri', 'target', 'release');
 const oldName = path.join(releaseDir, 'document_viewer.exe');
-const newName = path.join(releaseDir, 'Document Viewer-v1.1.0-Portable.exe');
+const newName = path.join(releaseDir, 'Document Viewer-v1.2.0-Portable.exe');
 
 if (fs.existsSync(oldName)) {
   fs.copyFileSync(oldName, newName);

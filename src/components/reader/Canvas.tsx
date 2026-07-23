@@ -15,17 +15,32 @@ interface CanvasProps {
   onDocumentLoad?: (numPages: number, outline: any[], metadata?: any) => void;
   onPageChange?: (page: number) => void;
   goToPage?: number;
+  currentPage?: number;
   darkMode?: boolean;
+  isContinuous?: boolean;
+  isDual?: boolean;
+  rotation?: number;
 }
 
-export default function Canvas({ scale, documentUrl, onDocumentLoad, onPageChange, goToPage, darkMode }: CanvasProps) {
+export default function Canvas({ 
+  scale, 
+  documentUrl, 
+  onDocumentLoad, 
+  onPageChange, 
+  goToPage, 
+  currentPage = 1,
+  darkMode,
+  isContinuous = true,
+  isDual = false,
+  rotation = 0
+}: CanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pageRefs = useRef<Map<number, HTMLCanvasElement>>(new Map());
   const wrapperRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+  const renderTasksRef = useRef<Map<number, any>>(new Map());
   const [pdfDoc, setPdfDoc] = useState<PDFDocumentProxy | null>(null);
   const [numPages, setNumPages] = useState(0);
   const [defaultPageSize, setDefaultPageSize] = useState({ width: 792, height: 1122 }); // Standard A4-ish
-  const renderingRef = useRef<Set<number>>(new Set());
 
   // Load PDF document
   useEffect(() => {
@@ -62,6 +77,41 @@ export default function Canvas({ scale, documentUrl, onDocumentLoad, onPageChang
         let outline = await pdf.getOutline();
         if (!outline) outline = [];
 
+        const resolveOutlineDestinations = async (items: any[]) => {
+          for (let item of items) {
+            if (item.dest) {
+              try {
+                let dest = item.dest;
+                if (typeof dest === 'string') {
+                  dest = await pdf.getDestination(dest);
+                }
+                if (Array.isArray(dest) && dest.length > 0) {
+                  const ref = dest[0];
+                  let pageIndex = -1;
+                  if (typeof ref === 'number') {
+                    // pdf.js sometimes returns the page index directly
+                    pageIndex = ref;
+                  } else if (typeof ref === 'object' && ref !== null) {
+                    pageIndex = await pdf.getPageIndex(ref);
+                  }
+                  if (pageIndex >= 0) {
+                    item.pageNum = pageIndex + 1;
+                  }
+                }
+              } catch (e) {
+                console.warn('Failed to resolve outline dest:', e);
+              }
+            }
+            if (item.items && item.items.length > 0) {
+              await resolveOutlineDestinations(item.items);
+            }
+          }
+        };
+
+        if (outline.length > 0) {
+          await resolveOutlineDestinations(outline);
+        }
+
         let docMetadata = null;
         try {
           const meta = await pdf.getMetadata();
@@ -82,17 +132,25 @@ export default function Canvas({ scale, documentUrl, onDocumentLoad, onPageChang
 
   // Render a single page: canvas + annotation layer (clickable links)
   const renderPage = useCallback(async (pageNum: number) => {
-    if (!pdfDoc || renderingRef.current.has(pageNum)) return;
+    if (!pdfDoc) return;
+    
+    // If a render is already running for this page, cancel it to avoid race conditions
+    if (renderTasksRef.current.has(pageNum)) {
+      try {
+        renderTasksRef.current.get(pageNum).cancel();
+      } catch (e) {
+        // Ignore cancel errors
+      }
+      renderTasksRef.current.delete(pageNum);
+    }
     
     const canvas = pageRefs.current.get(pageNum);
     const wrapper = wrapperRefs.current.get(pageNum);
     if (!canvas || !wrapper) return;
 
-    renderingRef.current.add(pageNum);
-
     try {
       const page = await pdfDoc.getPage(pageNum);
-      const viewport = page.getViewport({ scale });
+      const viewport = page.getViewport({ scale, rotation });
       const context = canvas.getContext('2d');
       if (!context) return;
 
@@ -107,11 +165,15 @@ export default function Canvas({ scale, documentUrl, onDocumentLoad, onPageChang
       wrapper.style.height = `${viewport.height}px`;
 
       // Render the canvas
-      await page.render({
+      const renderTask = page.render({
         canvasContext: context,
         viewport: viewport,
         transform: [dpr, 0, 0, dpr, 0, 0]
-      } as any).promise;
+      } as any);
+
+      renderTasksRef.current.set(pageNum, renderTask);
+      await renderTask.promise;
+      renderTasksRef.current.delete(pageNum);
 
       // === Annotation Layer (clickable links, form fields) ===
       let annotDiv = wrapper.querySelector('.annotationLayer') as HTMLDivElement;
@@ -190,19 +252,27 @@ export default function Canvas({ scale, documentUrl, onDocumentLoad, onPageChang
         console.warn('TextLayer error:', textError);
       }
 
-    } catch (error) {
-      console.warn(`Error rendering page ${pageNum}:`, error);
+    } catch (error: any) {
+      if (error?.name === 'RenderingCancelledException') {
+        // Expected when we cancel old tasks, don't spam console
+      } else {
+        console.warn(`Error rendering page ${pageNum}:`, error);
+      }
     } finally {
-      renderingRef.current.delete(pageNum);
+      renderTasksRef.current.delete(pageNum);
     }
-  }, [pdfDoc, scale]);
+  }, [pdfDoc, scale, rotation]);
+
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   // Lazy render pages when they enter viewport
   useEffect(() => {
     if (!pdfDoc || numPages === 0 || !containerRef.current) return;
     
-    renderingRef.current.clear();
-    const renderedPages = new Set<number>();
+    // Clear old tasks if the document changes
+    renderTasksRef.current.forEach(task => { try { task.cancel(); } catch(e){} });
+    renderTasksRef.current.clear();
+    const renderedCanvases = new WeakSet<HTMLCanvasElement>();
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -210,9 +280,10 @@ export default function Canvas({ scale, documentUrl, onDocumentLoad, onPageChang
           const pageNumStr = (entry.target as HTMLElement).dataset.page;
           if (pageNumStr) {
             const pageNum = parseInt(pageNumStr, 10);
-            if (!renderedPages.has(pageNum)) {
+            const canvas = pageRefs.current.get(pageNum);
+            if (canvas && !renderedCanvases.has(canvas)) {
+              renderedCanvases.add(canvas);
               renderPage(pageNum);
-              renderedPages.add(pageNum);
             }
           }
         }
@@ -223,12 +294,17 @@ export default function Canvas({ scale, documentUrl, onDocumentLoad, onPageChang
       threshold: 0.01
     });
 
+    observerRef.current = observer;
+
     wrapperRefs.current.forEach(wrapper => {
       observer.observe(wrapper);
     });
 
-    return () => observer.disconnect();
-  }, [pdfDoc, scale, numPages, renderPage]);
+    return () => {
+      observer.disconnect();
+      observerRef.current = null;
+    };
+  }, [pdfDoc, scale, renderPage]);
 
   // Track scroll position to determine current page
   useEffect(() => {
@@ -283,34 +359,82 @@ export default function Canvas({ scale, documentUrl, onDocumentLoad, onPageChang
     );
   }
 
+  const rows: (number | null)[][] = [];
+  if (isDual) {
+    let i = 1;
+    // For now, assume odd pages left is true
+    while (i <= numPages) {
+      const row: (number | null)[] = [i];
+      if (i + 1 <= numPages) {
+        row.push(i + 1);
+      } else {
+        row.push(null);
+      }
+      rows.push(row);
+      i += 2;
+    }
+  } else {
+    for (let i = 1; i <= numPages; i++) {
+      rows.push([i]);
+    }
+  }
+
+  // Filter rows if not continuous
+  const targetPage = goToPage || currentPage || 1;
+  const visibleRows = isContinuous 
+    ? rows 
+    : rows.filter(row => row.includes(targetPage));
+
+  const isRotated90 = rotation % 180 !== 0;
+  const pgWidth = isRotated90 ? defaultPageSize.height : defaultPageSize.width;
+  const pgHeight = isRotated90 ? defaultPageSize.width : defaultPageSize.height;
+
   return (
     <div 
       ref={containerRef}
       className={`w-full h-full overflow-auto pdf-canvas-area ${darkMode ? 'bg-dark-canvas' : 'bg-adwaita-canvas'}`}
     >
       <div className="flex flex-col items-center py-6 gap-4 min-h-full">
-        {Array.from({ length: numPages }, (_, i) => i + 1).map(pageNum => (
-          <div 
-            key={pageNum} 
-            data-page={pageNum}
-            ref={el => {
-              if (el) wrapperRefs.current.set(pageNum, el);
-              else wrapperRefs.current.delete(pageNum);
-            }}
-            className="relative shadow-[0_2px_12px_rgba(0,0,0,0.15)] bg-white"
-            style={{
-              width: `${defaultPageSize.width * scale}px`,
-              height: `${defaultPageSize.height * scale}px`
-            }}
-          >
-            <canvas
-              ref={el => {
-                if (el) pageRefs.current.set(pageNum, el);
-                else pageRefs.current.delete(pageNum);
-              }}
-              className="block"
-            />
-            {/* Annotation layer is appended here dynamically */}
+        {visibleRows.map((row) => (
+          <div key={row.join('-')} className="flex flex-row justify-center gap-4 max-w-full">
+            {row.map((pageNum, idx) => {
+              if (pageNum === null) {
+                return <div key={`empty-${idx}`} style={{ width: `${pgWidth * scale}px` }} className="shrink-0" />;
+              }
+              return (
+                <div 
+                  key={pageNum} 
+                  data-page={pageNum}
+                  ref={el => {
+                    if (el) {
+                      if (wrapperRefs.current.get(pageNum) !== el) {
+                        wrapperRefs.current.set(pageNum, el);
+                        observerRef.current?.observe(el);
+                      }
+                    } else {
+                      const oldEl = wrapperRefs.current.get(pageNum);
+                      if (oldEl) {
+                        observerRef.current?.unobserve(oldEl);
+                        wrapperRefs.current.delete(pageNum);
+                      }
+                    }
+                  }}
+                  className="relative shadow-[0_2px_12px_rgba(0,0,0,0.15)] bg-white shrink-0"
+                  style={{
+                    width: `${pgWidth * scale}px`,
+                    height: `${pgHeight * scale}px`
+                  }}
+                >
+                  <canvas
+                    ref={el => {
+                      if (el) pageRefs.current.set(pageNum, el);
+                      else pageRefs.current.delete(pageNum);
+                    }}
+                    className="block"
+                  />
+                </div>
+              );
+            })}
           </div>
         ))}
       </div>

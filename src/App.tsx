@@ -25,6 +25,9 @@ function App() {
     return localStorage.getItem('darkMode') === 'true';
   });
   const [isMaximized, setIsMaximized] = useState(false);
+  const [isContinuous, setIsContinuous] = useState(true);
+  const [isDual, setIsDual] = useState(false);
+  const [rotation, setRotation] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Check for a PDF passed via command line (double-clicking a file in Windows)
@@ -127,6 +130,11 @@ function App() {
   };
 
   // Global keyboard shortcuts
+  const stateRef = useRef({ isContinuous, isDual, currentPage, numPages });
+  useEffect(() => {
+    stateRef.current = { isContinuous, isDual, currentPage, numPages };
+  }, [isContinuous, isDual, currentPage, numPages]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key === 'o') {
@@ -135,11 +143,11 @@ function App() {
       }
       if (e.ctrlKey && (e.key === '=' || e.key === '+')) {
         e.preventDefault();
-        setScale(s => Math.min(4, s + 0.2));
+        setScale(s => Math.min(10, s + 0.2));
       }
       if (e.ctrlKey && e.key === '-') {
         e.preventDefault();
-        setScale(s => Math.max(0.3, s - 0.2));
+        setScale(s => Math.max(0.2, s - 0.2));
       }
       if (e.ctrlKey && e.key === '0') {
         e.preventDefault();
@@ -155,13 +163,45 @@ function App() {
         e.preventDefault();
         setSidebarVisible(v => !v);
       }
+      if (e.key === 'c' || e.key === 'C') {
+        setIsContinuous(c => !c);
+      }
+      if (e.key === 'd' || e.key === 'D') {
+        setIsDual(d => !d);
+      }
+      if (e.ctrlKey && e.key === 'ArrowRight') {
+        e.preventDefault();
+        setRotation(r => (r + 90) % 360);
+      }
+      if (e.ctrlKey && e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setRotation(r => (r + 270) % 360);
+      }
+      
+      const state = stateRef.current;
+      if (!state.isContinuous) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          const step = state.isDual ? 2 : 1;
+          const next = Math.min(state.currentPage + step, state.numPages);
+          setCurrentPage(next);
+          setGoToPage(next);
+        }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          const step = state.isDual ? 2 : 1;
+          const prev = Math.max(state.currentPage - step, 1);
+          setCurrentPage(prev);
+          setGoToPage(prev);
+        }
+      }
     };
 
     const handleWheel = (e: WheelEvent) => {
       if (e.ctrlKey) {
         e.preventDefault();
         const delta = e.deltaY > 0 ? -0.1 : 0.1;
-        setScale(s => Math.min(4, Math.max(0.3, s + delta)));
+        setScale(s => Math.min(10, Math.max(0.2, s + delta)));
       }
     };
 
@@ -204,9 +244,14 @@ function App() {
         darkMode={darkMode}
         onToggleDarkMode={() => setDarkMode(d => !d)}
         onShowProperties={() => setShowProperties(true)}
+        isContinuous={isContinuous}
+        onToggleContinuous={() => setIsContinuous(c => !c)}
+        isDual={isDual}
+        onToggleDual={() => setIsDual(d => !d)}
+        onRotate={() => setRotation(r => (r + 90) % 360)}
       />
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 min-w-0 overflow-hidden">
         <ContextualSidebar 
           outline={outline} 
           visible={sidebarVisible}
@@ -220,12 +265,16 @@ function App() {
           darkMode={darkMode}
         />
 
-        <div className="flex-1 relative">
+        <div className="flex-1 min-w-0 relative">
           <Canvas 
             scale={scale} 
             documentUrl={pdfUrl} 
             goToPage={goToPage}
+            currentPage={currentPage}
             darkMode={darkMode}
+            isContinuous={isContinuous}
+            isDual={isDual}
+            rotation={rotation}
             onDocumentLoad={(pages, documentOutline, docMetadata) => {
               setNumPages(pages);
               setOutline(documentOutline);
@@ -239,8 +288,10 @@ function App() {
           
           {pdfUrl && (
             <FloatingActionButtons 
-              onZoomIn={() => setScale(s => Math.min(4, s + 0.2))}
-              onZoomOut={() => setScale(s => Math.max(0.3, s - 0.2))}
+              onZoomIn={() => setScale(s => Math.min(10, s + 0.2))}
+              onZoomOut={() => setScale(s => Math.max(0.2, s - 0.2))}
+              canZoomIn={scale < 9.9}
+              canZoomOut={scale > 0.21}
               darkMode={darkMode}
             />
           )}

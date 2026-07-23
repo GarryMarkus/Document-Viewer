@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
-import { getCurrentWindow } from '@tauri-apps/api/window';
+import { Window } from '@tauri-apps/api/window';
 
-const appWindow = getCurrentWindow();
+const appWindow = new Window('main');
 
 interface HeaderProps {
   onFileSelected?: (url: string, name: string) => void;
@@ -14,6 +14,11 @@ interface HeaderProps {
   darkMode?: boolean;
   onToggleDarkMode?: () => void;
   onShowProperties?: () => void;
+  isContinuous?: boolean;
+  onToggleContinuous?: () => void;
+  isDual?: boolean;
+  onToggleDual?: () => void;
+  onRotate?: () => void;
 }
 
 export default function UnifiedHeaderbar({ 
@@ -27,10 +32,16 @@ export default function UnifiedHeaderbar({
   darkMode = false,
   onToggleDarkMode,
   onShowProperties,
+  isContinuous,
+  onToggleContinuous,
+  isDual,
+  onToggleDual,
+  onRotate,
 }: HeaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [appMenuOpen, setAppMenuOpen] = useState(false);
   const [viewMenuOpen, setViewMenuOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const [pageInput, setPageInput] = useState('');
   const [editingPage, setEditingPage] = useState(false);
 
@@ -64,7 +75,6 @@ export default function UnifiedHeaderbar({
     setEditingPage(false);
   };
 
-  const bg = darkMode ? 'bg-dark-header' : 'bg-adwaita-header';
   const border = darkMode ? 'border-dark-border' : 'border-adwaita-border';
   const text = darkMode ? 'text-dark-text' : 'text-adwaita-text';
   const textDim = darkMode ? 'text-dark-text-dim' : 'text-adwaita-text-dim';
@@ -74,114 +84,119 @@ export default function UnifiedHeaderbar({
 
   // Popover Menu Styles
   const popoverBg = darkMode ? 'bg-dark-sidebar' : 'bg-white';
-  const popoverBorder = darkMode ? 'border-[#1a1a1a]' : 'border-gray-300';
-  const popoverShadow = darkMode ? 'shadow-[0_4px_24px_rgba(0,0,0,0.6)]' : 'shadow-[0_4px_24px_rgba(0,0,0,0.15)]';
+  const popoverBorder = darkMode ? 'border-white/10' : 'border-black/10';
+  const popoverShadow = darkMode ? 'shadow-2xl shadow-black/50' : 'shadow-xl shadow-black/10';
+
+  const leftBg = darkMode ? 'bg-dark-sidebar' : 'bg-[#f6f6f6]';
+  const rightBg = darkMode ? 'bg-dark-bg' : 'bg-white';
 
   const renderAppMenu = () => (
     <div className="relative shrink-0" onClick={e => e.stopPropagation()}>
       <button 
         onClick={() => { setAppMenuOpen(!appMenuOpen); setViewMenuOpen(false); }} 
-        className={`w-8 h-8 rounded-lg ${hover} ${active} flex items-center justify-center ${text} ${appMenuOpen ? activeBtn : ''}`}
+        className={`w-7 h-7 rounded-lg ${hover} ${active} flex items-center justify-center ${text} ${appMenuOpen ? activeBtn : ''}`}
         title="App Menu"
       >
         <svg className="w-5 h-5 pointer-events-none" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="10" cy="16" r="1.5"/></svg>
       </button>
 
       {appMenuOpen && (
-        <div className={`absolute top-[calc(100%+6px)] left-0 w-64 rounded-xl ${popoverBg} border ${popoverBorder} ${popoverShadow} py-2 z-50`}>
+        <div className={`absolute top-[calc(100%+6px)] left-0 w-64 rounded-xl ${popoverBg} border ${popoverBorder} ${popoverShadow} p-1.5 z-50`}>
           <div className={`popover-caret-up left-3 border-l border-t ${popoverBorder}`}></div>
-          <button onClick={() => fileInputRef.current?.click()} className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover} flex items-center justify-between`}>
-            <span>Open...</span>
-            <span className={textDim}>Ctrl+O</span>
-          </button>
-          <div className={`border-t my-1.5 ${darkMode ? 'border-white/10' : 'border-black/5'}`} />
-          <button onClick={() => { onToggleDarkMode?.(); setAppMenuOpen(false); }} className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover} flex items-center justify-between`}>
-            <span>{darkMode ? 'Day Mode' : 'Night Mode'}</span>
-            <span className={textDim}>Ctrl+I</span>
-          </button>
-          <div className={`border-t my-1.5 ${darkMode ? 'border-white/10' : 'border-black/5'}`} />
-          <button className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover} flex items-center justify-between`}>
-            <span>Keyboard Shortcuts</span>
-            <span className={textDim}>Ctrl+?</span>
-          </button>
-          <button className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover} flex items-center justify-between`}>
-            <span>Help</span>
-            <span className={textDim}>F1</span>
-          </button>
-          <button className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover}`}>
-            About Document Viewer
-          </button>
+          <div className="flex flex-col">
+            <button onClick={() => fileInputRef.current?.click()} className={`w-full text-left px-3 py-1.5 rounded-md text-sm ${text} ${hover} flex items-center justify-between`}>
+              <span>Open...</span>
+              <span className={textDim}>Ctrl+O</span>
+            </button>
+            <div className={`border-t my-1.5 mx-1 ${darkMode ? 'border-white/10' : 'border-black/5'}`} />
+            <button onClick={() => { onToggleDarkMode?.(); setAppMenuOpen(false); }} className={`w-full text-left px-3 py-1.5 rounded-md text-sm ${text} ${hover} flex items-center justify-between`}>
+              <span>{darkMode ? 'Day Mode' : 'Night Mode'}</span>
+              <span className={textDim}>Ctrl+I</span>
+            </button>
+            <div className={`border-t my-1.5 mx-1 ${darkMode ? 'border-white/10' : 'border-black/5'}`} />
+            <button className={`w-full text-left px-3 py-1.5 rounded-md text-sm ${text} ${hover} flex items-center justify-between`}>
+              <span>Keyboard Shortcuts</span>
+              <span className={textDim}>Ctrl+?</span>
+            </button>
+            <button onClick={() => { setAboutOpen(true); setAppMenuOpen(false); }} className={`w-full text-left px-3 py-1.5 rounded-md text-sm ${text} ${hover}`}>
+              About Document Viewer
+            </button>
+          </div>
+        </div>
+      )}
+      
+      {aboutOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50" onClick={() => setAboutOpen(false)}>
+          <div className={`${popoverBg} p-6 rounded-xl shadow-2xl max-w-sm w-full mx-4 border ${popoverBorder}`} onClick={e => e.stopPropagation()}>
+            <h2 className={`text-xl font-bold mb-2 ${text}`}>Document Viewer</h2>
+            <p className={`text-sm ${textDim} mb-4`}>Version 1.2.0</p>
+            <p className={`text-sm ${text} mb-6`}>A fast, elegant, and modern PDF reader for your documents.</p>
+            <button onClick={() => setAboutOpen(false)} className="w-full py-2 bg-[#3584e4] hover:bg-[#1c71d8] text-white rounded-lg text-sm font-medium transition-colors">
+              Close
+            </button>
+          </div>
         </div>
       )}
     </div>
+  );
+
+  const CheckIcon = () => (
+    <svg className="w-[14px] h-[14px] mr-2" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
   );
 
   const renderViewMenu = () => (
     <div className="relative" onClick={e => e.stopPropagation()}>
       <button 
         onClick={() => { setViewMenuOpen(!viewMenuOpen); setAppMenuOpen(false); }} 
-        className={`w-8 h-8 rounded-lg ${hover} ${active} flex items-center justify-center ${text} ${viewMenuOpen ? activeBtn : ''}`}
+        className={`w-7 h-7 rounded-lg ${hover} ${active} flex items-center justify-center ${text} ${viewMenuOpen ? activeBtn : ''}`}
         title="View Options"
       >
         <svg className="w-5 h-5 pointer-events-none" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="10" cy="16" r="1.5"/></svg>
       </button>
 
       {viewMenuOpen && (
-        <div className={`absolute top-[calc(100%+6px)] right-0 w-64 rounded-xl ${popoverBg} border ${popoverBorder} ${popoverShadow} py-2 z-50`}>
+        <div className={`absolute top-[calc(100%+6px)] right-0 w-[280px] rounded-xl ${popoverBg} border ${popoverBorder} ${popoverShadow} p-1.5 z-50`}>
           <div className={`popover-caret-up right-3 border-l border-t ${popoverBorder}`}></div>
-          <button className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover} flex items-center justify-between`}>
-            <span>Print...</span>
-            <span className={textDim}>Ctrl+P</span>
-          </button>
-          <button className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover} flex items-center justify-between`}>
-            <span>Fullscreen</span>
-            <span className={textDim}>F11</span>
-          </button>
-          <button className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover} flex items-center justify-between`}>
-            <span>Present as Slideshow</span>
-            <span className={textDim}>F5</span>
-          </button>
-          <button className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover}`}>
-            Sign Digitally...
-          </button>
-          <div className={`border-t my-1.5 ${darkMode ? 'border-white/10' : 'border-black/5'}`} />
-          <button className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover} flex items-center justify-between`}>
-            <span>Open a Copy</span>
-            <span className={textDim}>Shift+Ctrl+N</span>
-          </button>
-          <button className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover} flex items-center justify-between`}>
-            <span>Open With...</span>
-            <span className={textDim}>Shift+Ctrl+O</span>
-          </button>
-          <button className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover}`}>
-            Save As...
-          </button>
-          <div className={`border-t my-1.5 ${darkMode ? 'border-white/10' : 'border-black/5'}`} />
-          <button className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover} flex items-center justify-between`}>
-            <span className="flex items-center gap-2"><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg> Continuous</span>
-            <span className={textDim}>C</span>
-          </button>
-          <button className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover} flex items-center justify-between pl-10`}>
-            <span>Dual</span>
-            <span className={textDim}>D</span>
-          </button>
-          <button className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover} flex items-center justify-between`}>
-            <span className="flex items-center gap-2"><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg> Odd Pages Left</span>
-            <span className={textDim}>O</span>
-          </button>
-          <button className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover} pl-10`}>
-            Right to Left Document
-          </button>
-          <div className={`border-t my-1.5 ${darkMode ? 'border-white/10' : 'border-black/5'}`} />
-          <button className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover} flex items-center justify-between`}>
-            <span>Rotate ⤵</span>
-            <span className={textDim}>Ctrl+Right</span>
-          </button>
-          <div className={`border-t my-1.5 ${darkMode ? 'border-white/10' : 'border-black/5'}`} />
-          <button onClick={() => { onShowProperties?.(); setViewMenuOpen(false); }} className={`w-full text-left px-4 py-1.5 text-sm ${text} ${hover} flex items-center justify-between`}>
-            <span>Document Properties</span>
-            <span className={textDim}>Alt+Return</span>
-          </button>
+          <div className="flex flex-col">
+            <button onClick={() => {
+              window.print();
+              setViewMenuOpen(false);
+            }} className={`w-full text-left px-3 py-1.5 rounded-md text-sm ${text} ${hover} flex items-center justify-between`}>
+              <span>Print...</span>
+              <span className={textDim}>Ctrl+P</span>
+            </button>
+            <button onClick={() => {
+              document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+              setViewMenuOpen(false);
+            }} className={`w-full text-left px-3 py-1.5 rounded-md text-sm ${text} ${hover} flex items-center justify-between`}>
+              <span>Fullscreen</span>
+              <span className={textDim}>F11</span>
+            </button>
+            <button onClick={() => { onToggleSidebar?.(); setViewMenuOpen(false); }} className={`w-full text-left px-3 py-1.5 rounded-md text-sm ${text} ${hover} flex items-center justify-between`}>
+              <span>Toggle Sidebar</span>
+              <span className={textDim}>F9</span>
+            </button>
+            <button onClick={() => { onToggleContinuous?.(); setViewMenuOpen(false); }} className={`relative w-full text-left px-3 py-1.5 rounded-md text-sm ${text} ${hover} flex items-center justify-between pl-[34px]`}>
+              {isContinuous && <div className="absolute left-3"><CheckIcon /></div>}
+              <span>Continuous</span>
+              <span className={textDim}>C</span>
+            </button>
+            <button onClick={() => { onToggleDual?.(); setViewMenuOpen(false); }} className={`relative w-full text-left px-3 py-1.5 rounded-md text-sm ${text} ${hover} flex items-center justify-between pl-[34px]`}>
+              {isDual && <div className="absolute left-3"><CheckIcon /></div>}
+              <span>Dual</span>
+              <span className={textDim}>D</span>
+            </button>
+            <div className={`border-t my-1.5 mx-1 ${darkMode ? 'border-white/10' : 'border-black/5'}`} />
+            <button onClick={() => { onRotate?.(); setViewMenuOpen(false); }} className={`w-full text-left px-3 py-1.5 rounded-md text-sm ${text} ${hover} flex items-center justify-between pl-[34px]`}>
+              <span>Rotate ⤵</span>
+              <span className={textDim}>Ctrl+Right</span>
+            </button>
+            <div className={`border-t my-1.5 mx-1 ${darkMode ? 'border-white/10' : 'border-black/5'}`} />
+            <button onClick={() => { onShowProperties?.(); setViewMenuOpen(false); }} className={`w-full text-left px-3 py-1.5 rounded-md text-sm ${text} ${hover} flex items-center justify-between pl-[34px]`}>
+              <span>Document Properties</span>
+              <span className={textDim}>Alt+Return</span>
+            </button>
+          </div>
         </div>
       )}
     </div>
@@ -189,7 +204,7 @@ export default function UnifiedHeaderbar({
 
   return (
     <div 
-      className={`h-[44px] flex items-center shrink-0 select-none w-full`}
+      className={`h-[34px] flex items-center shrink-0 select-none w-full`}
       onDoubleClick={(e) => {
         if ((e.target as HTMLElement).closest('button, input')) return;
         appWindow.toggleMaximize();
@@ -198,12 +213,9 @@ export default function UnifiedHeaderbar({
       {/* ===== LEFT HEADERBAR (Matches Sidebar Width) ===== */}
       {sidebarVisible && (
         <div 
-          className={`h-full flex items-center px-2 gap-1 ${bg} w-[260px] shrink-0 border-r ${border}`}
+          className={`h-full flex items-center px-2 gap-1 ${leftBg} w-[260px] shrink-0 border-r border-b ${border}`}
           data-tauri-drag-region
         >
-        <button className={`w-8 h-8 rounded-lg ${hover} ${active} flex items-center justify-center ${text} shrink-0`} title="Search">
-          <svg className="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-        </button>
         <div className={`flex-1 min-w-0 flex items-center justify-center px-2 pointer-events-none`} data-tauri-drag-region>
           <span className={`text-sm font-bold ${text} truncate`}>
             Document Viewer
@@ -214,27 +226,17 @@ export default function UnifiedHeaderbar({
       )}
 
       {/* ===== RIGHT HEADERBAR (Expands) ===== */}
-      <div className={`h-full flex-1 min-w-0 flex items-center justify-between px-2 ${bg} border-b ${border}`} data-tauri-drag-region>
+      <div className={`h-full flex-1 min-w-0 flex items-center justify-between px-2 ${rightBg} border-b ${border}`} data-tauri-drag-region>
         
         {/* Left Side of Right Headerbar */}
         <div className="flex items-center gap-1 shrink-0" data-tauri-drag-region>
-          {!sidebarVisible && (
-            <button className={`w-8 h-8 rounded-lg ${hover} ${active} flex items-center justify-center ${text}`} title="Search">
-              <svg className="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-            </button>
-          )}
-          
-          <button 
-            onClick={onToggleSidebar}
-            className={`w-8 h-8 rounded-lg flex items-center justify-center ${text} ${sidebarVisible ? activeBtn : `${hover} ${active}`}`}
-            title="Toggle Sidebar (F9)"
-          >
-            <svg className="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <rect x="3" y="4" width="18" height="16" rx="2" ry="2" stroke="currentColor" strokeWidth={2} fill="none" />
-              <line x1="9" y1="4" x2="9" y2="20" stroke="currentColor" strokeWidth={2} />
+          <button onClick={onToggleSidebar} className={`w-7 h-7 rounded-lg ${hover} ${active} flex items-center justify-center ${text}`} title="Toggle Sidebar">
+            <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2"/>
+              <path d="M9 4v16" stroke="currentColor" strokeWidth="2"/>
+              <rect x="3" y="4" width="6" height="16" rx="2" fill="currentColor"/>
             </svg>
           </button>
-
           {!sidebarVisible && (
             <div className="ml-1 shrink-0">{renderAppMenu()}</div>
           )}
@@ -252,7 +254,7 @@ export default function UnifiedHeaderbar({
         {/* Right Controls */}
         <div className="flex items-center gap-1.5 shrink-0" data-tauri-drag-region>
           {fileName && numPages > 0 && (
-            <div className={`flex items-center gap-1.5 text-[13px] font-bold ${text} px-3 py-1 rounded-full ${darkMode ? 'bg-white/10' : 'bg-black/5'} mr-1`}>
+            <div className={`flex items-center gap-1.5 text-[13px] font-bold ${text} px-3 py-1 rounded-full ${darkMode ? 'bg-[#2a2a2a]' : 'bg-[#e0e0e0]'} mr-1 shadow-inner`}>
               {editingPage ? (
                 <input 
                   type="number"
@@ -277,14 +279,14 @@ export default function UnifiedHeaderbar({
           {/* Window controls */}
           <button 
             onClick={() => appWindow.minimize()} 
-            className={`w-6 h-6 rounded-full ${darkMode ? 'bg-white/10 hover:bg-white/20' : 'bg-black/5 hover:bg-black/10'} flex items-center justify-center ml-1`}
+            className={`w-[24px] h-[24px] rounded-full ${darkMode ? 'bg-white/10 hover:bg-white/20' : 'bg-black/5 hover:bg-black/10'} flex items-center justify-center ml-2`}
           >
             <svg className={`w-3 h-3 ${text}`} fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" d="M5 12h14" /></svg>
           </button>
           
           <button 
             onClick={() => appWindow.close()} 
-            className={`w-6 h-6 rounded-full ${darkMode ? 'bg-white/10 hover:bg-white/20' : 'bg-black/5 hover:bg-black/10'} flex items-center justify-center hover:!bg-[#e01b24] hover:!border-transparent transition-colors group`}
+            className={`w-[24px] h-[24px] rounded-full ${darkMode ? 'bg-white/10 hover:bg-white/20' : 'bg-black/5 hover:bg-black/10'} flex items-center justify-center hover:!bg-[#e01b24] hover:!border-transparent transition-colors group mr-1`}
           >
             <svg className={`w-3 h-3 ${text} group-hover:text-white`} fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
