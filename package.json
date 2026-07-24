@@ -1,7 +1,14 @@
 {
   "name": "document-viewer",
   "private": true,
-  "version": "1.2.0",
+  "version": "2.0.0",
+  "description": "A clean, distraction-free PDF reader for Windows, faithfully inspired by GNOME's minimalist aesthetics.",
+  "author": "Garry Markus",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GarryMarkus/Document-Viewer.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -137,6 +137,10 @@ function App() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger shortcuts when typing in an input
+      const tag = (e.target as HTMLElement)?.tagName;
+      const isTyping = tag === 'INPUT' || tag === 'TEXTAREA' || (e.target as HTMLElement)?.isContentEditable;
+
       if (e.ctrlKey && e.key === 'o') {
         e.preventDefault();
         fileInputRef.current?.click();
@@ -163,10 +167,10 @@ function App() {
         e.preventDefault();
         setSidebarVisible(v => !v);
       }
-      if (e.key === 'c' || e.key === 'C') {
+      if (!isTyping && (e.key === 'c' || e.key === 'C')) {
         setIsContinuous(c => !c);
       }
-      if (e.key === 'd' || e.key === 'D') {
+      if (!isTyping && (e.key === 'd' || e.key === 'D')) {
         setIsDual(d => !d);
       }
       if (e.ctrlKey && e.key === 'ArrowRight') {
@@ -251,19 +255,22 @@ function App() {
         onRotate={() => setRotation(r => (r + 90) % 360)}
       />
 
-      <div className="flex flex-1 min-w-0 overflow-hidden">
-        <ContextualSidebar 
-          outline={outline} 
-          visible={sidebarVisible}
-          documentUrl={pdfUrl}
-          numPages={numPages}
-          currentPage={currentPage}
-          onPageSelect={(page) => {
-            setCurrentPage(page);
-            setGoToPage(page);
-          }}
-          darkMode={darkMode}
-        />
+      <div className="flex flex-1 min-w-0 overflow-hidden relative">
+        <div 
+          className={`shrink-0 h-full overflow-hidden transition-all duration-300 ease-in-out ${sidebarVisible ? 'w-[260px] opacity-100' : 'w-0 opacity-0'}`}
+        >
+          <ContextualSidebar 
+            outline={outline} 
+            documentUrl={pdfUrl}
+            numPages={numPages}
+            currentPage={currentPage}
+            onPageSelect={(page) => {
+              setCurrentPage(page);
+              setGoToPage(page);
+            }}
+            darkMode={darkMode}
+          />
+        </div>
 
         <div className="flex-1 min-w-0 relative">
           <Canvas 

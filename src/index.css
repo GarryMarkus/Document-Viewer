@@ -10,12 +10,14 @@ html, body, #root {
   padding: 0;
   overflow: hidden;
   font-family: 'Inter', 'Cantarell', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* ===== LIGHT MODE WINDOW ===== */
 .window-frame {
-  @apply h-full w-full flex flex-col overflow-hidden;
-  background: #f0f0f0;
+  @apply h-full w-full flex flex-col overflow-hidden bg-adwaita-bg dark:bg-dark-bg;
 }
 
 /* Maximized state (no visual change needed, OS handles corners) */
@@ -34,9 +36,7 @@ html, body, #root {
 }
 
 /* ===== DARK MODE ===== */
-.dark .window-frame {
-  background: #1a1a1a; /* Canvas backing */
-}
+/* Canvas backing is handled by adwaita-bg/dark-bg */
 
 /* GNOME Popover Carets */
 .popover-caret-up {
@@ -50,6 +50,24 @@ html, body, #root {
   transform: rotate(45deg);
   z-index: -1;
   border-top-left-radius: 2px;
+}
+
+.popover-caret-down {
+  transform: translateY(50%) rotate(45deg);
+}
+
+/* GPU acceleration for smooth scrolling */
+.pdf-canvas-area {
+  scroll-behavior: auto;
+  -webkit-overflow-scrolling: touch;
+  will-change: scroll-position;
+}
+
+/* Hide text and annotation layers while zooming to avoid visual artifacts */
+.zooming .textLayer, 
+.zooming .annotationLayer {
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 /* ===== SCROLLBAR — Light ===== */
@@ -154,7 +172,7 @@ html, body, #root {
 
 /* Smooth transitions globally */
 button, input {
-  transition: background-color 150ms ease, color 150ms ease, box-shadow 150ms ease, opacity 150ms ease;
+  transition: background-color 100ms ease, color 100ms ease, box-shadow 100ms ease, opacity 100ms ease;
 }
 
 /* Focus ring for keyboard navigation */

@@ -1,66 +1,77 @@
-# Document Viewer — Document Reader for Windows
+# Document Viewer
 
-A clean, distraction-free PDF reader for Windows, faithfully inspired by GNOME's minimalist aesthetics. Built for speed, minimalism, and a truly native feel.
+A fast, elegant, and distraction-free PDF reader for Windows, faithfully inspired by GNOME Papers' minimalist Libadwaita aesthetics. Built with Tauri v2 for native performance.
+
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Platform](https://img.shields.io/badge/platform-Windows%20x64-lightgrey)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 ## Features
 
 ### Core Reading Experience
-- **Continuous Multi-Page Scrolling** — Seamless vertical scrolling, toggleable from the View Menu.
-- **Dual Page Mode** — Read like a book with side-by-side page rendering.
-- **Document Rotation** — Instantly rotate documents in 90-degree increments natively.
-- **Crisp Headless PDF.js Rendering** — Renders directly to canvas via Web Worker with full high-DPI scaling support.
-- **Offline Rendering Engine** — Fully embeds standard PDF fonts, character maps (CMaps), and WASM decoders (JBIG2/JPEG2000) for flawless offline rendering of complex documents without relying on external CDNs.
-- **Smart Zoom** — Use `Ctrl` + Scroll Wheel, `Ctrl` + `=/-/0`, or the sleek circular overlay zoom controls on the canvas.
-- **Selectable Text (OCR)** — Full text layer rendering for highlighting, copying, and pasting.
-- **Clickable Links** — Native support for embedded document hyperlinks and external URLs.
-- **Native Print** — Full document printing integration seamlessly hooked up.
-- **Page Tracking & Navigation** — Scroll position automatically updates the current page counter. Click the page number in the headerbar to manually jump to any page.
+- **Continuous Scrolling** — Seamless vertical multi-page scrolling, toggleable from the View menu or `C` key.
+- **Dual Page Mode** — Side-by-side book-style reading, toggleable from the View menu or `D` key.
+- **Document Rotation** — Rotate documents in 90° increments (`Ctrl+Arrow`).
+- **Smart Zoom** — `Ctrl+Scroll Wheel`, `Ctrl+=/-/0`, or the floating overlay zoom controls. Debounced rendering ensures smooth, lag-free zooming.
+- **Selectable Text** — Full text layer rendering for highlighting, copying, and pasting.
+- **Clickable Links** — Native support for embedded hyperlinks and external URLs.
+- **Page Tracking & Navigation** — Scroll position auto-updates the page counter. Click the page number to jump to any page.
+- **Crisp PDF.js Rendering** — Renders via Web Worker with high-DPI support (capped at 2× for performance).
+- **Offline Engine** — Fully bundles standard fonts, CMaps, and WASM decoders (JBIG2/JPEG2000) for flawless offline rendering.
 
-### GNOME-Inspired Design Language
-- **Frameless Window** — Custom titlebar with native Windows 11 DWM GPU-composited rounded corners.
-- **Sleek Split Headerbar** — Slimmed down top bar blending app controls and document info.
-- **Dark & Light Mode Support** — Toggle between themes natively with UI dynamically updating its aesthetics.
-- **Dynamic Application Icon** — Runtime executable icon dynamically switches to match the active system theme (Dark/Light).
-- **Document Properties Modal** — Clean Adwaita-styled properties dialog detailing PDF metadata (Title, Author, Creator, Page Count).
-- **GNOME Thin Scrollbars** — Overlay-style with rounded thumbs for a minimal, unintrusive feel.
-- **Premium Typography** — Clean, professional font usage matching modern UI standards.
+### GNOME-Inspired Design
+- **Libadwaita Aesthetic** — Inspired by GNOME Papers with a faithful recreation of the Adwaita color palette, typography, and spacing.
+- **Frameless Window** — Custom titlebar with native Windows 11 DWM composited rounded corners.
+- **Split Headerbar** — Slim top bar with app controls, centered title, and page indicator pill.
+- **Dark & Light Mode** — Toggle between themes with full UI adaptation, including dynamic window icon switching.
+- **Animated Sidebar** — Smooth 300ms slide animation for sidebar toggle with synchronized headerbar.
+- **Thin Scrollbars** — Overlay-style rounded scrollbar thumbs for a minimal feel.
+- **Document Properties** — Adwaita-styled modal displaying PDF metadata (Title, Author, Creator, etc.).
+- **Keyboard Shortcuts Dialog** — Full shortcuts reference accessible from the app menu.
 
-### Engine & Performance
-- **Virtualization Engine** — True lazy-loading via `IntersectionObserver`. Only visible pages and thumbnails are rendered in memory, allowing instant scrolling through massive 1000+ page textbooks without lag.
-- **Asset Auto-Bundling** — Heavy static assets (like WASM binaries and fonts) are efficiently resolved during installation without bloating the repository.
+### Performance
+- **Virtualized Rendering** — Lazy-loading via `IntersectionObserver`. Only visible pages are rendered, enabling instant scrolling through 1000+ page documents.
+- **Debounced Zoom** — CSS-based instant visual feedback with delayed high-quality re-render for buttery smooth zooming.
+- **Throttled Scroll Detection** — Page tracking uses `requestAnimationFrame` to prevent layout thrashing.
+- **DPR Capping** — Pixel ratio capped at 2× to balance crispness and rendering speed.
+- **GPU Acceleration** — Canvas area uses `will-change` and optimized scroll hints.
 
 ### OS Integration
-- **Native File Associations** — Automatically registers as a PDF viewer during installation.
-- **Deep-linking / Double-click** — Native Windows integration captures startup arguments to instantly load PDFs launched directly from the File Explorer.
+- **File Associations** — Registers as a PDF viewer during installation.
+- **Double-click to Open** — Native Windows integration loads PDFs launched from File Explorer.
+- **Drag & Drop** — Drop any PDF onto the window to open it, with visual dashed-border feedback.
 
-### Sidebar Functionality
-- **Thumbnails** — Real canvas-rendered page previews with accent borders highlighting the currently viewed page.
-- **Outline** — Extracts and renders actual PDF bookmarks/table of contents for swift structural navigation.
+### Sidebar
+- **Thumbnails** — Lazy-loaded canvas-rendered page previews with accent ring on the active page.
+- **Outline** — Renders PDF bookmarks/table of contents for structural navigation.
+- **Bottom Tab Bar** — GNOME-style segmented control for switching between views.
 
-### Native Window Gestures
-- **Custom Drag** — Drag region on the headerbar allows fluid window movement.
-- **Double-Click Headerbar** — Toggle maximize (automatically squares corners to fit the screen).
-- **Drag & Drop** — Drop any PDF onto the window to instantly open it, complete with visual dashed-border feedback.
-- **Native Controls** — Seamlessly integrated Minimize, Maximize, and Close hover controls pinned to the top right.
+### Window Controls
+- **Drag Region** — Headerbar allows fluid window movement.
+- **Double-click Maximize** — Double-click the headerbar to toggle maximize.
+- **GNOME-style Controls** — Minimize, Maximize, and Close buttons with circular styling.
 
-### Keyboard Shortcuts
+## Keyboard Shortcuts
+
 | Shortcut | Action |
 |----------|--------|
 | `Ctrl+O` | Open file |
 | `Ctrl+=` | Zoom in |
 | `Ctrl+-` | Zoom out |
-| `Ctrl+0` | Fit to width |
+| `Ctrl+0` | Reset zoom |
 | `Ctrl+Scroll` | Smooth zoom |
-| `Ctrl+P` | Print document |
-| `Ctrl+Right` | Rotate Right 90° |
-| `Ctrl+Left` | Rotate Left 90° |
+| `Ctrl+Right` | Rotate right 90° |
+| `Ctrl+Left` | Rotate left 90° |
 | `F11` | Toggle fullscreen |
 | `F9` | Toggle sidebar |
+| `C` | Toggle continuous mode |
+| `D` | Toggle dual page mode |
 
 ## Tech Stack
+
 - **Framework:** Tauri v2 (Rust backend + Edge WebView2)
 - **Frontend:** React 19 + TypeScript + Vite
-- **Styling:** Tailwind CSS v3
+- **Styling:** Tailwind CSS v3 with custom Adwaita palette
 - **Rendering:** PDF.js (Mozilla) v6+
 
 ## Getting Started
@@ -71,9 +82,9 @@ A clean, distraction-free PDF reader for Windows, faithfully inspired by GNOME's
 - Visual Studio C++ Build Tools (Windows)
 
 ### Development
-1. Clone the repository.
-2. Install dependencies (this will automatically trigger the `postinstall` script to bundle PDF assets).
 ```bash
+git clone https://github.com/GarryMarkus/Document-Viewer.git
+cd Document-Viewer
 npm install
 npm run tauri dev
 ```
@@ -82,11 +93,27 @@ npm run tauri dev
 ```bash
 npm run tauri build
 ```
-Installer output: `src-tauri/target/release/bundle/nsis/Document Viewer_1.2.0_x64-setup.exe`
 
-## Future Scopes & Roadmap
-- **Search Engine** — In-document text search (`Ctrl+F`) with a slide-down GNOME-styled search bar and text highlighting.
-- **Annotations** — Creation, highlighting, and persistence of custom annotations.
-- **Custom Bookmarks** — Bookmark saving and custom tables of contents.
-- **Recent Files** — History list of recently opened files upon launch.
-- **Presentation Mode** — Fullscreen paginated view.
+Output files:
+- **Portable:** `src-tauri/target/release/document_viewer.exe`
+- **MSI Installer:** `src-tauri/target/release/bundle/msi/Document Viewer_2.0.0_x64_en-US.msi`
+- **EXE Installer:** `src-tauri/target/release/bundle/nsis/Document Viewer_2.0.0_x64-setup.exe`
+
+## Known Issues
+
+- **Cargo version mismatch** — `Cargo.toml` still reports `1.2.0` while `tauri.conf.json` and `package.json` are at `2.0.0`. This is cosmetic and does not affect functionality.
+- **Text layer alignment** — At extreme zoom levels (>5×), the transparent text selection layer may drift slightly from the rendered canvas.
+- **Large PDF initial load** — Documents with 500+ pages may take a few seconds for the initial outline resolution pass.
+- **Annotation layer** — Some complex annotation types (forms, widgets) are not fully supported; only links are interactive.
+
+## Roadmap
+
+- **Search** — In-document text search (`Ctrl+F`) with GNOME-styled search bar and highlighting.
+- **Annotations** — Highlighting, underlining, and note creation.
+- **Bookmarks** — User-defined bookmarks and custom navigation.
+- **Recent Files** — History list on launch screen.
+- **Presentation Mode** — Fullscreen paginated slideshow view.
+
+## License
+
+MIT

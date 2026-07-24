@@ -41,6 +41,15 @@ export default function Canvas({
   const [pdfDoc, setPdfDoc] = useState<PDFDocumentProxy | null>(null);
   const [numPages, setNumPages] = useState(0);
   const [defaultPageSize, setDefaultPageSize] = useState({ width: 792, height: 1122 }); // Standard A4-ish
+  const [renderScale, setRenderScale] = useState(scale);
+
+  // Debounce scale changes for rendering to avoid lag during fast zooming
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setRenderScale(scale);
+    }, 150); // 150ms debounce — snappy yet prevents thrashing
+    return () => clearTimeout(timer);
+  }, [scale]);
 
   // Load PDF document
   useEffect(() => {
@@ -150,19 +159,15 @@ export default function Canvas({
 
     try {
       const page = await pdfDoc.getPage(pageNum);
-      const viewport = page.getViewport({ scale, rotation });
+      const viewport = page.getViewport({ scale: renderScale, rotation });
       const context = canvas.getContext('2d');
       if (!context) return;
 
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2); // Cap DPR at 2 for performance
       canvas.height = viewport.height * dpr;
       canvas.width = viewport.width * dpr;
       canvas.style.width = `${viewport.width}px`;
       canvas.style.height = `${viewport.height}px`;
-
-      // Set wrapper size to match canvas css size
-      wrapper.style.width = `${viewport.width}px`;
-      wrapper.style.height = `${viewport.height}px`;
 
       // Render the canvas
       const renderTask = page.render({
@@ -261,7 +266,7 @@ export default function Canvas({
     } finally {
       renderTasksRef.current.delete(pageNum);
     }
-  }, [pdfDoc, scale, rotation]);
+  }, [pdfDoc, renderScale, rotation]);
 
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -304,45 +309,72 @@ export default function Canvas({
       observer.disconnect();
       observerRef.current = null;
     };
-  }, [pdfDoc, scale, renderPage]);
+  }, [pdfDoc, renderScale, renderPage]);
 
   // Track scroll position to determine current page
   useEffect(() => {
     const container = containerRef.current;
     if (!container || !numPages) return;
 
+    let rafId = 0;
     const handleScroll = () => {
-      const scrollTop = container.scrollTop;
-      const containerHeight = container.clientHeight;
-      const scrollCenter = scrollTop + containerHeight / 3;
+      if (!isContinuous) return;
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const scrollTop = container.scrollTop;
+        const containerHeight = container.clientHeight;
+        const scrollCenter = scrollTop + containerHeight / 3;
 
-      let currentPage = 1;
-      for (let i = 1; i <= numPages; i++) {
-        const wrapper = wrapperRefs.current.get(i);
-        if (!wrapper) continue;
-        if (wrapper.offsetTop <= scrollCenter) {
-          currentPage = i;
+        let newPage = 1;
+        let maxTop = -1;
+        for (let i = 1; i <= numPages; i++) {
+          const wrapper = wrapperRefs.current.get(i);
+          if (!wrapper) continue;
+          if (wrapper.offsetTop <= scrollCenter) {
+            if (wrapper.offsetTop > maxTop) {
+              maxTop = wrapper.offsetTop;
+              newPage = i;
+            }
+          }
         }
-      }
 
-      if (onPageChange) {
-        onPageChange(currentPage);
-      }
+        if (onPageChange) {
+          onPageChange(newPage);
+        }
+      });
     };
 
     container.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [numPages, onPageChange]);
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, [numPages, onPageChange, isContinuous]);
 
-  // Scroll to specific page
+  // Scroll to page when user navigates (goToPage)
   useEffect(() => {
     if (!goToPage || !containerRef.current) return;
-    const wrapper = wrapperRefs.current.get(goToPage);
-    if (wrapper) {
-      wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    const timer = setTimeout(() => {
+      const wrapper = wrapperRefs.current.get(goToPage);
+      if (wrapper) {
+        wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 50);
+    return () => clearTimeout(timer);
   }, [goToPage]);
+
+  // When layout mode changes, jump to current page instantly (no animation)
+  useEffect(() => {
+    if (!currentPage || !containerRef.current) return;
+    const timer = setTimeout(() => {
+      const wrapper = wrapperRefs.current.get(currentPage);
+      if (wrapper) {
+        wrapper.scrollIntoView({ behavior: 'instant', block: 'start' });
+      }
+    }, 30);
+    return () => clearTimeout(timer);
+  }, [isContinuous, isDual, rotation]);
 
   // Empty state
   if (!documentUrl) {
@@ -392,7 +424,7 @@ export default function Canvas({
   return (
     <div 
       ref={containerRef}
-      className={`w-full h-full overflow-auto pdf-canvas-area ${darkMode ? 'bg-dark-canvas' : 'bg-adwaita-canvas'}`}
+      className={`w-full h-full overflow-auto pdf-canvas-area ${darkMode ? 'bg-dark-canvas' : 'bg-adwaita-canvas'} ${scale !== renderScale ? 'zooming' : ''}`}
     >
       <div className="flex flex-col items-center py-6 gap-4 min-h-full">
         {visibleRows.map((row) => (
@@ -419,7 +451,7 @@ export default function Canvas({
                       }
                     }
                   }}
-                  className="relative shadow-[0_2px_12px_rgba(0,0,0,0.15)] bg-white shrink-0"
+                  className={`relative bg-white shrink-0 ${darkMode ? 'shadow-[0_1px_3px_rgba(0,0,0,0.4)] border border-white/5' : 'shadow-[0_1px_4px_rgba(0,0,0,0.12)] border border-black/[0.08]'}`}
                   style={{
                     width: `${pgWidth * scale}px`,
                     height: `${pgHeight * scale}px`
@@ -431,6 +463,7 @@ export default function Canvas({
                       else pageRefs.current.delete(pageNum);
                     }}
                     className="block"
+                    style={{ width: `${pgWidth * scale}px`, height: `${pgHeight * scale}px` }}
                   />
                 </div>
               );

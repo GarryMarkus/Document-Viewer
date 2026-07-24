@@ -5,7 +5,6 @@ type SidebarTab = 'thumbnails' | 'outline' | 'annotations' | 'bookmarks';
 
 interface SidebarProps {
   outline?: any[];
-  visible?: boolean;
   documentUrl?: string;
   numPages?: number;
   currentPage?: number;
@@ -15,7 +14,6 @@ interface SidebarProps {
 
 export default function ContextualSidebar({ 
   outline = [], 
-  visible = true, 
   documentUrl,
   numPages = 0,
   currentPage = 1,
@@ -91,8 +89,6 @@ export default function ContextualSidebar({
     observerRef.current.observe(el);
   }, [thumbnails]);
 
-  if (!visible) return null;
-
   const renderOutlineItems = (items: any[], depth = 0): React.ReactElement[] => {
     if (!items || items.length === 0) return [];
     return items.map((item, idx) => (
@@ -120,23 +116,23 @@ export default function ContextualSidebar({
     switch (activeTab) {
       case 'thumbnails':
         return (
-          <div className="p-3 grid gap-4">
+          <div className="p-3 grid gap-3">
             {Array.from({ length: numPages }, (_, i) => i + 1).map(pageNum => (
               <button 
                 key={pageNum}
                 onClick={() => onPageSelect?.(pageNum)}
-                className={`flex flex-col items-center gap-1.5 group p-2 rounded-xl transition-all ${
+                className={`flex flex-col items-center gap-1.5 group p-2 rounded-lg transition-colors duration-100 ${
                   pageNum === currentPage 
-                    ? (darkMode ? 'bg-[#2a2a2a]' : 'bg-[#d5d5d5]') 
-                    : 'bg-transparent hover:bg-black/[0.04] dark:hover:bg-white/[0.04]'
+                    ? (darkMode ? 'bg-white/[0.08]' : 'bg-black/[0.06]') 
+                    : 'bg-transparent hover:bg-black/[0.03] dark:hover:bg-white/[0.03]'
                 }`}
               >
                 <div 
                   ref={(el) => observeThumbnail(el as HTMLDivElement, pageNum)}
-                  className={`border rounded overflow-hidden shadow-sm transition-all ${
+                  className={`rounded-md overflow-hidden transition-all duration-100 ${
                   pageNum === currentPage 
-                    ? `border-transparent` 
-                    : `border-transparent ${darkMode ? 'border-white/10' : 'border-black/10'}`
+                    ? `ring-2 ${darkMode ? 'ring-[#3584e4]' : 'ring-[#3584e4]'} shadow-md` 
+                    : `border ${darkMode ? 'border-white/10' : 'border-black/[0.08]'} shadow-sm`
                 }`}>
                   {thumbnails.has(pageNum) ? (
                     <img src={thumbnails.get(pageNum)} alt={`Page ${pageNum}`} className="w-full block" />
@@ -146,7 +142,7 @@ export default function ContextualSidebar({
                     </div>
                   )}
                 </div>
-                <span className={`text-xs ${pageNum === currentPage ? `text-white font-medium` : textDim}`}>
+                <span className={`text-xs font-medium ${pageNum === currentPage ? (darkMode ? 'text-[#78aeed]' : 'text-[#3584e4]') : textDim}`}>
                   {pageNum}
                 </span>
               </button>
@@ -196,24 +192,26 @@ export default function ContextualSidebar({
   ];
 
   return (
-    <div className={`w-[260px] ${bg} border-r ${border} flex flex-col shrink-0 select-none`}>
+    <div className={`w-[260px] h-full ${bg} border-r ${border} flex flex-col shrink-0 select-none`}>
       <div className="flex-1 overflow-y-auto">
         {tabContent()}
       </div>
 
-      <div className={`h-[52px] border-t ${border} flex items-center gap-2 px-4 ${darkMode ? 'bg-[#181818]' : 'bg-[#e0e0e0]'} shrink-0`}>
-        {tabs.map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`flex-1 h-9 rounded-full flex items-center justify-center transition-all ${
-              activeTab === tab.id ? `${darkMode ? 'bg-[#3a3a3a]' : 'bg-white'} shadow-sm ${text}` : tabInactive
-            }`}
-            title={tab.label}
-          >
-            {tab.icon}
-          </button>
-        ))}
+      <div className={`h-12 flex items-center justify-center border-t ${border} shrink-0 px-4`}>
+        <div className={`flex w-full h-[30px] ${darkMode ? 'bg-white/[0.06]' : 'bg-black/[0.06]'} rounded-lg p-[3px] gap-[2px]`}>
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex-1 h-full rounded-md flex items-center justify-center transition-colors duration-100 ${
+                activeTab === tab.id ? `${darkMode ? 'bg-[#3a3a3a]' : 'bg-white'} shadow-sm ${text}` : tabInactive
+              }`}
+              title={tab.label}
+            >
+              {tab.icon}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
