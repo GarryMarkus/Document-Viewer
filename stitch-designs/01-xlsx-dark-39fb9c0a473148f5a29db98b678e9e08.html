@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en" style=""><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "surface": "#131313",
+          "secondary": "#9ecaff",
+          "background": "#131313",
+          "on-secondary-container": "#f6f8ff",
+          "tertiary-fixed": "#d3e4ff",
+          "on-tertiary-fixed": "#001c38",
+          "on-secondary-fixed": "#001d36",
+          "on-primary-fixed-variant": "#004883",
+          "on-surface-variant": "#c0c7d4",
+          "secondary-fixed": "#d1e4ff",
+          "tertiary": "#a2c9ff",
+          "primary": "#a3c9ff",
+          "surface-container-high": "#2a2a2a",
+          "primary-fixed": "#d3e3ff",
+          "on-error": "#690005",
+          "primary-fixed-dim": "#a3c9ff",
+          "surface-container-lowest": "#0e0e0e",
+          "inverse-on-surface": "#303030",
+          "surface-container-low": "#1b1c1c",
+          "secondary-fixed-dim": "#9ecaff",
+          "on-secondary": "#003258",
+          "surface-bright": "#393939",
+          "on-error-container": "#ffdad6",
+          "on-primary-container": "#ffffff",
+          "surface-container": "#202020",
+          "surface-tint": "#a3c9ff",
+          "on-surface": "#e5e2e1",
+          "on-tertiary-fixed-variant": "#004881",
+          "outline": "#8a919e",
+          "error": "#ffb4ab",
+          "on-secondary-fixed-variant": "#00497d",
+          "on-tertiary-container": "#ffffff",
+          "on-primary": "#00315c",
+          "secondary-container": "#0075c4",
+          "inverse-primary": "#0060ab",
+          "tertiary-container": "#2679c9",
+          "outline-variant": "#404752",
+          "error-container": "#93000a",
+          "surface-variant": "#353535",
+          "inverse-surface": "#e5e2e1",
+          "on-primary-fixed": "#001c39",
+          "primary-container": "#0078d4",
+          "surface-container-highest": "#353535",
+          "tertiary-fixed-dim": "#a2c9ff",
+          "surface-dim": "#131313",
+          "on-background": "#e5e2e1",
+          "on-tertiary": "#00315c"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.125rem",
+          "lg": "0.25rem",
+          "xl": "0.5rem",
+          "full": "0.75rem"
+        },
+        "spacing": {
+          "space-xl": "1.5rem",
+          "space-lg": "1rem",
+          "gutter": "0.75rem",
+          "margin": "0.5rem",
+          "space-xs": "0.25rem",
+          "space-md": "0.75rem",
+          "space-sm": "0.5rem"
+        },
+        "fontFamily": {
+          "title-lg": [
+            "Geist"
+          ],
+          "caption-strong": [
+            "Geist"
+          ],
+          "body": [
+            "Geist"
+          ],
+          "display": [
+            "Geist"
+          ],
+          "label": [
+            "Geist"
+          ],
+          "title": [
+            "Geist"
+          ],
+          "body-strong": [
+            "Geist"
+          ],
+          "subtitle": [
+            "Geist"
+          ],
+          "body-large": [
+            "Geist"
+          ],
+          "caption": [
+            "Geist"
+          ]
+        },
+        "fontSize": {
+          "title-lg": [
+            "28px",
+            {
+              "lineHeight": "36px",
+              "letterSpacing": "-0.015em",
+              "fontWeight": "600"
+            }
+          ],
+          "caption-strong": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "fontWeight": "600"
+            }
+          ],
+          "body": [
+            "14px",
+            {
+              "lineHeight": "20px",
+              "fontWeight": "400"
+            }
+          ],
+          "display": [
+            "40px",
+            {
+              "lineHeight": "52px",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "600"
+            }
+          ],
+          "label": [
+            "11px",
+            {
+              "lineHeight": "14px",
+              "letterSpacing": "0.02em",
+              "fontWeight": "500"
+            }
+          ],
+          "title": [
+            "20px",
+            {
+              "lineHeight": "26px",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "600"
+            }
+          ],
+          "body-strong": [
+            "14px",
+            {
+              "lineHeight": "20px",
+              "fontWeight": "600"
+            }
+          ],
+          "subtitle": [
+            "16px",
+            {
+              "lineHeight": "22px",
+              "letterSpacing": "-0.005em",
+              "fontWeight": "600"
+            }
+          ],
+          "body-large": [
+            "16px",
+            {
+              "lineHeight": "22px",
+              "fontWeight": "400"
+            }
+          ],
+          "caption": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "fontWeight": "400"
+            }
+          ]
+        }
+      }
+    }
+  };</script></head><body class="bg-background font-body text-body text-on-surface select-none"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/90 backdrop-blur-2xl shadow-[0_1px_8px_rgba(0,0,0,0.2)]"><div class="h-10 px-space-sm flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs"><div class="w-5 h-5 flex items-center justify-center text-primary"><span class="material-symbols-outlined text-[16px]">picture_as_pdf</span></div><span class="font-caption-strong text-caption-strong text-on-surface mr-space-sm tracking-wide">Docs</span><div class="flex items-center gap-space-xs"><div class="h-7 px-space-sm bg-surface-container rounded-t-lg flex items-center gap-space-xs shadow-[0_-1px_4px_rgba(0,0,0,0.15)]"><span class="material-symbols-outlined text-primary text-[14px]">description</span><span class="font-caption text-caption text-on-surface truncate max-w-[140px]">Annual_Report_2024.pdf</span><button class="w-4 h-4 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[12px]">close</span></button></div><button class="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[15px]">add</span></button></div></div><div class="flex-1 max-w-sm mx-auto"><div class="h-7 px-space-sm rounded bg-surface-container-low flex items-center gap-space-xs shadow-[inset_0_1px_2px_rgba(0,0,0,0.3)]"><span class="material-symbols-outlined text-on-surface-variant text-[15px]">search</span><input class="w-full bg-transparent font-caption text-caption text-on-surface placeholder:text-outline focus:outline-none" placeholder="Search in document (Ctrl+F)" type="text"/><kbd class="font-label text-label text-on-surface-variant bg-surface-container px-space-xs rounded">Ctrl+F</kbd></div></div><div class="flex items-center"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center mr-space-sm"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="flex items-center"><button class="w-9 h-7 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[14px]">minimize</span></button><button class="w-9 h-7 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[14px]">check_box_outline_blank</span></button><button class="w-9 h-7 flex items-center justify-center text-on-surface-variant hover:bg-error-container hover:text-on-primary-container transition-colors"><span class="material-symbols-outlined text-[14px]">close</span></button></div></div></div><div class="h-11 px-space-sm bg-surface-container-low/95 flex items-center justify-between shadow-[0_1px_4px_rgba(0,0,0,0.15)]"><div class="flex items-center gap-space-xs"><button class="h-8 px-space-sm rounded flex items-center gap-space-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-caption text-caption"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><path d="M8 10h8"></path></svg><span class="hidden sm:inline">Open</span></button><button class="h-8 px-space-sm rounded flex items-center gap-space-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-caption text-caption"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg><span class="hidden sm:inline">Save</span></button><button class="h-8 w-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" title="Print Document"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect height="8" rx="1" width="12" x="6" y="14"></rect></svg></button><button class="h-8 w-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" title="Share Document"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg></button><div class="h-5 w-[1px] bg-outline-variant mx-space-xs"></div><div class="flex items-center bg-surface-container rounded p-[2px]"><button class="h-7 w-7 rounded flex items-center justify-center text-on-surface bg-surface-container-high" title="Single Page"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><rect height="18" rx="2" width="14" x="5" y="3"></rect></svg></button><button class="h-7 w-7 rounded flex items-center justify-center text-on-surface-variant hover:text-on-surface" title="Continuous Flow"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><rect height="8" rx="1.5" width="14" x="5" y="2"></rect><rect height="8" rx="1.5" width="14" x="5" y="14"></rect></svg></button><button class="h-7 w-7 rounded flex items-center justify-center text-on-surface-variant hover:text-on-surface" title="Two-page Spread"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg></button></div><div class="h-5 w-[1px] bg-outline-variant mx-space-xs"></div><div class="flex items-center gap-space-xs bg-surface-container rounded px-space-xs h-7"><button class="w-6 h-6 flex items-center justify-center text-on-surface-variant hover:text-on-surface" title="Zoom Out"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><line x1="5" x2="19" y1="12" y2="12"></line></svg></button><span class="font-caption-strong text-caption-strong text-on-surface px-space-xs min-w-[42px] text-center">125%</span><button class="w-6 h-6 flex items-center justify-center text-on-surface-variant hover:text-on-surface" title="Zoom In"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></button><button class="h-6 px-space-xs rounded text-on-surface-variant hover:text-on-surface font-label text-label">Fit</button></div></div><div class="flex items-center gap-space-xs"><div class="flex items-center gap-space-xs"><button class="w-7 h-7 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface" title="Previous Page"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button><span class="font-caption text-caption text-on-surface-variant">Page <span class="font-caption-strong text-caption-strong text-on-surface">14</span> / 48</span><button class="w-7 h-7 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface" title="Next Page"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button></div><div class="h-5 w-[1px] bg-outline-variant mx-space-xs"></div><button class="h-8 w-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" title="Rotate Clockwise"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M21.5 2v6h-6"></path><path d="M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg></button><button class="h-8 w-8 rounded flex items-center justify-center text-primary bg-primary-container shadow-xs" title="Highlight Tool Active"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path><path d="M15 5l3 3"></path></svg></button><button class="h-8 w-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" title="Draw Ink Pen"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path><circle cx="12" cy="12" fill="currentColor" r="0.5"></circle></svg></button><button class="h-8 w-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" title="Add Sticky Note"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="8" x2="16" y1="13" y2="13"></line><line x1="8" x2="12" y1="17" y2="17"></line></svg></button></div></div></header><aside class="fixed left-0 top-[84px] bottom-7 w-12 bg-surface-container-lowest z-40 flex flex-col items-center py-space-sm shadow-[1px_0_6px_rgba(0,0,0,0.15)]"><nav class="flex flex-col items-center gap-space-xs w-full px-space-xs" data-active-classes="bg-primary-container text-on-primary-container rounded"><a class="w-9 h-9 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="document-view" href="#" title="Pages &amp; Thumbnails"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><rect height="7" rx="1.5" width="7" x="3" y="3"></rect><rect height="7" rx="1.5" width="7" x="14" y="3"></rect><rect height="7" rx="1.5" width="7" x="3" y="14"></rect><rect height="7" rx="1.5" width="7" x="14" y="14"></rect><path d="M6.5 6.5h.01M17.5 6.5h.01M6.5 17.5h.01M17.5 17.5h.01" stroke-width="2.5"></path></svg></a><a class="w-9 h-9 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="table-of-contents" href="#" title="Table of Contents"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M4 6h16M4 12h11M4 18h14"></path><circle cx="20" cy="12" fill="currentColor" r="1.5"></circle></svg></a><a class="w-9 h-9 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="bookmarks-hub" href="#" title="Bookmarks"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M19 21l-7-4.5L5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path><path d="M9 8h6"></path></svg></a><a class="w-9 h-9 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="annotations-manager" href="#" title="Annotations"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path><path d="M15 5l3 3"></path></svg></a><a class="w-9 h-9 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="document-attachments" href="#" title="Attachments"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg></a></nav><div class="mt-auto flex flex-col items-center gap-space-xs w-full px-space-xs"><a class="w-9 h-9 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="document-inspector" href="#" title="Document Properties"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg></a><a class="w-9 h-9 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="app-settings" href="#" title="Settings"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></a></div></aside><div class="pl-12"><main class="relative pt-[84px] pb-7 w-full min-h-screen bg-surface"><div class="flex flex-col w-full">
+<div class="flex flex-col bg-surface-container-lowest shadow-[0_1px_4px_rgba(0,0,0,0.3)]">
+<div class="h-9 px-space-sm flex items-center justify-between bg-surface-container-low shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
+<div class="flex items-center gap-space-xs overflow-x-auto">
+<div class="h-7 px-space-sm bg-surface-container-high rounded-t-lg flex items-center gap-space-xs shadow-[0_-1px_3px_rgba(0,0,0,0.2)]">
+<span class="material-symbols-outlined text-primary text-[15px]">table_chart</span>
+<span class="font-caption-strong text-caption-strong text-on-surface truncate max-w-[170px]">Q4_Financial_Model_2024.xlsx</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary ml-0.5"></span>
+<button class="w-4 h-4 ml-1 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-variant hover:text-on-surface transition-colors" title="Close Tab">
+<span class="material-symbols-outlined text-[12px]">close</span>
+</button>
+</div>
+<div class="h-7 px-space-sm bg-transparent rounded-t-lg flex items-center gap-space-xs hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-outline text-[14px]">picture_as_pdf</span>
+<span class="font-caption text-caption text-on-surface-variant truncate max-w-[130px]">Annual_Report_2024.pdf</span>
+<button class="w-4 h-4 rounded flex items-center justify-center text-outline hover:text-on-surface">
+<span class="material-symbols-outlined text-[12px]">close</span>
+</button>
+</div>
+<div class="h-7 px-space-sm bg-transparent rounded-t-lg flex items-center gap-space-xs hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-outline text-[14px]">article</span>
+<span class="font-caption text-caption text-on-surface-variant truncate max-w-[140px]">Product_Strategy_v3.docx</span>
+<button class="w-4 h-4 rounded flex items-center justify-center text-outline hover:text-on-surface">
+<span class="material-symbols-outlined text-[12px]">close</span>
+</button>
+</div>
+<button class="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface" title="Open Workbook">
+<span class="material-symbols-outlined text-[14px]">add</span>
+</button>
+</div>
+<div class="flex items-center gap-space-xs">
+<div class="h-6 px-space-xs rounded bg-surface-container flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label text-label text-on-surface-variant">Live Sync • OneDrive Pro</span>
+</div>
+<div class="h-4 w-[1px] bg-surface-variant mx-1"></div>
+<button class="h-6 px-space-xs rounded bg-primary-container text-on-primary-container hover:bg-secondary-container flex items-center gap-1 font-label text-label transition-colors">
+<span class="material-symbols-outlined text-[13px]">share</span>
+          Share Workbook
+        </button>
+</div>
+</div>
+<div class="h-10 px-space-sm bg-surface-container-lowest flex items-center justify-between gap-space-xs shadow-[0_1px_3px_rgba(0,0,0,0.18)]">
+<div class="flex items-center gap-1 flex-wrap">
+<button class="h-7 px-space-xs rounded flex items-center gap-1 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-caption text-caption" title="Save Workbook (Ctrl+S)">
+<span class="material-symbols-outlined text-[15px]">save</span>
+<span>Save</span>
+</button>
+<button class="h-7 px-space-xs rounded flex items-center gap-1 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-caption text-caption" title="Export Formats">
+<span class="material-symbols-outlined text-[15px]">file_download</span>
+<span>Export CSV</span>
+</button>
+<div class="h-4 w-[1px] bg-surface-variant mx-1"></div>
+<button class="h-7 px-space-xs rounded flex items-center gap-1 text-primary bg-surface-container-high hover:bg-surface-variant transition-colors font-caption text-caption" title="Quick Formula AutoSum">
+<span class="material-symbols-outlined text-[15px]">functions</span>
+<span class="font-caption-strong text-caption-strong">AutoSum</span>
+</button>
+<button class="h-7 px-space-xs rounded flex items-center gap-1 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-caption text-caption" title="Apply AutoFilters">
+<span class="material-symbols-outlined text-[15px]">filter_list</span>
+<span>Filter</span>
+</button>
+<button class="h-7 px-space-xs rounded flex items-center gap-1 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-caption text-caption" title="Freeze Header Row and First Column">
+<span class="material-symbols-outlined text-[15px]">table_rows_narrow</span>
+<span>Freeze Panes</span>
+</button>
+<div class="h-4 w-[1px] bg-surface-variant mx-1"></div>
+<button class="h-7 px-space-xs rounded flex items-center gap-1 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-caption text-caption" title="Toggle Chart View Mode">
+<span class="material-symbols-outlined text-[15px]">bar_chart</span>
+<span>Chart View</span>
+</button>
+<button class="h-7 px-space-xs rounded flex items-center gap-1 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-caption text-caption" title="Manage Cell Names">
+<span class="material-symbols-outlined text-[15px]">label</span>
+<span>Named Ranges</span>
+</button>
+</div>
+<div class="flex items-center gap-space-xs">
+<div class="flex items-center bg-surface-container rounded px-2 h-6 gap-1.5">
+<span class="material-symbols-outlined text-outline text-[13px]">calculate</span>
+<span class="font-label text-label text-on-surface-variant">Calculation:</span>
+<span class="font-label text-label text-primary font-caption-strong">Automatic</span>
+</div>
+<button class="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface" title="Spreadsheet Settings">
+<span class="material-symbols-outlined text-[15px]">tune</span>
+</button>
+</div>
+</div>
+<div class="h-8 px-space-sm bg-surface-container-low flex items-center gap-space-xs shadow-[0_1px_2px_rgba(0,0,0,0.25)]">
+<div class="w-16 h-6 px-1.5 bg-surface-container-high rounded flex items-center justify-between text-on-surface font-caption-strong text-caption shadow-inner">
+<span id="name-box-indicator">E14</span>
+<span class="material-symbols-outlined text-outline text-[12px]">expand_more</span>
+</div>
+<div class="flex items-center gap-0.5 text-on-surface-variant">
+<button class="w-6 h-6 rounded flex items-center justify-center hover:bg-surface-container hover:text-error" title="Cancel Formula Edit">
+<span class="material-symbols-outlined text-[13px]">close</span>
+</button>
+<button class="w-6 h-6 rounded flex items-center justify-center hover:bg-surface-container hover:text-primary" title="Commit Formula">
+<span class="material-symbols-outlined text-[13px]">check</span>
+</button>
+<div class="w-6 h-6 rounded flex items-center justify-center text-primary font-caption-strong text-caption" title="Insert Function (fx)">
+<span class="italic font-display font-semibold text-[13px]">fx</span>
+</div>
+</div>
+<div class="flex-1 h-6 px-2 bg-surface-container rounded flex items-center shadow-inner">
+<input class="w-full bg-transparent font-caption text-caption text-on-surface focus:outline-none tracking-normal" id="formula-bar-input" type="text" value="=SUM(E4:E13) * (1 + $C$2)"/>
+<span class="font-label text-label text-outline ml-2 whitespace-nowrap">Result: $23,105,400</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-0 min-h-[calc(100vh-188px)] bg-surface">
+<div class="col-span-2 bg-surface-container-low p-space-sm flex flex-col gap-space-md shadow-[1px_0_4px_rgba(0,0,0,0.2)]">
+<div>
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-1.5 text-on-surface font-caption-strong text-caption-strong uppercase tracking-wider">
+<span class="material-symbols-outlined text-primary text-[15px]">library_books</span>
+            Sheets (4)
+          </div>
+<button class="w-5 h-5 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container" title="New Sheet">
+<span class="material-symbols-outlined text-[14px]">add</span>
+</button>
+</div>
+<div class="flex flex-col gap-1 mt-1">
+<button class="w-full h-8 px-space-xs rounded bg-surface-container-high text-on-surface flex items-center justify-between shadow-xs">
+<div class="flex items-center gap-2 truncate">
+<span class="w-1.5 h-3.5 bg-primary rounded-full"></span>
+<span class="font-caption-strong text-caption truncate">Revenue Summary</span>
+</div>
+<span class="font-label text-label text-outline">10x28</span>
+</button>
+<button class="w-full h-8 px-space-xs rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-between transition-colors">
+<div class="flex items-center gap-2 truncate">
+<span class="w-1.5 h-3.5 bg-transparent rounded-full"></span>
+<span class="font-caption text-caption truncate">P&amp;L Statement</span>
+</div>
+<span class="font-label text-label text-outline">18x60</span>
+</button>
+<button class="w-full h-8 px-space-xs rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-between transition-colors">
+<div class="flex items-center gap-2 truncate">
+<span class="w-1.5 h-3.5 bg-transparent rounded-full"></span>
+<span class="font-caption text-caption truncate">Department OpEx</span>
+</div>
+<span class="font-label text-label text-outline">8x42</span>
+</button>
+<button class="w-full h-8 px-space-xs rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-between transition-colors">
+<div class="flex items-center gap-2 truncate">
+<span class="w-1.5 h-3.5 bg-transparent rounded-full"></span>
+<span class="font-caption text-caption truncate">Projections 2025</span>
+</div>
+<span class="font-label text-label text-outline">12x50</span>
+</button>
+</div>
+</div>
+<div class="bg-surface-container rounded p-space-sm">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-caption-strong text-caption-strong text-on-surface">Named Ranges</span>
+<span class="font-label text-label text-outline">3 items</span>
+</div>
+<div class="flex flex-col gap-1.5">
+<div class="p-1.5 bg-surface-container-high rounded flex flex-col gap-0.5">
+<div class="flex items-center justify-between">
+<span class="font-caption-strong text-caption text-primary">Gross_Revenue</span>
+<span class="font-label text-label text-on-surface-variant">='Rev'!$F$14</span>
+</div>
+<span class="font-label text-label text-outline">$73,500,000</span>
+</div>
+<div class="p-1.5 bg-surface-container-high rounded flex flex-col gap-0.5">
+<div class="flex items-center justify-between">
+<span class="font-caption-strong text-caption text-on-surface">EBITDA_Q4</span>
+<span class="font-label text-label text-on-surface-variant">='Rev'!$E$22</span>
+</div>
+<span class="font-label text-label text-outline">$6,561,000</span>
+</div>
+<div class="p-1.5 bg-surface-container-high rounded flex flex-col gap-0.5">
+<div class="flex items-center justify-between">
+<span class="font-caption-strong text-caption text-on-surface">Tax_Provision</span>
+<span class="font-label text-label text-on-surface-variant">='Rev'!$C$2</span>
+</div>
+<span class="font-label text-label text-outline">21.0%</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container rounded p-space-sm mt-auto">
+<div class="flex items-center gap-2 mb-2">
+<div class="w-6 h-6 rounded bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined text-[14px]">insights</span>
+</div>
+<div>
+<div class="font-caption-strong text-caption text-on-surface">Q4 ARR Growth</div>
+<div class="font-label text-label text-outline">+28.4% Net Margin</div>
+</div>
+</div>
+<div class="w-full h-10 flex items-end gap-1 px-1 bg-surface-container-lowest rounded">
+<div class="flex-1 bg-surface-variant rounded-t h-4"></div>
+<div class="flex-1 bg-surface-variant rounded-t h-5"></div>
+<div class="flex-1 bg-secondary rounded-t h-7"></div>
+<div class="flex-1 bg-primary rounded-t h-9"></div>
+</div>
+<div class="flex justify-between font-label text-label text-outline mt-1 px-1">
+<span>Q1</span>
+<span>Q2</span>
+<span>Q3</span>
+<span class="text-primary font-caption-strong">Q4</span>
+</div>
+</div>
+</div>
+<div class="col-span-7 bg-surface flex flex-col min-w-0">
+<div class="p-space-sm flex items-center justify-between bg-surface-container-lowest shadow-[0_1px_3px_rgba(0,0,0,0.2)]">
+<div class="flex items-center gap-space-sm">
+<span class="font-subtitle text-subtitle text-on-surface">Enterprise Growth &amp; ARR Bridge</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high font-label text-label text-primary">FY2024 Final Draft</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label text-label text-outline">Scale: 100%</span>
+<span class="font-label text-label text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">All Units in USD ($)</span>
+</div>
+</div>
+<div class="flex-1 overflow-auto bg-surface-container-lowest">
+<table class="w-full border-collapse font-caption text-caption select-none text-left table-fixed">
+<thead class="sticky top-0 z-20 bg-surface-container-high text-on-surface-variant font-label text-label shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
+<tr>
+<th class="w-10 text-center py-1 bg-surface-container font-label text-outline">#</th>
+<th class="w-64 px-2 py-1 bg-surface-container-high">A  <span class="text-outline">Category / Line Item</span></th>
+<th class="w-24 px-2 py-1 text-right">B  <span class="text-outline">Q1 Act</span></th>
+<th class="w-24 px-2 py-1 text-right">C  <span class="text-outline">Q2 Act</span></th>
+<th class="w-24 px-2 py-1 text-right">D  <span class="text-outline">Q3 Act</span></th>
+<th class="w-28 px-2 py-1 text-right bg-surface-container">E  <span class="text-primary font-caption-strong">Q4 Proj</span></th>
+<th class="w-28 px-2 py-1 text-right bg-surface-container-highest">F  <span class="text-outline">FY2024</span></th>
+<th class="w-24 px-2 py-1 text-right">G  <span class="text-outline">YoY %</span></th>
+<th class="w-24 px-2 py-1 text-right text-outline">H  Var ($)</th>
+<th class="w-24 px-2 py-1 text-right text-outline">J  Notes</th>
+</tr>
+</thead>
+<tbody class="divide-none text-on-surface">
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">1</td>
+<td class="px-2 py-1 font-caption-strong text-primary tracking-wide">FINANCIAL MODEL ASSUMPTIONS</td>
+<td class="px-2 py-1 text-right text-outline">Rate</td>
+<td class="px-2 py-1 text-right font-caption-strong text-primary bg-primary-container/20">21.0%</td>
+<td class="px-2 py-1 text-right text-outline">-</td>
+<td class="px-2 py-1 text-right text-outline">-</td>
+<td class="px-2 py-1 text-right text-outline">-</td>
+<td class="px-2 py-1 text-right text-outline">-</td>
+<td class="px-2 py-1 text-right text-outline">-</td>
+<td class="px-2 py-1 text-outline font-label">US Fed Statutory</td>
+</tr>
+<tr class="bg-surface hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">2</td>
+<td class="px-2 py-1 text-on-surface-variant font-caption">Tax Provision Rate Baseline</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">-</td>
+<td class="px-2 py-1 text-right font-caption-strong text-on-surface">0.210</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">-</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">-</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">-</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">-</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">-</td>
+<td class="px-2 py-1 text-outline font-label">Global blended</td>
+</tr>
+<tr class="bg-surface-container-low">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">3</td>
+<td class="px-2 py-1 font-caption-strong text-on-surface" colspan="9">REVENUE EXPANSION MATRIX (ARR)</td>
+</tr>
+<tr class="bg-surface hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">4</td>
+<td class="px-2 py-1 pl-4 text-on-surface">Enterprise SaaS Subscriptions</td>
+<td class="px-2 py-1 text-right">$8,450,000</td>
+<td class="px-2 py-1 text-right">$9,920,000</td>
+<td class="px-2 py-1 text-right">$11,480,000</td>
+<td class="px-2 py-1 text-right font-caption-strong bg-surface-container">$13,850,000</td>
+<td class="px-2 py-1 text-right font-caption-strong bg-surface-container-high">$43,700,000</td>
+<td class="px-2 py-1 text-right text-primary font-caption-strong">+38.4%</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">+$3.9M</td>
+<td class="px-2 py-1 text-outline font-label">Tier 1 accounts</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">5</td>
+<td class="px-2 py-1 pl-4 text-on-surface">Usage-Based Compute Add-ons</td>
+<td class="px-2 py-1 text-right">$3,120,000</td>
+<td class="px-2 py-1 text-right">$3,840,000</td>
+<td class="px-2 py-1 text-right">$4,510,000</td>
+<td class="px-2 py-1 text-right font-caption-strong bg-surface-container">$5,320,000</td>
+<td class="px-2 py-1 text-right font-caption-strong bg-surface-container-high">$16,790,000</td>
+<td class="px-2 py-1 text-right text-primary font-caption-strong">+42.1%</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">+$1.5M</td>
+<td class="px-2 py-1 text-outline font-label">API consumption</td>
+</tr>
+<tr class="bg-surface hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">6</td>
+<td class="px-2 py-1 pl-4 text-on-surface">Professional Services &amp; Advisory</td>
+<td class="px-2 py-1 text-right">$1,630,000</td>
+<td class="px-2 py-1 text-right">$1,890,000</td>
+<td class="px-2 py-1 text-right">$2,110,000</td>
+<td class="px-2 py-1 text-right font-caption-strong bg-surface-container">$2,385,400</td>
+<td class="px-2 py-1 text-right font-caption-strong bg-surface-container-high">$8,015,400</td>
+<td class="px-2 py-1 text-right text-on-surface">+14.3%</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">+$0.5M</td>
+<td class="px-2 py-1 text-outline font-label">Deployment pack</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">7</td>
+<td class="px-2 py-1 pl-4 text-on-surface">Partner Ecosystem Licensing</td>
+<td class="px-2 py-1 text-right">$1,000,000</td>
+<td class="px-2 py-1 text-right">$1,150,000</td>
+<td class="px-2 py-1 text-right">$1,300,000</td>
+<td class="px-2 py-1 text-right font-caption-strong bg-surface-container">$1,550,000</td>
+<td class="px-2 py-1 text-right font-caption-strong bg-surface-container-high">$5,000,000</td>
+<td class="px-2 py-1 text-right text-primary font-caption-strong">+21.0%</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">+$0.4M</td>
+<td class="px-2 py-1 text-outline font-label">OEM resellers</td>
+</tr>
+<tr class="bg-surface-container-high font-caption-strong">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">8</td>
+<td class="px-2 py-1 text-on-surface">Subtotal Recurring Core ARR</td>
+<td class="px-2 py-1 text-right">$14,200,000</td>
+<td class="px-2 py-1 text-right">$16,800,000</td>
+<td class="px-2 py-1 text-right">$19,400,000</td>
+<td class="px-2 py-1 text-right text-primary">$23,105,400</td>
+<td class="px-2 py-1 text-right text-primary bg-surface-variant">$73,505,400</td>
+<td class="px-2 py-1 text-right text-primary">+34.2%</td>
+<td class="px-2 py-1 text-right">+$6.3M</td>
+<td class="px-2 py-1 text-outline font-label">Validated</td>
+</tr>
+<tr class="bg-surface hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">9</td>
+<td class="px-2 py-1 pl-4 text-on-surface-variant">Hosting &amp; Cloud Infrastructure COGS</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($2,840,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($3,192,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($3,686,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant bg-surface-container">($4,158,900)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant bg-surface-container-high">($13,876,900)</td>
+<td class="px-2 py-1 text-right text-error">+22.4%</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">-$0.8M</td>
+<td class="px-2 py-1 text-outline font-label">AWS + Azure</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">10</td>
+<td class="px-2 py-1 pl-4 text-on-surface-variant">Customer Success &amp; Support Ops</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($1,136,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($1,344,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($1,552,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant bg-surface-container">($1,848,400)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant bg-surface-container-high">($5,880,400)</td>
+<td class="px-2 py-1 text-right text-error">+19.0%</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">-$0.3M</td>
+<td class="px-2 py-1 text-outline font-label">24/7 Enterprise SLA</td>
+</tr>
+<tr class="bg-surface hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">11</td>
+<td class="px-2 py-1 pl-4 text-on-surface-variant">Third-Party Gateway Fees</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($284,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($336,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($388,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant bg-surface-container">($462,100)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant bg-surface-container-high">($1,470,100)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">+18.2%</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">-$0.1M</td>
+<td class="px-2 py-1 text-outline font-label">Stripe &amp; Adyen</td>
+</tr>
+<tr class="bg-surface-container-high font-caption-strong">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">12</td>
+<td class="px-2 py-1 text-on-surface">Total Cost of Revenue (COGS)</td>
+<td class="px-2 py-1 text-right">($4,260,000)</td>
+<td class="px-2 py-1 text-right">($4,872,000)</td>
+<td class="px-2 py-1 text-right">($5,626,000)</td>
+<td class="px-2 py-1 text-right bg-surface-container">($6,469,400)</td>
+<td class="px-2 py-1 text-right bg-surface-variant">($21,227,400)</td>
+<td class="px-2 py-1 text-right text-error">+21.1%</td>
+<td class="px-2 py-1 text-right">-$1.2M</td>
+<td class="px-2 py-1 text-outline font-label">Target met</td>
+</tr>
+<tr class="bg-surface hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">13</td>
+<td class="px-2 py-1 text-on-surface font-caption-strong">Gross Profit Margin ($)</td>
+<td class="px-2 py-1 text-right">$9,940,000</td>
+<td class="px-2 py-1 text-right">$11,928,000</td>
+<td class="px-2 py-1 text-right">$13,774,000</td>
+<td class="px-2 py-1 text-right bg-surface-container">$16,636,000</td>
+<td class="px-2 py-1 text-right bg-surface-container-high font-caption-strong">$52,278,000</td>
+<td class="px-2 py-1 text-right text-primary font-caption-strong">+41.2%</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">+$5.1M</td>
+<td class="px-2 py-1 text-outline font-label">Scale milestone</td>
+</tr>
+<tr class="bg-surface-container relative">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">14</td>
+<td class="px-2 py-1 font-caption-strong text-primary">GROSS INVOICED ARR (RUN-RATE)</td>
+<td class="px-2 py-1 text-right font-caption-strong">$14,200,000</td>
+<td class="px-2 py-1 text-right font-caption-strong">$16,800,000</td>
+<td class="px-2 py-1 text-right font-caption-strong">$19,400,000</td>
+<td class="px-2 py-1 text-right font-caption-strong text-on-primary bg-primary-container relative">
+<span>$23,105,400</span>
+<span class="absolute bottom-0 right-0 w-2 h-2 bg-on-primary shadow-xs"></span>
+</td>
+<td class="px-2 py-1 text-right font-caption-strong text-primary bg-surface-variant">$73,505,400</td>
+<td class="px-2 py-1 text-right">
+<span class="px-1.5 py-0.5 rounded bg-primary-container text-on-primary-container font-label text-label font-caption-strong">+34.2%</span>
+</td>
+<td class="px-2 py-1 text-right font-caption-strong text-primary">+$8.9M</td>
+<td class="px-2 py-1 text-outline font-label">Active Focus Cell</td>
+</tr>
+<tr class="bg-surface hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">15</td>
+<td class="px-2 py-1 pl-4 text-on-surface">Gross Margin Percentage (%)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">70.0%</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">71.0%</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">71.0%</td>
+<td class="px-2 py-1 text-right font-caption-strong bg-surface-container text-primary">72.0%</td>
+<td class="px-2 py-1 text-right font-caption-strong bg-surface-container-high text-primary">71.1%</td>
+<td class="px-2 py-1 text-right text-primary">+200 bps</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">+1.1%</td>
+<td class="px-2 py-1 text-outline font-label">Operating leverage</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">16</td>
+<td class="px-2 py-1 pl-4 text-on-surface">Sales &amp; Marketing (GTM)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($4,260,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($4,872,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($5,238,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant bg-surface-container">($5,776,350)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant bg-surface-container-high">($20,146,350)</td>
+<td class="px-2 py-1 text-right text-error">+14.8%</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">-$0.9M</td>
+<td class="px-2 py-1 text-outline font-label">CAC payback 11m</td>
+</tr>
+<tr class="bg-surface hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">17</td>
+<td class="px-2 py-1 pl-4 text-on-surface">Research &amp; Engineering (R&amp;D)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($3,124,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($3,360,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($3,686,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant bg-surface-container">($4,158,970)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant bg-surface-container-high">($14,328,970)</td>
+<td class="px-2 py-1 text-right text-error">+16.1%</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">-$0.8M</td>
+<td class="px-2 py-1 text-outline font-label">AI Copilot engine</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">18</td>
+<td class="px-2 py-1 pl-4 text-on-surface">General &amp; Administrative (G&amp;A)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($994,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($1,008,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">($1,164,000)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant bg-surface-container">($1,155,270)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant bg-surface-container-high">($4,321,270)</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">+6.2%</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">-$0.1M</td>
+<td class="px-2 py-1 text-outline font-label">Legal + Compliance</td>
+</tr>
+<tr class="bg-surface-container-high font-caption-strong">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">19</td>
+<td class="px-2 py-1 text-on-surface">Total Operating Expenses (OpEx)</td>
+<td class="px-2 py-1 text-right">($8,378,000)</td>
+<td class="px-2 py-1 text-right">($9,240,000)</td>
+<td class="px-2 py-1 text-right">($10,088,000)</td>
+<td class="px-2 py-1 text-right bg-surface-container">($11,090,590)</td>
+<td class="px-2 py-1 text-right bg-surface-variant">($38,796,590)</td>
+<td class="px-2 py-1 text-right text-error">+14.2%</td>
+<td class="px-2 py-1 text-right">-$1.8M</td>
+<td class="px-2 py-1 text-outline font-label">Budget variance &lt;2%</td>
+</tr>
+<tr class="bg-surface hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">20</td>
+<td class="px-2 py-1 text-on-surface font-caption-strong">OPERATING INCOME (EBIT)</td>
+<td class="px-2 py-1 text-right">$1,562,000</td>
+<td class="px-2 py-1 text-right">$2,688,000</td>
+<td class="px-2 py-1 text-right">$3,686,000</td>
+<td class="px-2 py-1 text-right bg-surface-container text-primary font-caption-strong">$5,545,410</td>
+<td class="px-2 py-1 text-right bg-surface-container-high text-primary font-caption-strong">$13,481,410</td>
+<td class="px-2 py-1 text-right text-primary font-caption-strong">+118.5%</td>
+<td class="px-2 py-1 text-right text-primary">+$3.3M</td>
+<td class="px-2 py-1 text-outline font-label">Inflection reached</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">21</td>
+<td class="px-2 py-1 pl-4 text-on-surface-variant">D&amp;A Non-Cash Adjustments</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">$280,000</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">$310,000</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">$350,000</td>
+<td class="px-2 py-1 text-right text-on-surface-variant bg-surface-container">$385,000</td>
+<td class="px-2 py-1 text-right text-on-surface-variant bg-surface-container-high">$1,325,000</td>
+<td class="px-2 py-1 text-right text-outline">+10.2%</td>
+<td class="px-2 py-1 text-right text-outline">+$0.1M</td>
+<td class="px-2 py-1 text-outline font-label">Capitalized software</td>
+</tr>
+<tr class="bg-surface-container-highest font-caption-strong">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">22</td>
+<td class="px-2 py-1 text-primary">ADJUSTED EBITDA</td>
+<td class="px-2 py-1 text-right">$1,842,000</td>
+<td class="px-2 py-1 text-right">$2,998,000</td>
+<td class="px-2 py-1 text-right">$4,036,000</td>
+<td class="px-2 py-1 text-right text-primary bg-surface-container">$5,930,410</td>
+<td class="px-2 py-1 text-right text-primary bg-surface-variant">$14,806,410</td>
+<td class="px-2 py-1 text-right text-primary">+98.4%</td>
+<td class="px-2 py-1 text-right text-primary">+$3.4M</td>
+<td class="px-2 py-1 text-outline font-label">Rule of 40 score 58</td>
+</tr>
+<tr class="bg-surface hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">23</td>
+<td class="px-2 py-1 pl-4 text-on-surface-variant">Free Cash Flow (FCF) Conversion</td>
+<td class="px-2 py-1 text-right">$1,105,200</td>
+<td class="px-2 py-1 text-right">$2,098,600</td>
+<td class="px-2 py-1 text-right">$2,825,200</td>
+<td class="px-2 py-1 text-right bg-surface-container">$4,151,287</td>
+<td class="px-2 py-1 text-right bg-surface-container-high">$10,180,287</td>
+<td class="px-2 py-1 text-right text-primary font-caption-strong">+85.0%</td>
+<td class="px-2 py-1 text-right text-primary">+$2.1M</td>
+<td class="px-2 py-1 text-outline font-label">70% EBITDA to FCF</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">24</td>
+<td class="px-2 py-1 pl-4 text-on-surface-variant">Net Revenue Retention (NRR)</td>
+<td class="px-2 py-1 text-right">124.0%</td>
+<td class="px-2 py-1 text-right">126.5%</td>
+<td class="px-2 py-1 text-right">128.0%</td>
+<td class="px-2 py-1 text-right bg-surface-container font-caption-strong text-primary">131.2%</td>
+<td class="px-2 py-1 text-right bg-surface-container-high font-caption-strong text-primary">131.2%</td>
+<td class="px-2 py-1 text-right text-primary">+720 bps</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">+4.7%</td>
+<td class="px-2 py-1 text-outline font-label">Best-in-class benchmark</td>
+</tr>
+<tr class="bg-surface hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">25</td>
+<td class="px-2 py-1 pl-4 text-on-surface-variant">Gross Retention Rate (GRR)</td>
+<td class="px-2 py-1 text-right">96.5%</td>
+<td class="px-2 py-1 text-right">96.8%</td>
+<td class="px-2 py-1 text-right">97.2%</td>
+<td class="px-2 py-1 text-right bg-surface-container">97.5%</td>
+<td class="px-2 py-1 text-right bg-surface-container-high">97.5%</td>
+<td class="px-2 py-1 text-right text-primary">+100 bps</td>
+<td class="px-2 py-1 text-right text-outline">+0.7%</td>
+<td class="px-2 py-1 text-outline font-label">Low churn enterprise</td>
+</tr>
+<tr class="bg-surface-container-low hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">26</td>
+<td class="px-2 py-1 pl-4 text-on-surface-variant">Headcount (Full-Time Equivalents)</td>
+<td class="px-2 py-1 text-right">142</td>
+<td class="px-2 py-1 text-right">158</td>
+<td class="px-2 py-1 text-right">174</td>
+<td class="px-2 py-1 text-right bg-surface-container">190</td>
+<td class="px-2 py-1 text-right bg-surface-container-high">190</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">+33.8%</td>
+<td class="px-2 py-1 text-right text-on-surface-variant">+48</td>
+<td class="px-2 py-1 text-outline font-label">Product &amp; sales hires</td>
+</tr>
+<tr class="bg-surface hover:bg-surface-container transition-colors">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">27</td>
+<td class="px-2 py-1 pl-4 text-on-surface-variant">ARR per Full-Time Employee</td>
+<td class="px-2 py-1 text-right">$100,000</td>
+<td class="px-2 py-1 text-right">$106,329</td>
+<td class="px-2 py-1 text-right">$111,494</td>
+<td class="px-2 py-1 text-right bg-surface-container">$121,607</td>
+<td class="px-2 py-1 text-right bg-surface-container-high">$386,870</td>
+<td class="px-2 py-1 text-right text-primary">+21.6%</td>
+<td class="px-2 py-1 text-right text-primary">+$21.6k</td>
+<td class="px-2 py-1 text-outline font-label">Efficiency expansion</td>
+</tr>
+<tr class="bg-surface-container-high">
+<td class="text-center font-label text-outline py-1 bg-surface-container-lowest">28</td>
+<td class="px-2 py-1 font-caption-strong text-primary">CHECKSUM / INTEGRITY VALIDATION</td>
+<td class="px-2 py-1 text-right font-caption-strong text-primary">OK</td>
+<td class="px-2 py-1 text-right font-caption-strong text-primary">OK</td>
+<td class="px-2 py-1 text-right font-caption-strong text-primary">OK</td>
+<td class="px-2 py-1 text-right font-caption-strong text-primary bg-surface-container">OK</td>
+<td class="px-2 py-1 text-right font-caption-strong text-primary bg-surface-variant">OK</td>
+<td class="px-2 py-1 text-right font-caption-strong text-primary">PASS</td>
+<td class="px-2 py-1 text-right font-caption-strong text-primary">$0.00</td>
+<td class="px-2 py-1 text-primary font-caption-strong">100% Balanced</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="h-8 px-space-sm bg-surface-container-low flex items-center justify-between shadow-[0_-1px_3px_rgba(0,0,0,0.2)]">
+<div class="flex items-center gap-1">
+<button class="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container" title="First Sheet">
+<span class="material-symbols-outlined text-[14px]">first_page</span>
+</button>
+<button class="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container" title="Previous Sheet">
+<span class="material-symbols-outlined text-[14px]">chevron_left</span>
+</button>
+<button class="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container" title="Next Sheet">
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</button>
+<button class="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container" title="Last Sheet">
+<span class="material-symbols-outlined text-[14px]">last_page</span>
+</button>
+<div class="flex items-center gap-1 ml-2">
+<button class="h-6 px-2 rounded bg-surface-container-high text-on-surface flex items-center gap-1 font-caption-strong text-caption shadow-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              Revenue Summary
+            </button>
+<button class="h-6 px-2 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center gap-1 font-caption text-caption transition-colors">
+              P&amp;L Statement
+            </button>
+<button class="h-6 px-2 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center gap-1 font-caption text-caption transition-colors">
+              Department OpEx
+            </button>
+<button class="h-6 px-2 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center gap-1 font-caption text-caption transition-colors">
+              Projections 2025
+            </button>
+</div>
+<button class="w-6 h-6 rounded ml-1 flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface" title="Add Sheet">
+<span class="material-symbols-outlined text-[14px]">add</span>
+</button>
+</div>
+<div class="flex items-center gap-space-xs font-label text-label text-outline">
+<span>Formula Engine: Dynamic Arrays Enabled</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</div>
+</div>
+</div>
+<div class="col-span-3 bg-surface-container-low p-space-sm flex flex-col gap-space-md shadow-[-1px_0_4px_rgba(0,0,0,0.2)]">
+<div class="flex items-center bg-surface-container rounded p-0.5">
+<button class="flex-1 py-1 rounded bg-surface-container-high font-caption-strong text-caption text-on-surface text-center shadow-xs">
+          Cell Inspector
+        </button>
+<button class="flex-1 py-1 rounded text-on-surface-variant hover:text-on-surface font-caption text-caption text-center transition-colors">
+          Formulas &amp; Audit
+        </button>
+<button class="flex-1 py-1 rounded text-on-surface-variant hover:text-on-surface font-caption text-caption text-center transition-colors">
+          Tools
+        </button>
+</div>
+<div class="bg-surface-container rounded p-space-sm flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-primary-container font-caption-strong text-caption-strong text-on-primary-container">E14</span>
+<span class="font-caption-strong text-caption text-on-surface">Gross Invoiced ARR</span>
+</div>
+<span class="font-label text-label text-primary font-caption-strong">Calculated</span>
+</div>
+<div class="mt-2 p-2 bg-surface-container-lowest rounded">
+<div class="font-label text-label text-outline mb-0.5">Evaluated Value</div>
+<div class="font-title text-title text-on-surface tracking-tight">$23,105,400</div>
+<div class="font-label text-label text-primary mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">trending_up</span>
+            +$3,705,400 (+19.1%) vs Q3 Actuals
+          </div>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-1">
+<div class="p-2 bg-surface-container-high rounded">
+<div class="font-label text-label text-outline">Number Format</div>
+<div class="font-caption-strong text-caption text-on-surface mt-0.5">Currency ($ USD)</div>
+<div class="font-label text-label text-on-surface-variant">0 Decimals</div>
+</div>
+<div class="p-2 bg-surface-container-high rounded">
+<div class="font-label text-label text-outline">Alignment &amp; Wrap</div>
+<div class="font-caption-strong text-caption text-on-surface mt-0.5">Right-aligned</div>
+<div class="font-label text-label text-on-surface-variant">Auto-Fit Column</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container rounded p-space-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-caption-strong text-caption-strong text-on-surface">Formula Precedents / Dependents</span>
+<span class="material-symbols-outlined text-outline text-[16px]">account_tree</span>
+</div>
+<div class="p-2 bg-surface-container-lowest rounded flex flex-col gap-2 font-caption text-caption">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[14px]">call_received</span>
+<span class="text-on-surface font-caption-strong">Precedents</span>
+</div>
+<span class="font-label text-label text-outline">10 cells (E4:E13, C2)</span>
+</div>
+<div class="flex items-center justify-between pl-4 text-on-surface-variant font-label">
+<span>• E4: Enterprise SaaS</span>
+<span class="text-on-surface font-caption-strong">$13.85M</span>
+</div>
+<div class="flex items-center justify-between pl-4 text-on-surface-variant font-label">
+<span>• E5: Usage Compute</span>
+<span class="text-on-surface font-caption-strong">$5.32M</span>
+</div>
+<div class="flex items-center justify-between pl-4 text-on-surface-variant font-label">
+<span>• $C$2: Baseline Model Multiplier</span>
+<span class="text-on-surface font-caption-strong">1.21</span>
+</div>
+<div class="h-[1px] bg-surface-variant my-0.5"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[14px]">call_made</span>
+<span class="text-on-surface font-caption-strong">Dependents</span>
+</div>
+<span class="font-label text-label text-outline">4 formulas</span>
+</div>
+<div class="flex items-center justify-between pl-4 text-on-surface-variant font-label">
+<span>• F14: FY2024 Gross ARR</span>
+<span class="text-primary font-caption-strong">$73.50M</span>
+</div>
+<div class="flex items-center justify-between pl-4 text-on-surface-variant font-label">
+<span>• G14: YoY Growth Ratio</span>
+<span class="text-primary font-caption-strong">+34.2%</span>
+</div>
+</div>
+<button class="w-full h-7 rounded bg-surface-container-high hover:bg-surface-variant text-on-surface flex items-center justify-center gap-1 font-label text-label transition-colors">
+<span class="material-symbols-outlined text-[14px]">visibility</span>
+          Trace Formula Arrows in Canvas
+        </button>
+</div>
+<div class="bg-surface-container rounded p-space-sm flex flex-col gap-2">
+<span class="font-caption-strong text-caption-strong text-on-surface">Regional Distribution (Q4 Actuals)</span>
+<div class="space-y-1.5">
+<div>
+<div class="flex justify-between font-label text-label mb-1">
+<span class="text-on-surface">North America (Enterprise)</span>
+<span class="text-primary font-caption-strong">$13.8M (60%)</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 60%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label text-label mb-1">
+<span class="text-on-surface">EMEA Region</span>
+<span class="text-secondary font-caption-strong">$5.8M (25%)</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 25%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label text-label mb-1">
+<span class="text-on-surface">APAC &amp; LatAm Expansion</span>
+<span class="text-outline font-caption-strong">$3.5M (15%)</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="bg-outline h-full rounded-full" style="width: 15%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container rounded p-space-sm mt-auto">
+<span class="font-caption-strong text-caption-strong text-on-surface block mb-1">Selection Summary Stats</span>
+<div class="grid grid-cols-2 gap-1.5 font-label text-label">
+<div class="bg-surface-container-high p-1.5 rounded">
+<span class="text-outline block">Average</span>
+<span class="font-caption-strong text-caption text-on-surface">$18,375,000</span>
+</div>
+<div class="bg-surface-container-high p-1.5 rounded">
+<span class="text-outline block">Selected Cells</span>
+<span class="font-caption-strong text-caption text-on-surface">4 items</span>
+</div>
+<div class="bg-surface-container-high p-1.5 rounded">
+<span class="text-outline block">Min Value</span>
+<span class="font-caption-strong text-caption text-on-surface">$14,200,000</span>
+</div>
+<div class="bg-surface-container-high p-1.5 rounded">
+<span class="text-outline block">Max Value</span>
+<span class="font-caption-strong text-caption text-on-surface">$23,105,400</span>
+</div>
+</div>
+<div class="mt-2 pt-2 bg-surface-container-high p-2 rounded flex items-center justify-between">
+<span class="font-caption-strong text-caption text-outline">Sum Aggregate</span>
+<span class="font-subtitle text-subtitle text-primary font-caption-strong">$73,505,400</span>
+</div>
+</div>
+</div>
+</div>
+<div class="h-7 px-space-sm bg-surface-container-lowest flex items-center justify-between text-on-surface-variant font-label text-label shadow-[0_-1px_3px_rgba(0,0,0,0.3)]">
+<div class="flex items-center gap-space-md">
+<span class="flex items-center gap-1 text-on-surface">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+        Ready
+      </span>
+<span class="text-outline">|</span>
+<span>Calculation: Automatic</span>
+<span class="text-outline">|</span>
+<span>Cell Range: E14 (Gross ARR)</span>
+<span class="text-outline">|</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[13px]">lock</span>
+        Strict Model Integrity Locked
+      </span>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs text-on-surface">
+<span>Average: <strong class="text-primary font-caption-strong">$18.3M</strong></span>
+<span class="text-outline">|</span>
+<span>Count: <strong class="text-on-surface font-caption-strong">10</strong></span>
+<span class="text-outline">|</span>
+<span>Sum: <strong class="text-primary font-caption-strong">$73.5M</strong></span>
+</div>
+<div class="h-3 w-[1px] bg-surface-variant"></div>
+<div class="flex items-center gap-1">
+<button class="w-5 h-5 rounded flex items-center justify-center text-primary hover:bg-surface-container" title="Normal Grid View">
+<span class="material-symbols-outlined text-[14px]">grid_view</span>
+</button>
+<button class="w-5 h-5 rounded flex items-center justify-center text-outline hover:bg-surface-container" title="Page Break Preview">
+<span class="material-symbols-outlined text-[14px]">splitscreen</span>
+</button>
+<button class="w-5 h-5 rounded flex items-center justify-center text-outline hover:bg-surface-container" title="Read Mode">
+<span class="material-symbols-outlined text-[14px]">menu_book</span>
+</button>
+</div>
+<div class="h-3 w-[1px] bg-surface-variant"></div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-outline">remove</span>
+<input class="h-1 w-20 bg-surface-variant rounded accent-primary cursor-pointer" max="200" min="50" type="range" value="100"/>
+<span class="material-symbols-outlined text-[13px] text-outline">add</span>
+<span class="w-8 text-right font-caption-strong text-caption text-on-surface">100%</span>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function initExcelViewer() {
+    const formulaInput = document.getElementById('formula-bar-input');
+    const nameBox = document.getElementById('name-box-indicator');
+    if (!formulaInput || !nameBox) return;
+
+    const cells = document.querySelectorAll('td[class*="px-2"]');
+    cells.forEach((cell) => {
+      cell.addEventListener('click', function () {
+        const textVal = this.innerText.trim();
+        formulaInput.value = textVal.startsWith('$') || textVal.includes('%') 
+          ? '=VALUE("' + textVal + '")' 
+          : textVal;
+      });
+    });
+  })();
+</script></main></div><footer class="fixed bottom-0 left-0 right-0 h-7 z-50 bg-surface-container-lowest/95 px-space-sm flex items-center justify-between text-on-surface-variant shadow-[0_-1px_4px_rgba(0,0,0,0.15)]"><div class="flex items-center gap-space-md"><span class="font-label text-label flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-primary"></span>Ready</span><span class="font-label text-label text-outline">|</span><span class="font-label text-label">Page 14 of 48</span><span class="font-label text-label text-outline">|</span><span class="font-label text-label">4.8 MB</span><span class="font-label text-label text-outline">|</span><span class="font-label text-label flex items-center gap-space-xs"><svg class="w-3.5 h-3.5 text-primary" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>Protected (Read Only)</span></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs"><button class="w-4 h-4 flex items-center justify-center text-on-surface-variant hover:text-on-surface"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><line x1="5" x2="19" y1="12" y2="12"></line></svg></button><input class="h-1 w-24 bg-surface-variant rounded accent-primary cursor-pointer" max="300" min="50" type="range" value="125"/><button class="w-4 h-4 flex items-center justify-center text-on-surface-variant hover:text-on-surface"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></button><span class="font-label text-label min-w-[34px] text-right">125%</span></div><div class="h-3 w-[1px] bg-outline-variant"></div><button class="font-label text-label hover:text-on-surface transition-colors flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><rect height="7" rx="1" width="12" x="6" y="3"></rect><rect height="7" rx="1" width="12" x="6" y="14"></rect></svg><span class="">Continuous Scroll</span></button></div></footer>
+</body></html>

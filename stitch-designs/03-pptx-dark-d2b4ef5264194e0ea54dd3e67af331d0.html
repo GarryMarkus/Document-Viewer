@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en" style=""><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "surface": "#131313",
+          "secondary": "#9ecaff",
+          "background": "#131313",
+          "on-secondary-container": "#f6f8ff",
+          "tertiary-fixed": "#d3e4ff",
+          "on-tertiary-fixed": "#001c38",
+          "on-secondary-fixed": "#001d36",
+          "on-primary-fixed-variant": "#004883",
+          "on-surface-variant": "#c0c7d4",
+          "secondary-fixed": "#d1e4ff",
+          "tertiary": "#a2c9ff",
+          "primary": "#a3c9ff",
+          "surface-container-high": "#2a2a2a",
+          "primary-fixed": "#d3e3ff",
+          "on-error": "#690005",
+          "primary-fixed-dim": "#a3c9ff",
+          "surface-container-lowest": "#0e0e0e",
+          "inverse-on-surface": "#303030",
+          "surface-container-low": "#1b1c1c",
+          "secondary-fixed-dim": "#9ecaff",
+          "on-secondary": "#003258",
+          "surface-bright": "#393939",
+          "on-error-container": "#ffdad6",
+          "on-primary-container": "#ffffff",
+          "surface-container": "#202020",
+          "surface-tint": "#a3c9ff",
+          "on-surface": "#e5e2e1",
+          "on-tertiary-fixed-variant": "#004881",
+          "outline": "#8a919e",
+          "error": "#ffb4ab",
+          "on-secondary-fixed-variant": "#00497d",
+          "on-tertiary-container": "#ffffff",
+          "on-primary": "#00315c",
+          "secondary-container": "#0075c4",
+          "inverse-primary": "#0060ab",
+          "tertiary-container": "#2679c9",
+          "outline-variant": "#404752",
+          "error-container": "#93000a",
+          "surface-variant": "#353535",
+          "inverse-surface": "#e5e2e1",
+          "on-primary-fixed": "#001c39",
+          "primary-container": "#0078d4",
+          "surface-container-highest": "#353535",
+          "tertiary-fixed-dim": "#a2c9ff",
+          "surface-dim": "#131313",
+          "on-background": "#e5e2e1",
+          "on-tertiary": "#00315c"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.125rem",
+          "lg": "0.25rem",
+          "xl": "0.5rem",
+          "full": "0.75rem"
+        },
+        "spacing": {
+          "space-xl": "1.5rem",
+          "space-lg": "1rem",
+          "gutter": "0.75rem",
+          "margin": "0.5rem",
+          "space-xs": "0.25rem",
+          "space-md": "0.75rem",
+          "space-sm": "0.5rem"
+        },
+        "fontFamily": {
+          "title-lg": [
+            "Geist"
+          ],
+          "caption-strong": [
+            "Geist"
+          ],
+          "body": [
+            "Geist"
+          ],
+          "display": [
+            "Geist"
+          ],
+          "label": [
+            "Geist"
+          ],
+          "title": [
+            "Geist"
+          ],
+          "body-strong": [
+            "Geist"
+          ],
+          "subtitle": [
+            "Geist"
+          ],
+          "body-large": [
+            "Geist"
+          ],
+          "caption": [
+            "Geist"
+          ]
+        },
+        "fontSize": {
+          "title-lg": [
+            "28px",
+            {
+              "lineHeight": "36px",
+              "letterSpacing": "-0.015em",
+              "fontWeight": "600"
+            }
+          ],
+          "caption-strong": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "fontWeight": "600"
+            }
+          ],
+          "body": [
+            "14px",
+            {
+              "lineHeight": "20px",
+              "fontWeight": "400"
+            }
+          ],
+          "display": [
+            "40px",
+            {
+              "lineHeight": "52px",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "600"
+            }
+          ],
+          "label": [
+            "11px",
+            {
+              "lineHeight": "14px",
+              "letterSpacing": "0.02em",
+              "fontWeight": "500"
+            }
+          ],
+          "title": [
+            "20px",
+            {
+              "lineHeight": "26px",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "600"
+            }
+          ],
+          "body-strong": [
+            "14px",
+            {
+              "lineHeight": "20px",
+              "fontWeight": "600"
+            }
+          ],
+          "subtitle": [
+            "16px",
+            {
+              "lineHeight": "22px",
+              "letterSpacing": "-0.005em",
+              "fontWeight": "600"
+            }
+          ],
+          "body-large": [
+            "16px",
+            {
+              "lineHeight": "22px",
+              "fontWeight": "400"
+            }
+          ],
+          "caption": [
+            "12px",
+            {
+              "lineHeight": "16px",
+              "fontWeight": "400"
+            }
+          ]
+        }
+      }
+    }
+  };</script></head><body class="bg-background font-body text-body text-on-surface select-none"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/90 backdrop-blur-2xl shadow-[0_1px_8px_rgba(0,0,0,0.2)]"><div class="h-10 px-space-sm flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs"><div class="w-5 h-5 flex items-center justify-center text-primary"><span class="material-symbols-outlined text-[16px]">picture_as_pdf</span></div><span class="font-caption-strong text-caption-strong text-on-surface mr-space-sm tracking-wide">Docs</span><div class="flex items-center gap-space-xs"><div class="h-7 px-space-sm bg-surface-container rounded-t-lg flex items-center gap-space-xs shadow-[0_-1px_4px_rgba(0,0,0,0.15)]"><span class="material-symbols-outlined text-primary text-[14px]">description</span><span class="font-caption text-caption text-on-surface truncate max-w-[140px]">Annual_Report_2024.pdf</span><button class="w-4 h-4 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[12px]">close</span></button></div><button class="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[15px]">add</span></button></div></div><div class="flex-1 max-w-sm mx-auto"><div class="h-7 px-space-sm rounded bg-surface-container-low flex items-center gap-space-xs shadow-[inset_0_1px_2px_rgba(0,0,0,0.3)]"><span class="material-symbols-outlined text-on-surface-variant text-[15px]">search</span><input class="w-full bg-transparent font-caption text-caption text-on-surface placeholder:text-outline focus:outline-none" placeholder="Search in document (Ctrl+F)" type="text"/><kbd class="font-label text-label text-on-surface-variant bg-surface-container px-space-xs rounded">Ctrl+F</kbd></div></div><div class="flex items-center"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center mr-space-sm"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="flex items-center"><button class="w-9 h-7 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[14px]">minimize</span></button><button class="w-9 h-7 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[14px]">check_box_outline_blank</span></button><button class="w-9 h-7 flex items-center justify-center text-on-surface-variant hover:bg-error-container hover:text-on-primary-container transition-colors"><span class="material-symbols-outlined text-[14px]">close</span></button></div></div></div><div class="h-11 px-space-sm bg-surface-container-low/95 flex items-center justify-between shadow-[0_1px_4px_rgba(0,0,0,0.15)]"><div class="flex items-center gap-space-xs"><button class="h-8 px-space-sm rounded flex items-center gap-space-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-caption text-caption"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><path d="M8 10h8"></path></svg><span class="hidden sm:inline">Open</span></button><button class="h-8 px-space-sm rounded flex items-center gap-space-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-caption text-caption"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg><span class="hidden sm:inline">Save</span></button><button class="h-8 w-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" title="Print Document"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect height="8" rx="1" width="12" x="6" y="14"></rect></svg></button><button class="h-8 w-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" title="Share Document"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg></button><div class="h-5 w-[1px] bg-outline-variant mx-space-xs"></div><div class="flex items-center bg-surface-container rounded p-[2px]"><button class="h-7 w-7 rounded flex items-center justify-center text-on-surface bg-surface-container-high" title="Single Page"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><rect height="18" rx="2" width="14" x="5" y="3"></rect></svg></button><button class="h-7 w-7 rounded flex items-center justify-center text-on-surface-variant hover:text-on-surface" title="Continuous Flow"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><rect height="8" rx="1.5" width="14" x="5" y="2"></rect><rect height="8" rx="1.5" width="14" x="5" y="14"></rect></svg></button><button class="h-7 w-7 rounded flex items-center justify-center text-on-surface-variant hover:text-on-surface" title="Two-page Spread"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg></button></div><div class="h-5 w-[1px] bg-outline-variant mx-space-xs"></div><div class="flex items-center gap-space-xs bg-surface-container rounded px-space-xs h-7"><button class="w-6 h-6 flex items-center justify-center text-on-surface-variant hover:text-on-surface" title="Zoom Out"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><line x1="5" x2="19" y1="12" y2="12"></line></svg></button><span class="font-caption-strong text-caption-strong text-on-surface px-space-xs min-w-[42px] text-center">125%</span><button class="w-6 h-6 flex items-center justify-center text-on-surface-variant hover:text-on-surface" title="Zoom In"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></button><button class="h-6 px-space-xs rounded text-on-surface-variant hover:text-on-surface font-label text-label">Fit</button></div></div><div class="flex items-center gap-space-xs"><div class="flex items-center gap-space-xs"><button class="w-7 h-7 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface" title="Previous Page"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button><span class="font-caption text-caption text-on-surface-variant">Page <span class="font-caption-strong text-caption-strong text-on-surface">14</span> / 48</span><button class="w-7 h-7 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface" title="Next Page"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button></div><div class="h-5 w-[1px] bg-outline-variant mx-space-xs"></div><button class="h-8 w-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" title="Rotate Clockwise"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M21.5 2v6h-6"></path><path d="M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg></button><button class="h-8 w-8 rounded flex items-center justify-center text-primary bg-primary-container shadow-xs" title="Highlight Tool Active"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path><path d="M15 5l3 3"></path></svg></button><button class="h-8 w-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" title="Draw Ink Pen"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path><circle cx="12" cy="12" fill="currentColor" r="0.5"></circle></svg></button><button class="h-8 w-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" title="Add Sticky Note"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="8" x2="16" y1="13" y2="13"></line><line x1="8" x2="12" y1="17" y2="17"></line></svg></button></div></div></header><aside class="fixed left-0 top-[84px] bottom-7 w-12 bg-surface-container-lowest z-40 flex flex-col items-center py-space-sm shadow-[1px_0_6px_rgba(0,0,0,0.15)]"><nav class="flex flex-col items-center gap-space-xs w-full px-space-xs" data-active-classes="bg-primary-container text-on-primary-container rounded"><a class="w-9 h-9 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="document-view" href="#" title="Pages &amp; Thumbnails"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><rect height="7" rx="1.5" width="7" x="3" y="3"></rect><rect height="7" rx="1.5" width="7" x="14" y="3"></rect><rect height="7" rx="1.5" width="7" x="3" y="14"></rect><rect height="7" rx="1.5" width="7" x="14" y="14"></rect><path d="M6.5 6.5h.01M17.5 6.5h.01M6.5 17.5h.01M17.5 17.5h.01" stroke-width="2.5"></path></svg></a><a class="w-9 h-9 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="table-of-contents" href="#" title="Table of Contents"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M4 6h16M4 12h11M4 18h14"></path><circle cx="20" cy="12" fill="currentColor" r="1.5"></circle></svg></a><a class="w-9 h-9 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="bookmarks-hub" href="#" title="Bookmarks"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M19 21l-7-4.5L5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path><path d="M9 8h6"></path></svg></a><a class="w-9 h-9 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="annotations-manager" href="#" title="Annotations"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path><path d="M15 5l3 3"></path></svg></a><a class="w-9 h-9 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="document-attachments" href="#" title="Attachments"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg></a></nav><div class="mt-auto flex flex-col items-center gap-space-xs w-full px-space-xs"><a class="w-9 h-9 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="document-inspector" href="#" title="Document Properties"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg></a><a class="w-9 h-9 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="app-settings" href="#" title="Settings"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></a></div></aside><div class="pl-12"><main class="relative pt-[84px] pb-7 w-full min-h-screen bg-surface"><div class="flex flex-col w-full text-on-surface select-none">
+<!-- Extended Title Strip & Tab Management (Overrides shell tab strip seamlessly with rich PPTX tabs) -->
+<div class="w-full bg-surface-container-lowest flex items-center justify-between px-space-sm h-9 shadow-sm">
+<div class="flex items-center gap-space-xs overflow-x-auto">
+<!-- Active Presentation Tab -->
+<div class="h-8 px-space-md bg-surface-container rounded-t-lg flex items-center gap-space-xs shadow-md">
+<span class="w-4 h-4 rounded bg-[#D04423]/20 text-[#FF8566] flex items-center justify-center font-label text-label font-bold">P</span>
+<span class="font-caption-strong text-caption-strong text-on-surface truncate max-w-[180px]">Keynote_Q4_AllHands.pptx</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary ml-0.5" title="Edited"></span>
+<button class="w-4 h-4 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-variant hover:text-on-surface transition-colors ml-1">
+<span class="material-symbols-outlined text-[12px]">close</span>
+</button>
+</div>
+<!-- Inactive PDF Tab -->
+<div class="h-7 px-space-sm bg-surface-container-lowest hover:bg-surface-container-low rounded-t flex items-center gap-space-xs transition-colors cursor-pointer text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-primary text-[14px]">picture_as_pdf</span>
+<span class="font-caption text-caption truncate max-w-[150px]">Annual_Report_2024.pdf</span>
+<button class="w-3.5 h-3.5 rounded flex items-center justify-center hover:bg-surface-variant text-on-surface-variant">
+<span class="material-symbols-outlined text-[11px]">close</span>
+</button>
+</div>
+<!-- Inactive Excel Tab -->
+<div class="h-7 px-space-sm bg-surface-container-lowest hover:bg-surface-container-low rounded-t flex items-center gap-space-xs transition-colors cursor-pointer text-on-surface-variant hover:text-on-surface">
+<span class="w-3.5 h-3.5 rounded bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold">X</span>
+<span class="font-caption text-caption truncate max-w-[160px]">Q4_Financial_Model_2024.xlsx</span>
+<button class="w-3.5 h-3.5 rounded flex items-center justify-center hover:bg-surface-variant text-on-surface-variant">
+<span class="material-symbols-outlined text-[11px]">close</span>
+</button>
+</div>
+<button class="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" title="New Blank Presentation">
+<span class="material-symbols-outlined text-[15px]">add</span>
+</button>
+</div>
+<!-- Presentation Mode Context Badge -->
+<div class="hidden lg:flex items-center gap-space-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5 px-space-sm py-0.5 rounded bg-surface-container-high font-label text-label text-primary">
+<span class="material-symbols-outlined text-[14px]">auto_awesome</span>
+<span>Co-authoring Active (4 Viewers)</span>
+</div>
+<div class="flex -space-x-1.5 items-center">
+<div class="w-5 h-5 rounded-full bg-secondary-container text-on-secondary-container text-[9px] font-bold flex items-center justify-center shadow-xs">MR</div>
+<div class="w-5 h-5 rounded-full bg-tertiary-container text-on-tertiary-container text-[9px] font-bold flex items-center justify-center shadow-xs">SC</div>
+<div class="w-5 h-5 rounded-full bg-surface-bright text-on-surface text-[9px] font-bold flex items-center justify-center shadow-xs">+2</div>
+</div>
+</div>
+</div>
+<!-- WinUI 3 Presentation Command Ribbon -->
+<div class="w-full bg-surface-container-low px-space-sm py-1.5 flex flex-wrap items-center justify-between gap-space-xs shadow-sm">
+<!-- Left Ribbon Toolsets -->
+<div class="flex items-center gap-space-xs flex-wrap">
+<!-- Standard File Operations -->
+<div class="flex items-center gap-0.5">
+<button class="h-8 px-space-sm rounded bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center gap-1.5 font-caption text-caption transition-all">
+<span class="material-symbols-outlined text-[15px]">folder_open</span>
+<span>Open</span>
+</button>
+<button class="h-8 px-space-sm rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center gap-1.5 font-caption text-caption transition-all">
+<span class="material-symbols-outlined text-[15px]">save</span>
+<span>Save</span>
+</button>
+<button class="h-8 px-space-sm rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center gap-1.5 font-caption text-caption transition-all" title="Export as PDF document">
+<span class="material-symbols-outlined text-[15px]">picture_as_pdf</span>
+<span class="hidden md:inline">Export PDF</span>
+</button>
+<button class="h-8 w-8 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-all" title="Share Keynote">
+<span class="material-symbols-outlined text-[16px]">share</span>
+</button>
+</div>
+<div class="h-5 w-[1px] bg-outline-variant mx-space-xs"></div>
+<!-- Slideshow Presentation Primary Controls -->
+<div class="flex items-center gap-1.5">
+<button class="h-8 px-space-md rounded bg-primary-container text-on-primary-container hover:bg-secondary-container active:scale-95 flex items-center gap-1.5 font-caption-strong text-caption-strong shadow-md transition-all">
+<span class="material-symbols-outlined text-[16px]">slideshow</span>
+<span>Start Slideshow</span>
+<kbd class="ml-1 px-1 py-0.2 bg-black/30 rounded font-label text-label">F5</kbd>
+</button>
+<button class="h-8 px-space-sm rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center gap-1.5 font-caption text-caption transition-all" title="Shift + F5">
+<span class="material-symbols-outlined text-[15px]">play_arrow</span>
+<span class="hidden xl:inline">From Current Slide</span>
+</button>
+<button class="h-8 px-space-sm rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center gap-1.5 font-caption text-caption transition-all">
+<span class="material-symbols-outlined text-[15px]">co_present</span>
+<span class="hidden xl:inline">Presenter View</span>
+</button>
+</div>
+<div class="h-5 w-[1px] bg-outline-variant mx-space-xs"></div>
+<!-- Slide View Modes -->
+<div class="flex items-center bg-surface-container rounded p-0.5">
+<button class="h-7 px-2 rounded bg-surface-container-high text-on-surface flex items-center gap-1 font-caption text-caption" title="Standard Slide Canvas">
+<span class="material-symbols-outlined text-[15px]">crop_landscape</span>
+<span class="hidden sm:inline">Normal</span>
+</button>
+<button class="h-7 px-2 rounded text-on-surface-variant hover:text-on-surface flex items-center gap-1 font-caption text-caption" title="Slide Sorter Grid">
+<span class="material-symbols-outlined text-[15px]">grid_view</span>
+<span class="hidden sm:inline">Sorter</span>
+</button>
+<button class="h-7 px-2 rounded text-on-surface-variant hover:text-on-surface flex items-center gap-1 font-caption text-caption" title="Aspect Ratio">
+<span class="material-symbols-outlined text-[15px]">aspect_ratio</span>
+<span>16:9</span>
+</button>
+</div>
+</div>
+<!-- Right Presentation Indicators -->
+<div class="flex items-center gap-space-xs">
+<div class="flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-secondary-container/20 text-secondary font-label text-label">
+<span class="material-symbols-outlined text-[14px]">animation</span>
+<span>3 animations on slide</span>
+</div>
+<button class="h-8 px-space-sm rounded bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center gap-1.5 font-caption text-caption transition-all" id="toggleNotesBtn" title="Toggle Speaker Notes">
+<span class="material-symbols-outlined text-[15px]">notes</span>
+<span class="hidden md:inline">Notes</span>
+</button>
+<button class="h-8 w-8 rounded bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center justify-center transition-all" id="toggleInspectorBtn" title="Toggle Inspector Sidebar">
+<span class="material-symbols-outlined text-[16px]">dock_to_left</span>
+</button>
+</div>
+</div>
+<!-- Workspace Canvas: Triple-Pane Architecture -->
+<div class="flex w-full flex-1 overflow-hidden" style="min-height: calc(100vh - 192px);">
+<!-- LEFT NAVIGATION PANE: Slide Filmstrip (Thumbnails) -->
+<div class="w-64 bg-surface-container-lowest flex flex-col shrink-0 overflow-hidden shadow-sm">
+<!-- Filmstrip Header -->
+<div class="p-space-sm flex items-center justify-between bg-surface-container-low shadow-xs">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[16px]">view_timeline</span>
+<span class="font-caption-strong text-caption-strong text-on-surface uppercase tracking-wider">Slide Deck</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="font-label text-label text-on-surface-variant">24 Slides</span>
+<button class="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface" title="Add Slide">
+<span class="material-symbols-outlined text-[14px]">add_box</span>
+</button>
+</div>
+</div>
+<!-- Slide List -->
+<div class="flex-1 overflow-y-auto p-space-sm space-y-space-sm">
+<!-- Slide 1 -->
+<div class="group relative flex flex-col p-2 rounded bg-surface-container-low hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex items-center justify-between pb-1 font-label text-label text-on-surface-variant">
+<span>1</span>
+<span class="material-symbols-outlined text-[13px] opacity-0 group-hover:opacity-100">drag_handle</span>
+</div>
+<div class="w-full aspect-video bg-gradient-to-br from-[#1c1d22] to-[#0c0d10] rounded p-2 flex flex-col justify-between overflow-hidden shadow-xs">
+<span class="font-label text-label text-primary font-bold tracking-widest text-[9px] uppercase">ANNUAL KEYNOTE</span>
+<div class="space-y-0.5">
+<div class="font-caption-strong text-caption-strong text-on-surface text-[10px] leading-tight line-clamp-1">2025 Strategic Horizons</div>
+<div class="h-1 w-12 bg-primary/40 rounded-full"></div>
+</div>
+<div class="h-1 w-full bg-surface-container-high rounded-full"></div>
+</div>
+</div>
+<!-- Slide 2 -->
+<div class="group relative flex flex-col p-2 rounded bg-surface-container-low hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex items-center justify-between pb-1 font-label text-label text-on-surface-variant">
+<span>2</span>
+<span class="material-symbols-outlined text-[13px] opacity-0 group-hover:opacity-100">drag_handle</span>
+</div>
+<div class="w-full aspect-video bg-[#14161a] rounded p-2 flex flex-col justify-between overflow-hidden shadow-xs">
+<div class="font-caption-strong text-caption-strong text-on-surface text-[10px] leading-tight">Agenda &amp; Team Highlights</div>
+<div class="grid grid-cols-2 gap-1 my-auto">
+<div class="h-3 bg-surface-container rounded"></div>
+<div class="h-3 bg-surface-container rounded"></div>
+<div class="h-3 bg-surface-container rounded"></div>
+<div class="h-3 bg-surface-container rounded"></div>
+</div>
+<div class="flex justify-between items-center text-[8px] text-outline">
+<span>Section 01</span>
+<span>Exec Ops</span>
+</div>
+</div>
+</div>
+<!-- Slide 3 (Active Focus Slide) -->
+<div class="group relative flex flex-col p-2 rounded bg-surface-container-high shadow-md transition-all cursor-pointer ring-2 ring-primary">
+<div class="flex items-center justify-between pb-1 font-label text-label text-primary font-bold">
+<span class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+              Slide 3 of 24
+            </span>
+<span class="material-symbols-outlined text-[14px] text-primary">play_circle</span>
+</div>
+<div class="w-full aspect-video bg-[#101216] rounded p-2 flex flex-col justify-between overflow-hidden shadow-sm relative">
+<div class="space-y-0.5">
+<span class="font-label text-label text-secondary text-[8px] tracking-wider uppercase font-semibold">GLOBAL INFRASTRUCTURE</span>
+<div class="font-caption-strong text-caption-strong text-on-surface text-[10px] leading-tight">Global Market Acceleration &amp; AI Platform</div>
+</div>
+<div class="flex gap-1 items-center justify-between py-1">
+<div class="flex-1 h-3 bg-primary/20 rounded flex items-center justify-center font-label text-[8px] text-primary">99.99%</div>
+<div class="flex-1 h-3 bg-secondary/20 rounded flex items-center justify-center font-label text-[8px] text-secondary">14ms</div>
+<div class="flex-1 h-3 bg-tertiary/20 rounded flex items-center justify-center font-label text-[8px] text-tertiary">4.8x</div>
+</div>
+<div class="w-full h-1 bg-gradient-to-r from-primary via-secondary to-tertiary rounded-full"></div>
+</div>
+</div>
+<!-- Slide 4 -->
+<div class="group relative flex flex-col p-2 rounded bg-surface-container-low hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex items-center justify-between pb-1 font-label text-label text-on-surface-variant">
+<span>4</span>
+<span class="material-symbols-outlined text-[13px] opacity-0 group-hover:opacity-100">drag_handle</span>
+</div>
+<div class="w-full aspect-video bg-[#131418] rounded p-2 flex flex-col justify-between overflow-hidden shadow-xs">
+<div class="font-caption-strong text-caption-strong text-on-surface text-[10px] leading-tight">Architecture Diagram preview</div>
+<div class="flex items-center justify-center h-7 gap-1">
+<div class="w-4 h-4 rounded bg-surface-container-highest"></div>
+<div class="w-3 h-0.5 bg-outline"></div>
+<div class="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center text-[7px] text-primary">AI</div>
+<div class="w-3 h-0.5 bg-outline"></div>
+<div class="w-4 h-4 rounded bg-surface-container-highest"></div>
+</div>
+<span class="font-label text-[8px] text-outline">Distributed Core</span>
+</div>
+</div>
+<!-- Slide 5 -->
+<div class="group relative flex flex-col p-2 rounded bg-surface-container-low hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex items-center justify-between pb-1 font-label text-label text-on-surface-variant">
+<span>5</span>
+<span class="material-symbols-outlined text-[13px] opacity-0 group-hover:opacity-100">drag_handle</span>
+</div>
+<div class="w-full aspect-video bg-[#111317] rounded p-2 flex flex-col justify-between overflow-hidden shadow-xs">
+<div class="font-caption-strong text-caption-strong text-on-surface text-[10px] leading-tight">Financial Metrics &amp; ARR Target</div>
+<div class="flex items-end gap-1 h-6">
+<div class="w-2 h-2 bg-primary/40 rounded-t"></div>
+<div class="w-2 h-3.5 bg-primary/60 rounded-t"></div>
+<div class="w-2 h-5 bg-primary rounded-t"></div>
+<div class="w-2 h-4 bg-secondary/60 rounded-t"></div>
+<div class="w-2 h-6 bg-secondary rounded-t"></div>
+</div>
+<span class="font-label text-[8px] text-secondary font-bold">$120M Run-rate</span>
+</div>
+</div>
+<!-- Slide 6 -->
+<div class="group relative flex flex-col p-2 rounded bg-surface-container-low hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex items-center justify-between pb-1 font-label text-label text-on-surface-variant">
+<span>6</span>
+<span class="material-symbols-outlined text-[13px] opacity-0 group-hover:opacity-100">drag_handle</span>
+</div>
+<div class="w-full aspect-video bg-[#0f1012] rounded p-2 flex flex-col justify-center items-center text-center overflow-hidden shadow-xs">
+<span class="font-caption-strong text-caption-strong text-on-surface text-[10px]">Closing &amp; Q&amp;A</span>
+<span class="font-label text-[8px] text-on-surface-variant mt-1">Open Discussion</span>
+</div>
+</div>
+</div>
+<!-- Left Filmstrip Quick Settings -->
+<div class="p-space-sm bg-surface-container-low flex items-center justify-between font-label text-label text-on-surface-variant">
+<button class="hover:text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">visibility</span>
+<span>Collapse All</span>
+</button>
+<button class="hover:text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">tune</span>
+<span>Sort By Section</span>
+</button>
+</div>
+</div>
+<!-- CENTRAL DOCUMENT CANVAS: Fluid 16:9 Presentation Display & Speaker Drawer -->
+<div class="flex-1 bg-surface flex flex-col overflow-y-auto px-space-md py-space-md items-center justify-start relative">
+<!-- Slide Canvas Floating Viewport Overlay Bar -->
+<div class="w-full max-w-5xl flex items-center justify-between pb-space-sm text-on-surface-variant font-caption text-caption">
+<div class="flex items-center gap-space-sm">
+<span class="font-caption-strong text-caption-strong text-on-surface">Slide 3 of 24</span>
+<span>•</span>
+<span class="text-secondary font-medium">1920 × 1080 (16:9 Landscape)</span>
+<span>•</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-label text-label">Custom Theme: Obsidian Mesh</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface" title="Fit to Canvas">
+<span class="material-symbols-outlined text-[16px]">fit_screen</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface" title="Full Screen Preview">
+<span class="material-symbols-outlined text-[16px]">fullscreen</span>
+</button>
+</div>
+</div>
+<!-- The 16:9 Widescreen Presentation Slide -->
+<div class="w-full max-w-5xl aspect-video bg-[#121316] rounded-xl shadow-2xl p-8 lg:p-10 flex flex-col justify-between relative overflow-hidden select-text">
+<!-- Background Ambient Accent Gradient -->
+<div class="absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-br from-primary/10 via-secondary/5 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-24 -left-24 w-80 h-80 bg-gradient-to-tr from-secondary/10 via-primary/5 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+<!-- Slide Header Block -->
+<div class="relative z-10 flex flex-col">
+<div class="flex items-center justify-between pb-1">
+<span class="font-label text-label font-bold text-primary tracking-widest uppercase flex items-center gap-1.5">
+<span class="w-2 h-2 rounded bg-primary"></span>
+              Strategic Horizons 2025 • Section 02: Platform Growth
+            </span>
+<span class="font-label text-label text-outline tracking-wider">CONFIDENTIAL // INTERNAL EXEC PREVIEW</span>
+</div>
+<h1 class="font-display text-display text-on-surface tracking-tight mt-1 leading-tight">
+            Global Market Acceleration &amp; AI Platform
+          </h1>
+<p class="font-subtitle text-subtitle text-on-surface-variant max-w-3xl mt-1 font-normal">
+            Scaling infrastructure to 50M daily queries across 4 continents with edge-native intelligence.
+          </p>
+</div>
+<!-- Slide Core Content: Metrics & Node Topology Visualizer -->
+<div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-space-md my-auto pt-2 items-center">
+<!-- Column A: 3 Metric Cards with Subtle Visual Hierarchy (5 Cols) -->
+<div class="lg:col-span-5 flex flex-col gap-2.5">
+<!-- Metric 1 -->
+<div class="p-space-sm rounded-lg bg-surface-container/80 backdrop-blur shadow-sm hover:bg-surface-container-high transition-colors">
+<div class="flex items-center justify-between">
+<span class="font-label text-label text-secondary uppercase font-semibold">Service Reliability</span>
+<span class="font-label text-label text-primary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">verified</span> SLA Target
+                </span>
+</div>
+<div class="font-title-lg text-title-lg text-on-surface font-bold tracking-tight mt-0.5">99.99% Availability</div>
+<p class="font-caption text-caption text-on-surface-variant mt-0.5">Zero unplanned downtime during global multi-region cutover.</p>
+</div>
+<!-- Metric 2 -->
+<div class="p-space-sm rounded-lg bg-surface-container/80 backdrop-blur shadow-sm hover:bg-surface-container-high transition-colors">
+<div class="flex items-center justify-between">
+<span class="font-label text-label text-secondary uppercase font-semibold">Inferencing Speed</span>
+<span class="font-label text-label text-emerald-400 flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">arrow_downward</span> -42% YoY
+                </span>
+</div>
+<div class="font-title-lg text-title-lg text-on-surface font-bold tracking-tight mt-0.5">14ms P99 Latency</div>
+<p class="font-caption text-caption text-on-surface-variant mt-0.5">Optimized tensor execution pathways across edge nodes.</p>
+</div>
+<!-- Metric 3 -->
+<div class="p-space-sm rounded-lg bg-surface-container/80 backdrop-blur shadow-sm hover:bg-surface-container-high transition-colors">
+<div class="flex items-center justify-between">
+<span class="font-label text-label text-secondary uppercase font-semibold">Compute Throughput</span>
+<span class="font-label text-label text-primary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">trending_up</span> Accelerated
+                </span>
+</div>
+<div class="font-title-lg text-title-lg text-on-surface font-bold tracking-tight mt-0.5">4.8x Throughput YoY</div>
+<p class="font-caption text-caption text-on-surface-variant mt-0.5">Scalable inference fabric processing high-frequency streaming.</p>
+</div>
+</div>
+<!-- Column B: Architectural World Node Connection Graphic & Takeaways (7 Cols) -->
+<div class="lg:col-span-7 flex flex-col gap-space-sm">
+<!-- Visual Architectural Map Node (Vector Inline) -->
+<div class="w-full bg-surface-container-lowest/80 rounded-lg p-space-sm shadow-inner relative flex flex-col">
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+<span class="font-label text-label font-bold text-on-surface uppercase">Distributed Mesh Backbone</span>
+</div>
+<span class="font-label text-label text-secondary">Synchronized In Real-Time</span>
+</div>
+<!-- Stylized Vector Map Diagram -->
+<div class="relative w-full h-36 flex items-center justify-center overflow-hidden rounded">
+<svg class="w-full h-full text-outline/30" fill="none" viewbox="0 0 460 140" xmlns="http://www.w3.org/2000/svg">
+<!-- Abstract continent dots grid -->
+<circle cx="80" cy="50" fill="currentColor" r="1.5"></circle>
+<circle cx="95" cy="55" fill="currentColor" r="1.5"></circle>
+<circle cx="110" cy="45" fill="currentColor" r="1.5"></circle>
+<circle cx="125" cy="60" fill="currentColor" r="1.5"></circle>
+<circle cx="210" cy="40" fill="currentColor" r="1.5"></circle>
+<circle cx="225" cy="45" fill="currentColor" r="1.5"></circle>
+<circle cx="240" cy="35" fill="currentColor" r="1.5"></circle>
+<circle cx="255" cy="50" fill="currentColor" r="1.5"></circle>
+<circle cx="360" cy="50" fill="currentColor" r="1.5"></circle>
+<circle cx="375" cy="55" fill="currentColor" r="1.5"></circle>
+<circle cx="390" cy="45" fill="currentColor" r="1.5"></circle>
+<!-- Curved Connection Arcs -->
+<path d="M 120 60 Q 180 20 240 45" opacity="0.8" stroke="#a3c9ff" stroke-dasharray="4 3" stroke-width="1.75"></path>
+<path d="M 240 45 Q 310 15 380 50" opacity="0.8" stroke="#9ecaff" stroke-dasharray="4 3" stroke-width="1.75"></path>
+<path d="M 120 60 Q 250 110 380 50" opacity="0.5" stroke="#a2c9ff" stroke-dasharray="2 3" stroke-width="1.25"></path>
+<!-- US-East Node -->
+<g class="cursor-pointer">
+<circle cx="120" cy="60" fill="#0078d4" fill-opacity="0.25" r="10"></circle>
+<circle cx="120" cy="60" fill="#a3c9ff" r="4.5"></circle>
+<text fill="#e5e2e1" font-family="Geist" font-size="9" font-weight="600" text-anchor="middle" x="120" y="85">US-East (N. Virginia)</text>
+<text fill="#8a919e" font-family="Geist" font-size="8" text-anchor="middle" x="120" y="97">Active Core • 4.2ms</text>
+</g>
+<!-- EU-Central Node -->
+<g class="cursor-pointer">
+<circle cx="240" cy="45" fill="#0078d4" fill-opacity="0.25" r="10"></circle>
+<circle cx="240" cy="45" fill="#9ecaff" r="4.5"></circle>
+<text fill="#e5e2e1" font-family="Geist" font-size="9" font-weight="600" text-anchor="middle" x="240" y="24">EU-Central (Frankfurt)</text>
+<text fill="#8a919e" font-family="Geist" font-size="8" text-anchor="middle" x="240" y="34">Low Latency Hub</text>
+</g>
+<!-- APAC-Tokyo Node -->
+<g class="cursor-pointer">
+<circle cx="380" cy="50" fill="#0078d4" fill-opacity="0.25" r="10"></circle>
+<circle cx="380" cy="50" fill="#a2c9ff" r="4.5"></circle>
+<text fill="#e5e2e1" font-family="Geist" font-size="9" font-weight="600" text-anchor="middle" x="380" y="75">APAC-Tokyo</text>
+<text fill="#8a919e" font-family="Geist" font-size="8" text-anchor="middle" x="380" y="87">Edge Cluster • 11ms</text>
+</g>
+</svg>
+</div>
+</div>
+<!-- Sleek Bullet Check Points -->
+<div class="space-y-1.5 pt-1">
+<div class="flex items-start gap-2 bg-surface-container/40 p-2 rounded">
+<span class="material-symbols-outlined text-primary text-[17px] shrink-0 mt-0.5">check_circle</span>
+<span class="font-body text-body text-on-surface">Universal replication protocol reduces inter-region drift to sub-millisecond ranges.</span>
+</div>
+<div class="flex items-start gap-2 bg-surface-container/40 p-2 rounded">
+<span class="material-symbols-outlined text-primary text-[17px] shrink-0 mt-0.5">check_circle</span>
+<span class="font-body text-body text-on-surface">Autonomous failover routes 100% of APAC user traffic seamlessly during peak loads.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Slide Footer Metadata -->
+<div class="relative z-10 flex items-center justify-between pt-3 text-outline font-label text-label">
+<div class="flex items-center gap-space-sm">
+<span>Docs Presentation Engine</span>
+<span>•</span>
+<span>Keynote All-Hands 2025</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant">Slide 3 of 24</span>
+</div>
+</div>
+</div>
+<!-- Collapsible Speaker Notes Drawer -->
+<div class="w-full max-w-5xl mt-4 rounded-xl bg-surface-container-low shadow-lg p-space-md transition-all" id="speakerNotesDrawer">
+<div class="flex items-center justify-between pb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">record_voice_over</span>
+<span class="font-subtitle text-subtitle text-on-surface">Speaker Notes</span>
+<span class="px-2 py-0.5 rounded bg-surface-container font-label text-label text-on-surface-variant">Presenter Only (Shift+F5)</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="font-caption text-caption text-primary hover:underline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">edit_note</span> Edit Notes
+            </button>
+<button class="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface" id="closeNotesDrawer">
+<span class="material-symbols-outlined text-[15px]">expand_more</span>
+</button>
+</div>
+</div>
+<div class="p-3 bg-surface-container rounded-lg font-body text-body text-on-surface leading-relaxed">
+<p class="font-body-strong text-body-strong text-secondary mb-1">Key Delivery Guidance:</p>
+          "Emphasize the latency reduction milestone from Q3. Call out team recognition for the infra engineering squad before moving to slide 4. Reinforce to leadership that our multi-region replication fabric came in 18% under projected budget."
+        </div>
+<div class="flex items-center justify-between pt-2 text-outline font-label text-label">
+<span>Target Delivery: 2 min 15 sec</span>
+<span>Last modified today at 09:42 AM by you</span>
+</div>
+</div>
+</div>
+<!-- RIGHT INSPECTOR PANE: Slide Details & Element Tree (Windows 11 Context Flyout) -->
+<div class="w-72 bg-surface-container-lowest flex flex-col shrink-0 overflow-y-auto shadow-md" id="inspectorPane">
+<!-- Inspector Tabs -->
+<div class="flex items-center bg-surface-container-low shadow-xs">
+<button class="flex-1 py-2 font-caption-strong text-caption-strong text-primary bg-surface-container border-b-2 border-primary text-center">
+          Slide Details
+        </button>
+<button class="flex-1 py-2 font-caption text-caption text-on-surface-variant hover:text-on-surface text-center">
+          Animations
+        </button>
+<button class="flex-1 py-2 font-caption text-caption text-on-surface-variant hover:text-on-surface text-center">
+          Media
+        </button>
+</div>
+<!-- Slide Properties Section -->
+<div class="p-space-md space-y-space-md">
+<!-- Metadata Group -->
+<div class="space-y-2">
+<span class="font-label text-label font-bold text-on-surface-variant uppercase tracking-wider">Slide Configuration</span>
+<div class="space-y-1.5">
+<div class="flex items-center justify-between text-on-surface-variant font-caption text-caption">
+<span>Slide Layout</span>
+<span class="text-on-surface font-caption-strong text-caption-strong">Title &amp; Two Content</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-caption text-caption">
+<span>Hidden in Show</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container text-on-surface font-label text-label">No (Visible)</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-caption text-caption">
+<span>Theme Canvas</span>
+<span class="text-on-surface font-caption-strong text-caption-strong flex items-center gap-1">
+<span class="w-2.5 h-2.5 rounded-full bg-[#121316]"></span> Obsidian Mesh
+              </span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-caption text-caption">
+<span>Transition Style</span>
+<span class="text-primary font-caption-strong text-caption-strong flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">motion_photos_on</span> Morph (0.8s)
+              </span>
+</div>
+</div>
+</div>
+<div class="h-[1px] bg-outline-variant"></div>
+<!-- Slide Outline & Layer Tree -->
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label text-label font-bold text-on-surface-variant uppercase tracking-wider">Element Layer Tree</span>
+<span class="font-label text-label text-outline">5 Objects</span>
+</div>
+<div class="space-y-1">
+<div class="p-1.5 rounded bg-surface-container flex items-center justify-between hover:bg-surface-container-high transition-colors cursor-pointer text-on-surface">
+<div class="flex items-center gap-1.5 font-caption text-caption">
+<span class="material-symbols-outlined text-[15px] text-primary">title</span>
+<span class="truncate max-w-[140px]">Header: Global Acceleration</span>
+</div>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">visibility</span>
+</div>
+<div class="p-1.5 rounded bg-surface-container-low flex items-center justify-between hover:bg-surface-container transition-colors cursor-pointer text-on-surface-variant hover:text-on-surface">
+<div class="flex items-center gap-1.5 font-caption text-caption">
+<span class="material-symbols-outlined text-[15px] text-secondary">grid_view</span>
+<span class="truncate max-w-[140px]">Metric Cards (3 Items)</span>
+</div>
+<span class="material-symbols-outlined text-[14px]">visibility</span>
+</div>
+<div class="p-1.5 rounded bg-surface-container-low flex items-center justify-between hover:bg-surface-container transition-colors cursor-pointer text-on-surface-variant hover:text-on-surface">
+<div class="flex items-center gap-1.5 font-caption text-caption">
+<span class="material-symbols-outlined text-[15px] text-tertiary">hub</span>
+<span class="truncate max-w-[140px]">World Map Vector Mesh</span>
+</div>
+<span class="material-symbols-outlined text-[14px]">visibility</span>
+</div>
+<div class="p-1.5 rounded bg-surface-container-low flex items-center justify-between hover:bg-surface-container transition-colors cursor-pointer text-on-surface-variant hover:text-on-surface">
+<div class="flex items-center gap-1.5 font-caption text-caption">
+<span class="material-symbols-outlined text-[15px]">checklist</span>
+<span class="truncate max-w-[140px]">Takeaway Bullet Points</span>
+</div>
+<span class="material-symbols-outlined text-[14px]">visibility</span>
+</div>
+<div class="p-1.5 rounded bg-surface-container-low flex items-center justify-between hover:bg-surface-container transition-colors cursor-pointer text-on-surface-variant hover:text-on-surface">
+<div class="flex items-center gap-1.5 font-caption text-caption">
+<span class="material-symbols-outlined text-[15px] text-outline">description</span>
+<span class="truncate max-w-[140px]">Speaker Notes Drawer</span>
+</div>
+<span class="material-symbols-outlined text-[14px]">visibility</span>
+</div>
+</div>
+</div>
+<div class="h-[1px] bg-outline-variant"></div>
+<!-- Quick Actions & Presenter Toolkit -->
+<div class="space-y-2">
+<span class="font-label text-label font-bold text-on-surface-variant uppercase tracking-wider">Quick Actions</span>
+<div class="space-y-1.5">
+<button class="w-full py-2 px-space-sm rounded bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center justify-between font-caption text-caption transition-all shadow-xs">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[16px]">screen_share</span>
+<span>Present to Teams</span>
+</div>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+</button>
+<button class="w-full py-2 px-space-sm rounded bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center justify-between font-caption text-caption transition-all shadow-xs">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[16px]">print</span>
+<span>Export as Handouts</span>
+</div>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+</button>
+<button class="w-full py-2 px-space-sm rounded bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center justify-between font-caption text-caption transition-all shadow-xs">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-emerald-400 text-[16px]">psychology</span>
+<span>Rehearse with AI Coach</span>
+</div>
+<span class="px-1 py-0.2 rounded bg-primary/20 text-primary font-label text-[10px]">NEW</span>
+</button>
+</div>
+</div>
+</div>
+<!-- AI Presentation Tip -->
+<div class="mt-auto p-space-sm m-space-sm rounded-lg bg-surface-container/70 shadow-sm flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">lightbulb</span>
+<div class="space-y-0.5">
+<span class="font-caption-strong text-caption-strong text-on-surface block">Rehearsal Insight</span>
+<p class="font-label text-label text-on-surface-variant">Your pace on metrics slides is 140 WPM. Optimal clarity is 125 WPM.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- WinUI 3 Micro Status Bar (Docked bottom) -->
+<div class="w-full h-7 bg-surface-container-lowest px-space-sm flex items-center justify-between text-on-surface-variant shadow-md">
+<!-- Left Status Indicators -->
+<div class="flex items-center gap-space-md">
+<span class="font-label text-label flex items-center gap-1.5 text-on-surface">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>Ready
+      </span>
+<span class="font-label text-label text-outline">|</span>
+<span class="font-label text-label text-on-surface font-semibold">Slide 3 of 24</span>
+<span class="font-label text-label text-outline">|</span>
+<span class="font-label text-label">English (US)</span>
+<span class="font-label text-label text-outline">|</span>
+<span class="font-label text-label flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-primary">aspect_ratio</span> 16:9 Widescreen
+      </span>
+<span class="font-label text-label text-outline">|</span>
+<span class="font-label text-label flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[13px]">cloud_done</span> Saved to Cloud
+      </span>
+</div>
+<!-- Right Presentation Mode Switches & Zoom -->
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-1">
+<button class="w-5 h-5 rounded flex items-center justify-center hover:bg-surface-container hover:text-on-surface" title="Normal View">
+<span class="material-symbols-outlined text-[13px]">crop_landscape</span>
+</button>
+<button class="w-5 h-5 rounded flex items-center justify-center hover:bg-surface-container hover:text-on-surface" title="Slide Sorter">
+<span class="material-symbols-outlined text-[13px]">grid_view</span>
+</button>
+<button class="w-5 h-5 rounded flex items-center justify-center hover:bg-surface-container hover:text-on-surface" title="Reading View">
+<span class="material-symbols-outlined text-[13px]">menu_book</span>
+</button>
+<button class="w-5 h-5 rounded flex items-center justify-center bg-primary-container text-on-primary-container" title="Start Slide Show (F5)">
+<span class="material-symbols-outlined text-[13px]">slideshow</span>
+</button>
+</div>
+<div class="h-3 w-[1px] bg-outline-variant"></div>
+<!-- Fit & Zoom Controls -->
+<div class="flex items-center gap-space-xs">
+<button class="w-4 h-4 flex items-center justify-center text-on-surface-variant hover:text-on-surface" id="zoomOutBtn">
+<span class="material-symbols-outlined text-[12px]">remove</span>
+</button>
+<input class="h-1 w-20 bg-surface-variant rounded accent-primary cursor-pointer" id="zoomRange" max="150" min="40" type="range" value="85"/>
+<button class="w-4 h-4 flex items-center justify-center text-on-surface-variant hover:text-on-surface" id="zoomInBtn">
+<span class="material-symbols-outlined text-[12px]">add</span>
+</button>
+<button class="font-label text-label min-w-[50px] text-right hover:text-on-surface transition-colors cursor-pointer" id="fitCanvasBtn">
+          85% (Fit)
+        </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    const toggleNotesBtn = document.getElementById('toggleNotesBtn');
+    const speakerNotesDrawer = document.getElementById('speakerNotesDrawer');
+    const closeNotesDrawer = document.getElementById('closeNotesDrawer');
+    const toggleInspectorBtn = document.getElementById('toggleInspectorBtn');
+    const inspectorPane = document.getElementById('inspectorPane');
+    const zoomRange = document.getElementById('zoomRange');
+    const fitCanvasBtn = document.getElementById('fitCanvasBtn');
+
+    if (toggleNotesBtn && speakerNotesDrawer) {
+      toggleNotesBtn.addEventListener('click', () => {
+        speakerNotesDrawer.classList.toggle('hidden');
+      });
+    }
+
+    if (closeNotesDrawer && speakerNotesDrawer) {
+      closeNotesDrawer.addEventListener('click', () => {
+        speakerNotesDrawer.classList.add('hidden');
+      });
+    }
+
+    if (toggleInspectorBtn && inspectorPane) {
+      toggleInspectorBtn.addEventListener('click', () => {
+        inspectorPane.classList.toggle('hidden');
+      });
+    }
+
+    if (zoomRange && fitCanvasBtn) {
+      zoomRange.addEventListener('input', (e) => {
+        fitCanvasBtn.textContent = `${e.target.value}%`;
+      });
+      fitCanvasBtn.addEventListener('click', () => {
+        zoomRange.value = 85;
+        fitCanvasBtn.textContent = '85% (Fit)';
+      });
+    }
+  })();
+</script></main></div><footer class="fixed bottom-0 left-0 right-0 h-7 z-50 bg-surface-container-lowest/95 px-space-sm flex items-center justify-between text-on-surface-variant shadow-[0_-1px_4px_rgba(0,0,0,0.15)]"><div class="flex items-center gap-space-md"><span class="font-label text-label flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-primary"></span>Ready</span><span class="font-label text-label text-outline">|</span><span class="font-label text-label">Page 14 of 48</span><span class="font-label text-label text-outline">|</span><span class="font-label text-label">4.8 MB</span><span class="font-label text-label text-outline">|</span><span class="font-label text-label flex items-center gap-space-xs"><svg class="w-3.5 h-3.5 text-primary" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>Protected (Read Only)</span></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs"><button class="w-4 h-4 flex items-center justify-center text-on-surface-variant hover:text-on-surface"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><line x1="5" x2="19" y1="12" y2="12"></line></svg></button><input class="h-1 w-24 bg-surface-variant rounded accent-primary cursor-pointer" max="300" min="50" type="range" value="125"/><button class="w-4 h-4 flex items-center justify-center text-on-surface-variant hover:text-on-surface"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg></button><span class="font-label text-label min-w-[34px] text-right">125%</span></div><div class="h-3 w-[1px] bg-outline-variant"></div><button class="font-label text-label hover:text-on-surface transition-colors flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24"><rect height="7" rx="1" width="12" x="6" y="3"></rect><rect height="7" rx="1" width="12" x="6" y="14"></rect></svg><span class="">Continuous Scroll</span></button></div></footer>
+</body></html>

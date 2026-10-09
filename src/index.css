@@ -1,76 +1,120 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  /* Stitch WinUI 3 Fluent — Light Mode Tokens */
+  --surface: #FAFAFA;
+  --surface-dim: #EAEAEA;
+  --surface-bright: #FFFFFF;
+  --surface-container-lowest: #FFFFFF;
+  --surface-container-low: #F5F5F5;
+  --surface-container: #EBEBEB;
+  --surface-container-high: #E1E1E1;
+  --surface-container-highest: #D7D7D7;
+  --on-surface: #1A1A1A;
+  --on-surface-variant: #555D67;
+  --outline: #757D8A;
+  --outline-variant: #D0D4DC;
+  --primary: #0078D4;
+  --primary-container: #D6E8FF;
+  --on-primary: #FFFFFF;
+  --on-primary-container: #00315C;
+  --secondary: #0067B8;
+  --secondary-container: #D3E4FF;
+  --on-secondary: #FFFFFF;
+  --on-secondary-container: #001D36;
+  --background: #F3F3F3;
+  --on-background: #1A1A1A;
+  --error: #BA1A1A;
+  --error-container: #FFDAD6;
+  --doc-bed: #E6E8EB;
+}
+
+.dark {
+  /* Stitch WinUI 3 Fluent — Dark Mode Tokens */
+  --surface: #131313;
+  --surface-dim: #131313;
+  --surface-bright: #393939;
+  --surface-container-lowest: #0E0E0E;
+  --surface-container-low: #1B1C1C;
+  --surface-container: #202020;
+  --surface-container-high: #2A2A2A;
+  --surface-container-highest: #353535;
+  --on-surface: #E5E2E1;
+  --on-surface-variant: #C0C7D4;
+  --outline: #8A919E;
+  --outline-variant: #404752;
+  --primary: #A3C9FF;
+  --primary-container: #0078D4;
+  --on-primary: #00315C;
+  --on-primary-container: #FFFFFF;
+  --secondary: #9ECAFF;
+  --secondary-container: #0075C4;
+  --on-secondary: #003258;
+  --on-secondary-container: #F6F8FF;
+  --background: #131313;
+  --on-background: #E5E2E1;
+  --error: #FFB4AB;
+  --error-container: #93000A;
+  --doc-bed: #191919;
+}
 
 html, body, #root {
   height: 100vh;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  font-family: 'Inter', 'Cantarell', system-ui, -apple-system, sans-serif;
+  font-family: 'Geist', 'Segoe UI Variable', 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  background-color: var(--background);
+  color: var(--on-surface);
 }
 
-/* ===== LIGHT MODE WINDOW ===== */
 .window-frame {
-  @apply h-full w-full flex flex-col overflow-hidden bg-adwaita-bg dark:bg-dark-bg;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--background);
 }
 
-/* Maximized state (no visual change needed, OS handles corners) */
-.window-frame.maximized {
-  /* intentionally empty — OS handles maximized corners */
+/* WinUI 3 Subtle Micro-Borders */
+.border-subtle {
+  border-color: var(--outline-variant);
 }
 
-/* Fix PDF text selection visibility */
+/* PDF Selection visibility */
 .textLayer ::selection {
-  background: rgba(0, 120, 255, 0.4) !important;
+  background: rgba(0, 120, 212, 0.35) !important;
   color: transparent !important;
 }
 .textLayer span::selection {
-  background: rgba(0, 120, 255, 0.4) !important;
+  background: rgba(0, 120, 212, 0.35) !important;
   color: transparent !important;
 }
 
-/* ===== DARK MODE ===== */
-/* Canvas backing is handled by adwaita-bg/dark-bg */
-
-/* GNOME Popover Carets */
-.popover-caret-up {
-  position: absolute;
-  top: -6px;
-  width: 14px;
-  height: 14px;
-  background: inherit;
-  border-left: inherit;
-  border-top: inherit;
-  transform: rotate(45deg);
-  z-index: -1;
-  border-top-left-radius: 2px;
-}
-
-.popover-caret-down {
-  transform: translateY(50%) rotate(45deg);
-}
-
 /* GPU acceleration for smooth scrolling */
-.pdf-canvas-area {
+.pdf-canvas-area, .virtual-scroll-viewport {
   scroll-behavior: auto;
   -webkit-overflow-scrolling: touch;
   will-change: scroll-position;
+  contain: content;
 }
 
-/* Hide text and annotation layers while zooming to avoid visual artifacts */
+/* Smooth zooming opacity handling */
 .zooming .textLayer, 
 .zooming .annotationLayer {
   opacity: 0 !important;
   pointer-events: none !important;
 }
 
-/* ===== SCROLLBAR — Light ===== */
+/* ===== Custom Minimal Scrollbars ===== */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -79,39 +123,27 @@ html, body, #root {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.2);
-  border-radius: 100px;
+  background: rgba(120, 120, 120, 0.25);
+  border-radius: 9999px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0,0,0,0.35);
+  background: rgba(120, 120, 120, 0.45);
   border: 2px solid transparent;
   background-clip: content-box;
 }
 
-/* ===== SCROLLBAR — Dark ===== */
-.dark ::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.15);
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255,255,255,0.3);
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-
-/* Disable text selection globally for native feel */
+/* Text selection behavior */
 * {
   user-select: none;
   -webkit-user-select: none;
 }
 
-/* Allow text selection on PDF canvas area */
 .pdf-canvas-area canvas,
 .pdf-canvas-area .textLayer,
-.pdf-canvas-area .annotationLayer {
+.pdf-canvas-area .annotationLayer,
+.selectable-content {
   user-select: auto;
   -webkit-user-select: auto;
 }
@@ -135,14 +167,8 @@ html, body, #root {
   white-space: pre;
   transform-origin: 0% 0%;
 }
-.textLayer span::selection {
-  background: rgba(53, 132, 228, 0.3);
-}
-.dark .textLayer span::selection {
-  background: rgba(98, 160, 234, 0.4);
-}
 
-/* ===== PDF.js Annotation Layer (clickable links) ===== */
+/* ===== PDF.js Annotation Layer ===== */
 .annotationLayer {
   position: absolute;
   left: 0;
@@ -166,24 +192,69 @@ html, body, #root {
   pointer-events: all;
 }
 .annotationLayer .linkAnnotation > a:hover {
-  background: rgba(255, 255, 0, 0.15);
+  background: rgba(0, 120, 212, 0.15);
   border-radius: 2px;
 }
 
-/* Smooth transitions globally */
-button, input {
-  transition: background-color 100ms ease, color 100ms ease, box-shadow 100ms ease, opacity 100ms ease;
+/* Button & interactive element transitions */
+button, input, select {
+  transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
 }
 
-/* Focus ring for keyboard navigation */
-button:focus-visible {
-  outline: 2px solid #3584e4;
-  outline-offset: 2px;
-  border-radius: 6px;
+button:focus-visible, input:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
 }
 
-/* Drag-over visual feedback */
+/* Drag & Drop Feedback */
 .drag-over-active {
-  outline: 3px dashed #3584e4;
+  outline: 2px dashed #0078D4 !important;
   outline-offset: -3px;
+}
+
+/* ===== Search Highlight Tokens ===== */
+.search-highlight {
+  background-color: rgba(255, 235, 59, 0.45) !important;
+  color: #111111 !important;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(234, 179, 8, 0.4);
+}
+
+.search-highlight-active {
+  background-color: #F97316 !important;
+  color: #FFFFFF !important;
+  border-radius: 2px;
+  box-shadow: 0 0 0 2px #EA580C, 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== Print Optimization ===== */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  header, 
+  aside, 
+  footer, 
+  .command-ribbon, 
+  .nav-rail, 
+  .nav-drawer, 
+  .fps-overlay, 
+  .floating-actions, 
+  .search-overlay,
+  input[type="file"] {
+    display: none !important;
+  }
+
+  .window-frame {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .virtual-scroll-viewport {
+    height: auto !important;
+    overflow: visible !important;
+    contain: none !important;
+  }
 }

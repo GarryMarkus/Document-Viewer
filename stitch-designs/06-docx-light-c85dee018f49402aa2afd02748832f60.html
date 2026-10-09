@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-high": "#e9e8e7", "outline": "#717783", "surface-container-highest": "#e4e2e2", "secondary-fixed": "#d7e3ff", "surface": "#fbf9f8", "on-background": "#1b1c1c", "surface-dim": "#dbdad9", "outline-variant": "#c0c7d4", "surface-container": "#efeded", "primary": "#005faa", "surface-container-lowest": "#ffffff", "on-error-container": "#93000a", "background": "#fbf9f8", "surface-variant": "#e4e2e2", "surface-bright": "#fbf9f8", "on-primary-fixed-variant": "#004883", "inverse-on-surface": "#f2f0f0", "secondary-fixed-dim": "#abc7ff", "tertiary": "#006c36", "surface-container-low": "#f5f3f3", "on-tertiary-fixed": "#00210c", "on-surface": "#1b1c1c", "on-primary-container": "#ffffff", "on-secondary-fixed": "#001b3f", "tertiary-fixed": "#96f7af", "on-error": "#ffffff", "inverse-surface": "#303031", "secondary-container": "#8fb6ff", "tertiary-container": "#22874b", "error": "#ba1a1a", "primary-fixed-dim": "#a3c9ff", "on-secondary": "#ffffff", "inverse-primary": "#a3c9ff", "on-primary-fixed": "#001c39", "on-tertiary": "#ffffff", "primary-container": "#0078d4", "on-tertiary-container": "#ffffff", "surface-tint": "#0060ab", "on-tertiary-fixed-variant": "#005228", "primary-fixed": "#d3e3ff", "on-surface-variant": "#404752", "on-secondary-fixed-variant": "#134688", "error-container": "#ffdad6", "on-primary": "#ffffff", "tertiary-fixed-dim": "#7ada95", "secondary": "#335ea1", "on-secondary-container": "#144688" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-xl": "1rem", "space-xs": "0.25rem", "space-lg": "0.75rem", "margin": "1rem", "gutter": "0.75rem", "space-sm": "0.375rem", "space-md": "0.5rem" }, "fontFamily": { "body-lg": [ "Geist" ], "headline-xl": [ "Geist" ], "label-sm": [ "Geist" ], "headline-lg": [ "Geist" ], "headline-md": [ "Geist" ], "headline-sm": [ "Geist" ], "label-md": [ "Geist" ], "body-sm": [ "Geist" ], "body-md": [ "Geist" ], "code-sm": [ "JetBrains Mono" ] }, "fontSize": { "body-lg": [ "16px", { "lineHeight": "24px", "fontWeight": "400" } ], "headline-xl": [ "32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "label-sm": [ "11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" } ], "headline-lg": [ "24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "headline-md": [ "20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "headline-sm": [ "16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" } ], "label-md": [ "13px", { "lineHeight": "18px", "fontWeight": "500" } ], "body-sm": [ "12px", { "lineHeight": "16px", "fontWeight": "400" } ], "body-md": [ "14px", { "lineHeight": "20px", "fontWeight": "400" } ], "code-sm": [ "12px", { "lineHeight": "16px", "fontWeight": "400" } ] } } } };</script></head><body class="bg-surface-container font-body-md text-on-surface antialiased select-none"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-low/95 backdrop-blur-md shadow-[0_1px_4px_rgba(0,0,0,0.03)]"><div class="h-20 w-full flex flex-col justify-between"><div class="h-10 w-full flex items-center justify-between px-space-md border-b border-surface-container-high/60"><div class="flex items-center gap-space-sm"><div class="flex items-center gap-space-xs text-primary px-space-xs"><span class="material-symbols-outlined text-[18px]">description</span><span class="font-label-md text-label-md tracking-tight font-semibold text-on-surface">Docs</span></div><div class="h-4 w-[1px] bg-outline-variant/30 mx-space-xs"></div><div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar max-w-2xl"><div class="flex items-center gap-space-xs px-space-md py-[3px] rounded-lg bg-surface-container-lowest shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-surface-variant/70 text-on-surface"><span class="material-symbols-outlined text-error text-[15px]">picture_as_pdf</span><span class="font-label-sm text-label-sm max-w-[130px] truncate">Annual_Report_2024.pdf</span><button class="hover:bg-surface-container-high p-[1px] rounded-DEFAULT text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined text-[13px]">close</span></button></div><div class="flex items-center gap-space-xs px-space-md py-[3px] rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-primary text-[15px]">article</span><span class="font-label-sm text-label-sm max-w-[130px] truncate">Product_Strategy_v3.docx</span><button class="hover:bg-surface-container-high p-[1px] rounded-DEFAULT hover:text-on-surface"><span class="material-symbols-outlined text-[13px]">close</span></button></div><div class="flex items-center gap-space-xs px-space-md py-[3px] rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-tertiary text-[15px]">table_chart</span><span class="font-label-sm text-label-sm max-w-[130px] truncate">Q4_Financial_Model_2024.xlsx</span><button class="hover:bg-surface-container-high p-[1px] rounded-DEFAULT hover:text-on-surface"><span class="material-symbols-outlined text-[13px]">close</span></button></div><div class="flex items-center gap-space-xs px-space-md py-[3px] rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-primary-container text-[15px]">slideshow</span><span class="font-label-sm text-label-sm max-w-[130px] truncate">Keynote_Q4_AllHands.pptx</span><button class="hover:bg-surface-container-high p-[1px] rounded-DEFAULT hover:text-on-surface"><span class="material-symbols-outlined text-[13px]">close</span></button></div><button class="p-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[16px]">add</span></button></div></div><div class="flex items-center gap-space-md flex-1 max-w-sm mx-space-xl"><div class="flex items-center w-full bg-surface-container-lowest/80 px-space-md py-[3px] rounded-lg border border-outline-variant/40 shadow-[0_1px_2px_rgba(0,0,0,0.02)] focus-within:border-primary-container focus-within:ring-1 focus-within:ring-primary-container/20"><span class="material-symbols-outlined text-on-surface-variant text-[16px] mr-space-sm">search</span><input class="bg-transparent w-full text-on-surface placeholder:text-on-surface-variant/70 font-body-sm text-body-sm outline-none" placeholder="Search in document (Ctrl+F)" type="text"/><kbd class="font-code-sm text-[10px] text-on-surface-variant bg-surface-container px-space-xs py-[1px] rounded-DEFAULT border border-outline-variant/30">Ctrl+F</kbd></div></div><div class="flex items-center gap-space-sm"><div class="w-7 h-7 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[16px]">person</span></div><div class="flex items-center gap-0 text-on-surface-variant ml-space-xs"><button class="w-9 h-7 flex items-center justify-center hover:bg-surface-container-high hover:text-on-surface rounded-DEFAULT transition-colors"><span class="material-symbols-outlined text-[14px]">minimize</span></button><button class="w-9 h-7 flex items-center justify-center hover:bg-surface-container-high hover:text-on-surface rounded-DEFAULT transition-colors"><span class="material-symbols-outlined text-[14px]">check_box_outline_blank</span></button><button class="w-9 h-7 flex items-center justify-center hover:bg-error hover:text-on-error rounded-DEFAULT transition-colors"><span class="material-symbols-outlined text-[14px]">close</span></button></div></div></div><div class="h-10 w-full flex items-center justify-between px-space-md bg-surface-container-low"><div class="flex items-center gap-space-xs"><button class="flex items-center gap-space-xs px-space-md py-[3px] rounded-lg text-on-surface hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-md text-label-md"><span class="material-symbols-outlined text-[16px]">folder_open</span><span>Open</span></button><button class="flex items-center gap-space-xs px-space-md py-[3px] rounded-lg text-on-surface hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-md text-label-md"><span class="material-symbols-outlined text-[16px]">save</span><span>Save</span></button><button class="flex items-center gap-space-xs px-space-md py-[3px] rounded-lg text-on-surface hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-md text-label-md"><span class="material-symbols-outlined text-[16px]">print</span><span>Print</span></button><button class="flex items-center gap-space-xs px-space-md py-[3px] rounded-lg text-on-surface hover:bg-surface-container-high hover:text-on-surface transition-colors font-label-md text-label-md"><span class="material-symbols-outlined text-[16px]">share</span><span>Share</span></button><div class="h-4 w-[1px] bg-outline-variant/40 mx-space-xs"></div><div class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant"><button class="p-[3px] rounded-DEFAULT hover:bg-surface-container-high hover:text-on-surface"><span class="material-symbols-outlined text-[16px]">navigate_before</span></button><div class="flex items-center gap-space-xs px-space-xs"><input class="w-8 text-center bg-surface-container-lowest border border-outline-variant/40 rounded-DEFAULT py-[1px] text-on-surface font-body-sm text-body-sm" type="text" value="1"/><span>/ 24</span></div><button class="p-[3px] rounded-DEFAULT hover:bg-surface-container-high hover:text-on-surface"><span class="material-symbols-outlined text-[16px]">navigate_next</span></button></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs text-on-surface-variant"><button class="p-[2px] rounded-DEFAULT hover:bg-surface-container-high hover:text-on-surface"><span class="material-symbols-outlined text-[16px]">remove</span></button><span class="font-code-sm text-code-sm w-12 text-center text-on-surface">100%</span><button class="p-[2px] rounded-DEFAULT hover:bg-surface-container-high hover:text-on-surface"><span class="material-symbols-outlined text-[16px]">add</span></button><button class="p-[2px] rounded-DEFAULT hover:bg-surface-container-high hover:text-on-surface ml-space-xs"><span class="material-symbols-outlined text-[16px]">fit_screen</span></button></div><button class="px-space-md py-[3px] bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.05)]">Export</button></div></div></div></header><aside class="fixed left-0 top-20 bottom-7 w-12 bg-surface-container-low border-r border-surface-container-high/60 z-40 flex flex-col justify-between py-space-sm items-center shadow-[1px_0_4px_rgba(0,0,0,0.02)]"><nav class="flex flex-col items-center gap-space-xs w-full px-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-lg"><a aria-current="page" class="w-9 h-9 flex items-center justify-center transition-colors bg-primary-container text-on-primary-container font-semibold rounded-lg" data-path="document-canvas" href="#" title="Thumbnails"><span class="material-symbols-outlined text-[20px]">grid_view</span></a><a class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="outline-toc" href="#" title="Outline / Table of Contents"><span class="material-symbols-outlined text-[20px]">toc</span></a><a class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="bookmarks" href="#" title="Bookmarks"><span class="material-symbols-outlined text-[20px]">bookmark</span></a><a class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="annotations" href="#" title="Annotations &amp; Markup"><span class="material-symbols-outlined text-[20px]">edit_note</span></a><a class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="attachments" href="#" title="Attachments"><span class="material-symbols-outlined text-[20px]">attachment</span></a></nav><div class="flex flex-col items-center gap-space-xs w-full px-space-xs"><a class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="document-info" href="#" title="Document Info"><span class="material-symbols-outlined text-[20px]">info</span></a><a class="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#" title="Application Settings"><span class="material-symbols-outlined text-[20px]">settings</span></a></div></aside><div class="pl-12"><main class="w-full pt-20 pb-7 min-h-screen bg-surface-container"><div class="flex flex-col w-full">
+<!-- Sub-Ribbon / Document Context Bar -->
+<div class="w-full bg-surface-container-lowest px-space-md py-space-xs flex items-center justify-between shadow-sm sticky top-0 z-30">
+<div class="flex items-center gap-space-sm flex-wrap">
+<!-- Layout Modes -->
+<div class="flex items-center bg-surface-container p-[2px] rounded-lg">
+<button class="flex items-center gap-space-xs px-space-sm py-[3px] rounded-DEFAULT bg-surface-container-lowest text-primary shadow-sm font-label-md text-label-md" id="view-print">
+<span class="material-symbols-outlined text-[16px]">menu_book</span>
+<span>Print Layout</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-sm py-[3px] rounded-DEFAULT text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" id="view-web">
+<span class="material-symbols-outlined text-[16px]">web</span>
+<span>Web Flow</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-sm py-[3px] rounded-DEFAULT text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" id="view-focus">
+<span class="material-symbols-outlined text-[16px]">center_focus_strong</span>
+<span>Focus</span>
+</button>
+</div>
+<div class="h-4 w-[1px] bg-surface-container-high mx-space-xs hidden sm:block"></div>
+<!-- Quick Metrics -->
+<div class="flex items-center gap-space-xs px-space-sm py-[3px] rounded-lg bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px] text-tertiary">analytics</span>
+<span class="font-medium text-on-surface">3,420 words</span>
+<span>•</span>
+<span>8 min read</span>
+</div>
+<!-- Track Changes Chip -->
+<div class="flex items-center gap-space-xs px-space-sm py-[3px] rounded-lg bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-medium">
+<span class="material-symbols-outlined text-[14px]">track_changes</span>
+<span>Track Changes (2 pending)</span>
+</div>
+<div class="flex items-center gap-space-xs text-on-surface-variant">
+<button class="p-[3px] rounded-DEFAULT hover:bg-surface-container hover:text-on-surface transition-colors" title="Review Tools">
+<span class="material-symbols-outlined text-[18px]">spellcheck</span>
+</button>
+<button class="p-[3px] rounded-DEFAULT hover:bg-surface-container hover:text-on-surface transition-colors" title="Version History">
+<span class="material-symbols-outlined text-[18px]">history</span>
+</button>
+</div>
+</div>
+<!-- Right Controls -->
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs text-tertiary font-label-sm text-label-sm bg-surface-container-low px-space-sm py-[3px] rounded-lg">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-medium">AutoSave ON</span>
+</div>
+<button class="p-[3px] rounded-DEFAULT text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" id="toggle-nav-btn" title="Toggle Navigation Panel">
+<span class="material-symbols-outlined text-[18px]">view_sidebar</span>
+</button>
+<button class="p-[3px] rounded-DEFAULT text-primary bg-primary-fixed/40 hover:bg-primary-fixed/70 transition-colors" id="toggle-inspector-btn" title="Toggle Review Inspector">
+<span class="material-symbols-outlined text-[18px]">vertical_split</span>
+</button>
+</div>
+</div>
+<!-- Review Alert / Banner -->
+<div class="w-full bg-primary-fixed/30 px-space-md py-space-xs flex items-center justify-between text-on-primary-fixed shadow-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-sm text-label-sm font-semibold">SJ</div>
+<div class="flex items-center gap-space-xs font-label-sm text-label-sm">
+<span class="font-semibold text-on-surface">Sarah Jenkins</span>
+<span class="text-on-surface-variant">suggested replacing monolithic architecture reference with distributed microservices mesh.</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">14 mins ago</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-space-sm py-[2px] bg-primary text-on-primary rounded-lg font-label-sm text-label-sm hover:bg-primary-container transition-colors shadow-sm" onclick="acceptEdit()">Accept</button>
+<button class="px-space-sm py-[2px] bg-surface-container-lowest text-on-surface rounded-lg font-label-sm text-label-sm hover:bg-surface-container transition-colors shadow-sm" onclick="rejectEdit()">Reject</button>
+<button class="p-[2px] text-on-surface-variant hover:text-on-surface rounded-DEFAULT ml-space-xs">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<!-- Main 3-Column Work Area -->
+<div class="w-full flex justify-between items-start">
+<!-- Left Navigation Rail / Headings Tree -->
+<aside class="w-64 shrink-0 bg-surface-container-lowest p-space-md hidden lg:flex flex-col gap-space-md shadow-sm sticky top-12 max-h-[calc(100vh-140px)] overflow-y-auto rounded-r-xl" id="left-nav">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Headings &amp; Navigation</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant bg-surface-container px-space-xs py-[1px] rounded-DEFAULT">DOCX</span>
+</div>
+<!-- Quick Search inside Headings -->
+<div class="flex items-center bg-surface-container-low px-space-sm py-space-xs rounded-lg text-on-surface-variant focus-within:bg-surface-container">
+<span class="material-symbols-outlined text-[16px] mr-space-xs">filter_list</span>
+<input class="bg-transparent text-on-surface font-body-sm text-body-sm outline-none w-full" placeholder="Filter headings..." type="text"/>
+</div>
+<!-- Tree Hierarchy -->
+<div class="flex flex-col gap-1 font-body-sm text-body-sm text-on-surface-variant">
+<a class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg hover:bg-surface-container hover:text-on-surface transition-colors" href="#sec-1">
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="truncate">1. Executive Summary</span>
+</a>
+<a class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg hover:bg-surface-container hover:text-on-surface transition-colors" href="#sec-2">
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="truncate">2. Vision &amp; Market Opportunity</span>
+</a>
+<!-- Selected Active Node -->
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg bg-secondary-fixed text-on-secondary-fixed font-medium shadow-sm" href="#sec-3">
+<span class="material-symbols-outlined text-[14px]">expand_more</span>
+<span class="truncate">3. Core Architecture &amp; Tech Stack</span>
+</a>
+<div class="flex flex-col pl-space-md gap-1">
+<a class="flex items-center gap-space-xs px-space-sm py-[3px] rounded-DEFAULT bg-surface-container-high text-primary font-medium" href="#sec-3-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="truncate">3.1 Data Ingestion Pipeline</span>
+</a>
+<a class="flex items-center gap-space-xs px-space-sm py-[3px] rounded-DEFAULT hover:bg-surface-container hover:text-on-surface transition-colors" href="#sec-3-2">
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+<span class="truncate">3.2 Event-Driven Bus</span>
+</a>
+<a class="flex items-center gap-space-xs px-space-sm py-[3px] rounded-DEFAULT hover:bg-surface-container hover:text-on-surface transition-colors" href="#sec-3-3">
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+<span class="truncate">3.3 Security &amp; Zero-Trust Mesh</span>
+</a>
+</div>
+</div>
+<a class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg hover:bg-surface-container hover:text-on-surface transition-colors" href="#sec-4">
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="truncate">4. Scalability &amp; Latency Benchmarks</span>
+</a>
+<a class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg hover:bg-surface-container hover:text-on-surface transition-colors" href="#sec-5">
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="truncate">5. Delivery Milestones &amp; Roadmap</span>
+</a>
+</div>
+<!-- Quick Document Outline Stats -->
+<div class="mt-auto bg-surface-container-low p-space-sm rounded-lg flex flex-col gap-space-xs">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>Readability Index</span>
+<span class="text-tertiary font-semibold">Grade 11.2 (Clear)</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 84%"></div>
+</div>
+</div>
+</aside>
+<!-- Central Document Canvas (Realistic Word Canvas) -->
+<div class="flex-1 flex flex-col items-center px-space-md py-space-lg max-w-4xl mx-auto">
+<!-- A4 Paper Sheet (White Paper on Calm Slate Surface) -->
+<article class="w-full bg-surface-container-lowest rounded-xl shadow-md p-8 sm:p-14 flex flex-col gap-space-lg text-on-surface relative" id="document-sheet">
+<!-- Header Zone -->
+<div class="flex items-center justify-between pb-space-md text-on-surface-variant font-label-sm text-label-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-code-sm text-code-sm font-semibold tracking-wider text-primary">DOC-REV-4.18</span>
+<span>•</span>
+<span class="uppercase tracking-wider font-semibold">Enterprise Product Strategy</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span>Confidential &amp; Proprietary</span>
+<span>•</span>
+<span class="font-code-sm text-code-sm">Page 7 of 24</span>
+</div>
+</div>
+<!-- Section Badge & Title -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<span class="font-label-sm text-label-sm tracking-widest uppercase font-semibold text-primary">Part III • System Architecture</span>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight" id="sec-3">
+            3. Core Architecture &amp; Tech Stack
+          </h1>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Technical assessment for high-throughput transactional flows, fault tolerance limits, and decoupled services deployment models.
+          </p>
+</div>
+<!-- Paragraph 1 with Track Changes Diff -->
+<section class="flex flex-col gap-space-sm" id="sec-3-1">
+<h2 class="font-headline-md text-headline-md text-on-surface">
+            3.1 Data Ingestion Pipeline &amp; Service Topography
+          </h2>
+<p class="font-body-lg text-body-lg leading-relaxed text-on-surface">
+            The next-generation core platform must transition from our 
+            <!-- Tracked Deletion -->
+<span class="bg-error-container text-on-error-container line-through px-1 rounded-DEFAULT font-mono text-[14px]">legacy monolith based on monolithic Rails 6 workers</span>
+<!-- Tracked Insertion -->
+<span class="bg-tertiary-fixed text-on-tertiary-fixed font-medium px-1 rounded-DEFAULT" id="diff-insertion">scalable distributed microservices mesh</span> 
+            orchestrated across multi-region Kubernetes clusters. Under peak ingress, our distributed ledger will ingest synchronous customer telemetry events and route them through durable Kafka topics with partitioned stream tables.
+          </p>
+</section>
+<!-- Latency Comparison & Key Metrics Grid (Rich Visual Insight) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md my-space-xs">
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-xs">
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span>Ingestion Latency (p99)</span>
+<span class="text-tertiary font-semibold">-68%</span>
+</div>
+<div class="font-headline-lg text-headline-lg text-on-surface font-semibold">14.2 ms</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 24%"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Target under 20 ms SLA</span>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-xs">
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span>Throughput Floor</span>
+<span class="text-primary font-semibold">Peak</span>
+</div>
+<div class="font-headline-lg text-headline-lg text-on-surface font-semibold">120k eps</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 82%"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Events processed per sec</span>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-xs">
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span>Compute Efficiency</span>
+<span class="text-tertiary font-semibold">+34%</span>
+</div>
+<div class="font-headline-lg text-headline-lg text-on-surface font-semibold">3.8x ROI</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 76%"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Direct infrastructure reduction</span>
+</div>
+</div>
+<!-- Inline SVG Latency Comparison Chart -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Pipeline Throughput vs Response Time Profile</span>
+<div class="flex items-center gap-space-md font-label-sm text-label-sm text-on-surface-variant">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-outline"></span>
+<span>Monolithic v2.8</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span>Microservices Mesh v3.0</span>
+</div>
+</div>
+</div>
+<!-- Sparkline / Area Chart SVG -->
+<div class="w-full h-32 relative">
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 600 120">
+<!-- Grid lines -->
+<line class="text-surface-container-highest" stroke="currentColor" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="600" y1="20" y2="20"></line>
+<line class="text-surface-container-highest" stroke="currentColor" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="600" y1="60" y2="60"></line>
+<line class="text-surface-container-highest" stroke="currentColor" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="600" y1="100" y2="100"></line>
+<!-- Legacy curve -->
+<path class="text-outline-variant" d="M 0,95 Q 150,90 300,75 T 600,25" fill="none" stroke="currentColor" stroke-dasharray="3 3" stroke-width="2"></path>
+<!-- Modern Mesh Curve with gradient fill -->
+<defs>
+<lineargradient id="primaryGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#0078d4" stop-opacity="0.25"></stop>
+<stop offset="100%" stop-color="#0078d4" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<path d="M 0,110 L 0,105 Q 150,100 300,95 T 600,68 L 600,120 L 0,120 Z" fill="url(#primaryGrad)"></path>
+<path class="text-primary" d="M 0,105 Q 150,100 300,95 T 600,68" fill="none" stroke="currentColor" stroke-width="2.5"></path>
+<!-- Highlight Marker -->
+<circle class="shadow-sm" cx="450" cy="80" fill="#005faa" r="4"></circle>
+</svg>
+</div>
+<div class="flex justify-between font-code-sm text-code-sm text-on-surface-variant">
+<span>0k Events/s</span>
+<span>30k Events/s</span>
+<span>60k Events/s</span>
+<span>90k Events/s</span>
+<span>120k Events/s</span>
+</div>
+</div>
+<!-- Highlighted Annotation Comment Callout in Document -->
+<div class="bg-secondary-fixed/30 p-space-md rounded-xl flex items-start gap-space-md">
+<span class="material-symbols-outlined text-secondary text-[22px] mt-0.5">comment</span>
+<div class="flex flex-col gap-1 flex-1">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="font-semibold text-on-surface">Marcus Vance • Head of Infrastructure</span>
+<span class="text-on-surface-variant">Comment on Ingestion Protocols</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">
+              "Ensure we mandate gRPC transport layer for intra-service gossip protocols to avoid HTTP/1.1 connection throttling during burst failovers."
+            </p>
+</div>
+</div>
+<!-- Table 3.1.A Data Ingestion Pipeline Benchmarks -->
+<section class="flex flex-col gap-space-sm mt-space-xs">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">
+              Table 3.1.A: Data Ingestion Pipeline Benchmarks
+            </h3>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Verified Oct 2024</span>
+</div>
+<div class="w-full overflow-x-auto rounded-xl bg-surface-container-low shadow-sm">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="bg-surface-container text-on-surface font-label-md text-label-md">
+<th class="p-space-sm">Component</th>
+<th class="p-space-sm">Engine</th>
+<th class="p-space-sm">Max Ingress</th>
+<th class="p-space-sm">Latency (p99)</th>
+<th class="p-space-sm text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y-0 text-on-surface">
+<tr class="hover:bg-surface-container/60 transition-colors">
+<td class="p-space-sm font-medium">Message Broker</td>
+<td class="p-space-sm text-on-surface-variant font-code-sm text-code-sm">Apache Kafka v3.6</td>
+<td class="p-space-sm">250 MB/s</td>
+<td class="p-space-sm text-tertiary font-medium">8.4 ms</td>
+<td class="p-space-sm text-right">
+<span class="px-space-xs py-[2px] rounded-DEFAULT bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold">Production</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container/60 transition-colors">
+<td class="p-space-sm font-medium">Stream Processing</td>
+<td class="p-space-sm text-on-surface-variant font-code-sm text-code-sm">Apache Flink 1.18</td>
+<td class="p-space-sm">180 MB/s</td>
+<td class="p-space-sm text-tertiary font-medium">12.1 ms</td>
+<td class="p-space-sm text-right">
+<span class="px-space-xs py-[2px] rounded-DEFAULT bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold">Production</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container/60 transition-colors">
+<td class="p-space-sm font-medium">Telemetry Storage</td>
+<td class="p-space-sm text-on-surface-variant font-code-sm text-code-sm">ClickHouse Cloud</td>
+<td class="p-space-sm">420 MB/s</td>
+<td class="p-space-sm text-primary font-medium">28.0 ms</td>
+<td class="p-space-sm text-right">
+<span class="px-space-xs py-[2px] rounded-DEFAULT bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-semibold">Evaluating</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container/60 transition-colors">
+<td class="p-space-sm font-medium">Key-Value Cache</td>
+<td class="p-space-sm text-on-surface-variant font-code-sm text-code-sm">Redis Cluster v7.2</td>
+<td class="p-space-sm">95 MB/s</td>
+<td class="p-space-sm text-tertiary font-medium">1.6 ms</td>
+<td class="p-space-sm text-right">
+<span class="px-space-xs py-[2px] rounded-DEFAULT bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold">Production</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Paragraph 2 -->
+<p class="font-body-lg text-body-lg leading-relaxed text-on-surface">
+          Integration testing will conclude in Sprint 42. Deployment manifests leverage Helm charts wrapped in ArgoCD GitOps pipelines, granting rollback capability within under thirty seconds if anomalies arise.
+        </p>
+<!-- Page Break Visual Indicator -->
+<div class="flex items-center justify-center gap-space-sm py-space-md text-on-surface-variant/70">
+<div class="h-[1px] flex-1 bg-surface-container-high"></div>
+<div class="flex items-center gap-space-xs font-label-sm text-label-sm uppercase tracking-widest">
+<span class="material-symbols-outlined text-[14px]">content_cut</span>
+<span>Page Break • Next Page 8</span>
+</div>
+<div class="h-[1px] flex-1 bg-surface-container-high"></div>
+</div>
+</article>
+</div>
+<!-- Right Review & Inspector Sidebar -->
+<aside class="w-80 shrink-0 bg-surface-container-lowest p-space-md hidden xl:flex flex-col gap-space-md shadow-sm sticky top-12 max-h-[calc(100vh-140px)] overflow-y-auto rounded-l-xl" id="right-inspector">
+<!-- Review Panel Tabs -->
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-space-xs font-label-md text-label-md font-semibold text-on-surface">
+<span class="material-symbols-outlined text-[18px] text-primary">rate_review</span>
+<span>Review &amp; Comments</span>
+</div>
+<span class="px-space-xs py-[1px] bg-primary-fixed text-on-primary-fixed rounded-DEFAULT font-label-sm text-label-sm font-bold">2</span>
+</div>
+<!-- Card 1: Tracked Change (Sarah Jenkins) -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-sm shadow-sm" id="tracked-card-sarah">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-6 h-6 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-label-sm text-label-sm font-semibold">SJ</div>
+<span class="font-label-md text-label-md font-semibold text-on-surface">Sarah Jenkins</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">14m ago</span>
+</div>
+<div class="font-body-sm text-body-sm bg-surface-container-lowest p-space-xs rounded-lg flex flex-col gap-1">
+<div class="text-error line-through">legacy monolith based on monolithic Rails 6 workers</div>
+<div class="text-tertiary font-medium">scalable distributed microservices mesh</div>
+</div>
+<div class="flex items-center gap-space-xs mt-1">
+<button class="flex-1 py-space-xs bg-primary text-on-primary rounded-lg font-label-sm text-label-sm font-medium hover:bg-primary-container transition-colors shadow-sm flex items-center justify-center gap-1" onclick="acceptEdit()">
+<span class="material-symbols-outlined text-[14px]">check</span>
+<span>Accept</span>
+</button>
+<button class="flex-1 py-space-xs bg-surface-container-lowest text-on-surface rounded-lg font-label-sm text-label-sm font-medium hover:bg-surface-container transition-colors shadow-sm flex items-center justify-center gap-1" onclick="rejectEdit()">
+<span class="material-symbols-outlined text-[14px]">close</span>
+<span>Reject</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Threaded Comment (Marcus Vance) -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-sm shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-sm text-label-sm font-semibold">MV</div>
+<span class="font-label-md text-label-md font-semibold text-on-surface">Marcus Vance</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">1h ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface leading-normal">
+          Should we also mention Envoy sidecar proxies for mutual TLS?
+        </p>
+<!-- Inline Reply Input Box -->
+<div class="flex items-center gap-space-xs mt-space-xs bg-surface-container-lowest p-space-xs rounded-lg shadow-sm">
+<input class="bg-transparent font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant outline-none flex-1 px-1" placeholder="Reply to Marcus..." type="text"/>
+<button class="p-[3px] rounded-DEFAULT bg-primary text-on-primary hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-[14px]">send</span>
+</button>
+</div>
+</div>
+<!-- Document Properties Card -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-xs shadow-sm mt-auto">
+<span class="font-label-sm text-label-sm uppercase font-semibold text-on-surface-variant tracking-wider">Properties</span>
+<div class="flex justify-between font-body-sm text-body-sm py-1">
+<span class="text-on-surface-variant">Author</span>
+<span class="font-medium text-on-surface">Marcus Vance</span>
+</div>
+<div class="flex justify-between font-body-sm text-body-sm py-1">
+<span class="text-on-surface-variant">Format</span>
+<span class="font-medium text-on-surface">DOCX (Office Open XML)</span>
+</div>
+<div class="flex justify-between font-body-sm text-body-sm py-1">
+<span class="text-on-surface-variant">File Size</span>
+<span class="font-medium text-on-surface">2.4 MB</span>
+</div>
+<div class="flex justify-between font-body-sm text-body-sm py-1">
+<span class="text-on-surface-variant">Total Pages</span>
+<span class="font-medium text-on-surface">24 Pages</span>
+</div>
+</div>
+</aside>
+</div>
+<!-- Document Canvas Status Ribbon (Desktop Grade) -->
+<div class="w-full bg-surface-container-lowest px-space-md py-space-xs flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm shadow-sm mt-space-md">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs text-tertiary">
+<span class="material-symbols-outlined text-[16px]">task_alt</span>
+<span class="font-medium">Document Quality: 98% passed</span>
+</div>
+<span class="text-surface-container-highest">|</span>
+<span>Page 7 of 24 (Section 3)</span>
+<span class="text-surface-container-highest">|</span>
+<span>Spelling &amp; Grammar: Clean</span>
+</div>
+<!-- Zoom Slider Micro-Widget -->
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[16px]">fit_width</span>
+<button class="hover:text-on-surface transition-colors p-[2px]" onclick="adjustZoom(-10)">
+<span class="material-symbols-outlined text-[14px]">remove</span>
+</button>
+<input class="w-20 accent-primary cursor-pointer" id="zoom-range" max="150" min="50" oninput="updateZoom(this.value)" type="range" value="100"/>
+<button class="hover:text-on-surface transition-colors p-[2px]" onclick="adjustZoom(10)">
+<span class="material-symbols-outlined text-[14px]">add</span>
+</button>
+<span class="font-code-sm text-code-sm w-10 text-right font-medium text-on-surface" id="zoom-label">100%</span>
+</div>
+</div>
+</div>
+<script>
+  // Simple interactive controls for Track Changes review simulation
+  function acceptEdit() {
+    const diff = document.getElementById('diff-insertion');
+    if (diff) {
+      diff.className = 'font-semibold text-on-surface';
+    }
+    const card = document.getElementById('tracked-card-sarah');
+    if (card) {
+      card.innerHTML = `
+        <div class="flex items-center gap-space-xs text-tertiary font-label-md text-label-md font-semibold">
+          <span class="material-symbols-outlined text-[16px]">check_circle</span>
+          <span>Edit Accepted by You</span>
+        </div>
+      `;
+    }
+  }
+
+  function rejectEdit() {
+    const diff = document.getElementById('diff-insertion');
+    if (diff) {
+      diff.style.display = 'none';
+    }
+    const card = document.getElementById('tracked-card-sarah');
+    if (card) {
+      card.innerHTML = `
+        <div class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md font-semibold">
+          <span class="material-symbols-outlined text-[16px]">cancel</span>
+          <span>Edit Reverted</span>
+        </div>
+      `;
+    }
+  }
+
+  // Zoom Slider simulation
+  function updateZoom(val) {
+    document.getElementById('zoom-label').innerText = val + '%';
+    const sheet = document.getElementById('document-sheet');
+    if (sheet) {
+      sheet.style.transform = `scale(${val / 100})`;
+      sheet.style.transformOrigin = 'top center';
+    }
+  }
+
+  function adjustZoom(delta) {
+    const input = document.getElementById('zoom-range');
+    let current = parseInt(input.value, 10);
+    let next = Math.min(150, Math.max(50, current + delta));
+    input.value = next;
+    updateZoom(next);
+  }
+
+  // Toggle Left / Right Inspector Panes
+  document.getElementById('toggle-nav-btn')?.addEventListener('click', () => {
+    const nav = document.getElementById('left-nav');
+    if (nav) nav.classList.toggle('hidden');
+  });
+
+  document.getElementById('toggle-inspector-btn')?.addEventListener('click', () => {
+    const insp = document.getElementById('right-inspector');
+    if (insp) insp.classList.toggle('hidden');
+  });
+</script></main></div><footer class="fixed bottom-0 left-0 right-0 h-7 bg-surface-container-low border-t border-surface-container-high/60 z-50 px-space-md flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm shadow-[0_-1px_4px_rgba(0,0,0,0.02)]"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs text-tertiary font-medium"><span class="w-2 h-2 rounded-full bg-tertiary inline-block animate-pulse"></span><span>Ready</span></div><span class="text-outline-variant/60">|</span><div class="flex items-center gap-space-xs text-on-surface-variant"><span class="material-symbols-outlined text-[14px]">description</span><span>A4 (8.27 × 11.69 in)</span></div><span class="text-outline-variant/60">|</span><div class="flex items-center gap-space-xs text-on-surface-variant"><span class="material-symbols-outlined text-[14px]">database</span><span>2.4 MB</span></div></div><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs text-primary font-medium"><span class="material-symbols-outlined text-[14px]">verified_user</span><span>Digitally Signed</span></div><span class="text-outline-variant/60">|</span><div class="flex items-center gap-space-xs text-on-surface-variant"><span class="material-symbols-outlined text-[14px]">visibility</span><span>Reading Mode</span></div><span class="text-outline-variant/60">|</span><div class="flex items-center gap-space-xs"><span class="font-code-sm text-code-sm text-on-surface">100%</span></div></div></footer></body></html>

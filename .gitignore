@@ -42,3 +42,10 @@ public/cmaps/
 public/standard_fonts/
 public/wasm/
 public/iccs/
+
+# Benchmark and synthetic sample files
+sample-*
+*.sample.*
+
+# AI Agent transcripts and scratch files
+.agents/

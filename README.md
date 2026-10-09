@@ -1,119 +1,114 @@
 # Document Viewer
 
-A fast, elegant, and distraction-free PDF reader for Windows, faithfully inspired by GNOME Papers' minimalist Libadwaita aesthetics. Built with Tauri v2 for native performance.
+A high-performance, offline desktop document reader for Windows built with **Tauri v2**, **React 19**, and **TypeScript**. Features a modern WinUI 3 Fluent design inspired by Stitch design specifications, supporting **PDF, DOCX, XLSX, and PPTX** documents with buttery smooth 60–120 fps continuous scrolling and zero telemetry.
 
-![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Version](https://img.shields.io/badge/version-3.0.0-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20x64-lightgrey)
+![Offline](https://img.shields.io/badge/offline-100%25-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-## Features
+---
 
-### Core Reading Experience
-- **Continuous Scrolling** — Seamless vertical multi-page scrolling, toggleable from the View menu or `C` key.
-- **Dual Page Mode** — Side-by-side book-style reading, toggleable from the View menu or `D` key.
-- **Document Rotation** — Rotate documents in 90° increments (`Ctrl+Arrow`).
-- **Smart Zoom** — `Ctrl+Scroll Wheel`, `Ctrl+=/-/0`, or the floating overlay zoom controls. Debounced rendering ensures smooth, lag-free zooming.
-- **Selectable Text** — Full text layer rendering for highlighting, copying, and pasting.
-- **Clickable Links** — Native support for embedded hyperlinks and external URLs.
-- **Page Tracking & Navigation** — Scroll position auto-updates the page counter. Click the page number to jump to any page.
-- **Crisp PDF.js Rendering** — Renders via Web Worker with high-DPI support (capped at 2× for performance).
-- **Offline Engine** — Fully bundles standard fonts, CMaps, and WASM decoders (JBIG2/JPEG2000) for flawless offline rendering.
+## 🎯 Key Capabilities
 
-### GNOME-Inspired Design
-- **Libadwaita Aesthetic** — Inspired by GNOME Papers with a faithful recreation of the Adwaita color palette, typography, and spacing.
-- **Frameless Window** — Custom titlebar with native Windows 11 DWM composited rounded corners.
-- **Split Headerbar** — Slim top bar with app controls, centered title, and page indicator pill.
-- **Dark & Light Mode** — Toggle between themes with full UI adaptation, including dynamic window icon switching.
-- **Animated Sidebar** — Smooth 300ms slide animation for sidebar toggle with synchronized headerbar.
-- **Thin Scrollbars** — Overlay-style rounded scrollbar thumbs for a minimal feel.
-- **Document Properties** — Adwaita-styled modal displaying PDF metadata (Title, Author, Creator, etc.).
-- **Keyboard Shortcuts Dialog** — Full shortcuts reference accessible from the app menu.
+### 1. Multi-Format Offline Rendering
+Zero dependencies on Microsoft Office or LibreOffice. Completely self-contained and bundled:
+- **PDF (`.pdf`)**: Continuous virtual scroll rendered via PDF.js Web Worker + OffscreenCanvas, selectable TextLayer, and clickable hyperlink AnnotationLayer.
+- **DOCX (`.docx`, `.doc`)**: Faithful typography, headings outline, word count metrics, and pagination rendered via `docx-preview`.
+- **XLSX (`.xlsx`, `.xls`, `.csv`)**: High-performance HTML5 Canvas virtual grid engine supporting 100k+ rows with frozen column headers (`A..Z`), frozen row headers (`1..N`), formula bar (`fx`), active cell inspector, and multi-sheet tab switcher.
+- **PPTX (`.pptx`, `.ppt`)**: Fast OpenXML zip parser rendering 16:9 responsive slide canvases into the virtual scroll frame and dedicated full-screen Presentation Mode (`F5`) with speaker notes popover.
 
-### Performance
-- **Virtualized Rendering** — Lazy-loading via `IntersectionObserver`. Only visible pages are rendered, enabling instant scrolling through 1000+ page documents.
-- **Debounced Zoom** — CSS-based instant visual feedback with delayed high-quality re-render for buttery smooth zooming.
-- **Throttled Scroll Detection** — Page tracking uses `requestAnimationFrame` to prevent layout thrashing.
-- **DPR Capping** — Pixel ratio capped at 2× to balance crispness and rendering speed.
-- **GPU Acceleration** — Canvas area uses `will-change` and optimized scroll hints.
+### 2. High-Frame-Rate Virtual Scroll Engine
+- **Pre-Calculated Row Layout**: Exact page heights and coordinates are reserved up front, ensuring **0 Cumulative Layout Shift (CLS)** and zero scroll jumps.
+- **Directional Overscan**: Pre-renders pages 1.5 viewport heights ahead of the user's scroll direction.
+- **LRU Memory Management**: Bounded texture and DOM cache evicts off-screen pages, maintaining low memory footprints even on 500+ page documents.
+- **Debounced Zooming**: Immediate CSS scaling during rapid `Ctrl+Wheel` and pinch zoom with debounced sharp re-rendering.
+- **FPS & Frame-Time HUD**: Real-time FPS, 1% Low frame time, and automated scroll benchmark runner (`Ctrl+Shift+D`).
 
-### OS Integration
-- **File Associations** — Registers as a PDF viewer during installation.
-- **Double-click to Open** — Native Windows integration loads PDFs launched from File Explorer.
-- **Drag & Drop** — Drop any PDF onto the window to open it, with visual dashed-border feedback.
+### 3. In-Document Search & Text Highlighting
+- **Floating Find Bar (`Ctrl+F`)**: Acrylic backdrop HUD with match counter (`X of Y matches`), Next (`Enter` / `F3`), Previous (`Shift+Enter` / `Shift+F3`), and Match Case toggle (`Aa`).
+- **DOM & Canvas Highlighting**: Subtle yellow highlight tags across PDF text layers, Word sections, PowerPoint slides, and Excel grid cells, with vibrant orange highlighting for the active match.
 
-### Sidebar
-- **Thumbnails** — Lazy-loaded canvas-rendered page previews with accent ring on the active page.
-- **Outline** — Renders PDF bookmarks/table of contents for structural navigation.
-- **Bottom Tab Bar** — GNOME-style segmented control for switching between views.
+### 4. Navigation & Outlines
+- **Slide Deck & Page Thumbnails**: Real-time thumbnail previews in `NavigationDrawer` (16:9 for presentations, portrait for documents).
+- **Headings & Outline Map**: Filterable table of contents for PDF bookmarks, Word headings, and presentation slide decks.
+- **Persistent Bookmarks**: One-click page bookmarking with quick jump navigation.
+- **Recent Files List**: Local persistence tracking file size, last opened timestamp, and last viewed page.
 
-### Window Controls
-- **Drag Region** — Headerbar allows fluid window movement.
-- **Double-click Maximize** — Double-click the headerbar to toggle maximize.
-- **GNOME-style Controls** — Minimize, Maximize, and Close buttons with circular styling.
+### 5. Desktop Polish & Native Integration
+- **Windows Integration**: Drag-and-drop file opening, file associations for all supported formats, and "Open File Location" (reveals file in Windows Explorer).
+- **Clean Print Styling (`Ctrl+P`)**: Dedicated print stylesheet stripping window chrome and formatting clean document pages.
+- **WinUI 3 Fluent Design**: Light and Dark mode tokens matching Microsoft Fluent / Stitch guidelines.
+- **Graceful Error Handling**: Dedicated recovery screens for password-protected files (with password unlock prompt), corrupt files, and unsupported formats.
 
-## Keyboard Shortcuts
+---
+
+## ⌨️ Keyboard Shortcuts
 
 | Shortcut | Action |
 |----------|--------|
-| `Ctrl+O` | Open file |
-| `Ctrl+=` | Zoom in |
-| `Ctrl+-` | Zoom out |
-| `Ctrl+0` | Reset zoom |
-| `Ctrl+Scroll` | Smooth zoom |
-| `Ctrl+Right` | Rotate right 90° |
-| `Ctrl+Left` | Rotate left 90° |
-| `F11` | Toggle fullscreen |
-| `F9` | Toggle sidebar |
-| `C` | Toggle continuous mode |
-| `D` | Toggle dual page mode |
+| `Ctrl + O` | Open file dialog |
+| `Ctrl + P` | Print document |
+| `Ctrl + F` | Search in document |
+| `F3` / `Shift + F3` | Next / Previous search match |
+| `Ctrl + G` | Go to page number |
+| `Ctrl + =` / `Ctrl + -` | Zoom in / Zoom out |
+| `Ctrl + 0` | Reset zoom to 100% |
+| `Ctrl + Scroll` | Smooth mousewheel zoom |
+| `Ctrl + Right` / `Left` | Rotate document 90° clockwise / counter-clockwise |
+| `F5` | Start slideshow presentation (PPTX) |
+| `F9` | Toggle sidebar navigation drawer |
+| `F11` | Toggle fullscreen window |
+| `C` | Toggle continuous vertical scroll |
+| `D` | Toggle dual-page spread |
+| `PageUp` / `PageDown` | Previous / Next page |
+| `Home` / `End` | First / Last page |
+| `Esc` | Close Search HUD, Modals, or Presentation Mode |
+| `?` | Open Keyboard Shortcuts reference |
+| `Ctrl + Shift + D` | Toggle developer FPS & Benchmark HUD |
 
-## Tech Stack
+---
 
-- **Framework:** Tauri v2 (Rust backend + Edge WebView2)
-- **Frontend:** React 19 + TypeScript + Vite
-- **Styling:** Tailwind CSS v3 with custom Adwaita palette
-- **Rendering:** PDF.js (Mozilla) v6+
+## 🧪 Benchmark Test Suite
 
-## Getting Started
+To generate real-world test documents for scrolling and stress testing:
+
+```bash
+# Generates:
+# - sample-500-pages.pdf (500 pages)
+# - sample-financial-model.xlsx (multi-sheet workbook with 5,000+ data rows)
+# - sample-100-slides.pptx (100 slides with shape layouts and speaker notes)
+node scripts/create-benchmark-samples.js
+```
+
+Once loaded, open the developer HUD with `Ctrl+Shift+D` and click **"Run 60fps Scroll Benchmark"** to measure frame stability and 1% low frame rates.
+
+---
+
+## 🛠️ Building & Packaging
 
 ### Prerequisites
-- Node.js (v18+)
-- Rust toolchain
-- Visual Studio C++ Build Tools (Windows)
+- Node.js 18+ and npm
+- Rust toolchain (stable)
+- Windows 10/11 with Visual Studio C++ Build Tools
 
-### Development
+### Development Mode
 ```bash
-git clone https://github.com/GarryMarkus/Document-Viewer.git
-cd Document-Viewer
 npm install
 npm run tauri dev
 ```
 
-### Production Build
+### Production Build (MSI & NSIS Setup)
 ```bash
 npm run tauri build
 ```
 
-Output files:
-- **Portable:** `src-tauri/target/release/document_viewer.exe`
-- **MSI Installer:** `src-tauri/target/release/bundle/msi/Document Viewer_2.0.0_x64_en-US.msi`
-- **EXE Installer:** `src-tauri/target/release/bundle/nsis/Document Viewer_2.0.0_x64-setup.exe`
+Installers and executables are generated in:
+- **Portable Binary:** `src-tauri/target/release/Document Viewer-v3.0.0-Portable.exe`
+- **MSI Installer:** `src-tauri/target/release/bundle/msi/Document Viewer_3.0.0_x64_en-US.msi`
+- **NSIS Setup:** `src-tauri/target/release/bundle/nsis/Document Viewer_3.0.0_x64-setup.exe`
 
-## Known Issues
+---
 
-- **Cargo version mismatch** — `Cargo.toml` still reports `1.2.0` while `tauri.conf.json` and `package.json` are at `2.0.0`. This is cosmetic and does not affect functionality.
-- **Text layer alignment** — At extreme zoom levels (>5×), the transparent text selection layer may drift slightly from the rendered canvas.
-- **Large PDF initial load** — Documents with 500+ pages may take a few seconds for the initial outline resolution pass.
-- **Annotation layer** — Some complex annotation types (forms, widgets) are not fully supported; only links are interactive.
-
-## Roadmap
-
-- **Search** — In-document text search (`Ctrl+F`) with GNOME-styled search bar and highlighting.
-- **Annotations** — Highlighting, underlining, and note creation.
-- **Bookmarks** — User-defined bookmarks and custom navigation.
-- **Recent Files** — History list on launch screen.
-- **Presentation Mode** — Fullscreen paginated slideshow view.
-
-## License
-
-MIT
+## 📄 License
+MIT License. Built offline for speed and privacy.
