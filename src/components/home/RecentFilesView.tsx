@@ -30,8 +30,8 @@ export default function RecentFilesView({
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center p-6 overflow-y-auto select-none bg-background">
-      <div className="max-w-2xl w-full flex flex-col gap-6 items-center">
+    <div className="w-full h-full flex flex-col items-center justify-start p-6 overflow-y-auto select-none bg-background">
+      <div className="max-w-2xl w-full flex flex-col gap-6 items-center my-auto py-4">
         {/* Header & Logo */}
         <div className="text-center space-y-2">
           <div className="w-16 h-16 rounded-2xl bg-primary-container text-on-primary-container mx-auto flex items-center justify-center shadow-lg shadow-primary/20">

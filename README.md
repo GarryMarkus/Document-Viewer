@@ -2,7 +2,7 @@
 
 A high-performance, offline desktop document reader for Windows created by **Garry Markus**, built with **Tauri v2**, **React 19**, and **TypeScript**. Features a modern WinUI 3 Fluent design inspired by Stitch design specifications, supporting **PDF, DOCX, XLSX, and PPTX** documents with buttery smooth 60–120 fps continuous scrolling and zero telemetry.
 
-![Version](https://img.shields.io/badge/version-3.0.0-blue)
+![Version](https://img.shields.io/badge/version-3.1.0-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20x64-lightgrey)
 ![Offline](https://img.shields.io/badge/offline-100%25-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -104,9 +104,9 @@ npm run tauri build
 ```
 
 Installers and executables are generated in:
-- **Portable Binary:** `src-tauri/target/release/Document Viewer-v3.0.0-Portable.exe`
-- **MSI Installer:** `src-tauri/target/release/bundle/msi/Document Viewer_3.0.0_x64_en-US.msi`
-- **NSIS Setup:** `src-tauri/target/release/bundle/nsis/Document Viewer_3.0.0_x64-setup.exe`
+- **Portable Binary:** `src-tauri/target/release/Docs Reader-v3.1.0-Portable.exe`
+- **MSI Installer:** `src-tauri/target/release/bundle/msi/Docs Reader_3.1.0_x64_en-US.msi`
+- **NSIS Setup:** `src-tauri/target/release/bundle/nsis/Docs Reader_3.1.0_x64-setup.exe`
 
 ---
 

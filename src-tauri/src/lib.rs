@@ -28,8 +28,9 @@ fn check_startup_file() -> Option<String> {
 }
 
 #[tauri::command]
-fn read_file_bytes(path: String) -> Result<Vec<u8>, String> {
-    fs::read(path).map_err(|e| e.to_string())
+fn read_file_bytes(path: String) -> Result<tauri::ipc::Response, String> {
+    let bytes = fs::read(path).map_err(|e| e.to_string())?;
+    Ok(tauri::ipc::Response::new(bytes))
 }
 
 #[tauri::command]
@@ -49,6 +50,22 @@ fn show_in_folder(path: String) -> Result<(), String> {
     }
 }
 
+mod converter;
+
+#[tauri::command]
+async fn convert_office_to_pdf(app: tauri::AppHandle, path: String) -> Result<String, String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        converter::convert_office_to_pdf_task(app, path)
+    }).await.unwrap_or_else(|e| Err(e.to_string()))
+}
+
+#[tauri::command]
+async fn convert_office_bytes_to_pdf(app: tauri::AppHandle, bytes: Vec<u8>, filename: String) -> Result<String, String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        converter::convert_office_bytes_to_pdf_task(app, bytes, filename)
+    }).await.unwrap_or_else(|e| Err(e.to_string()))
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -57,7 +74,9 @@ pub fn run() {
             greet,
             check_startup_file,
             read_file_bytes,
-            show_in_folder
+            show_in_folder,
+            convert_office_to_pdf,
+            convert_office_bytes_to_pdf
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

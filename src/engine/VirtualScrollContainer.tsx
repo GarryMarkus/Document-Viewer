@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { DocumentRenderer } from './types';
-import { LRUCache } from './cache/LRUCache';
 import { applySearchHighlights } from '../utils/searchHighlight';
 
 interface VirtualScrollContainerProps {
@@ -43,7 +42,6 @@ export default function VirtualScrollContainer({
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRefs = useRef<Map<number, HTMLCanvasElement>>(new Map());
   const wrapperRefs = useRef<Map<number, HTMLDivElement>>(new Map());
-  const pageRenderedCache = useRef(new LRUCache<string, boolean>(30));
 
   // Debounced rendering scale to prevent lag during rapid Ctrl+Wheel zooming
   const [renderScale, setRenderScale] = useState(scale);
@@ -206,28 +204,60 @@ export default function VirtualScrollContainer({
     });
   }, [rows, isContinuous, currentPage, scrollTop, viewportHeight]);
 
-  // Render a specific page onto its registered canvas
+  // Render a specific page onto its registered canvas and wrapper
   const renderPage = useCallback(async (pageIdx: number) => {
     if (!renderer) return;
     const canvas = canvasRefs.current.get(pageIdx);
     const wrapper = wrapperRefs.current.get(pageIdx);
-    if (!canvas) return;
+    if (!canvas || !wrapper) return;
 
     const cacheKey = `${pageIdx}-${renderScale}-${rotation}`;
-    if (pageRenderedCache.current.get(cacheKey)) return;
+    if ((canvas as any).__renderedKey === cacheKey && (wrapper as any).__renderedKey === cacheKey) {
+      return;
+    }
 
     try {
-      await renderer.renderPage(
-        pageIdx,
-        canvas,
-        {
-          scale: renderScale,
-          rotation,
-          dpr: Math.min(window.devicePixelRatio || 1, 2),
-        },
-        wrapper
-      );
-      pageRenderedCache.current.set(cacheKey, true);
+      if (renderer.format === 'pdf') {
+        // 1. Fast low-res preview render for PDF
+        await renderer.renderPage(
+          pageIdx,
+          canvas,
+          {
+            scale: renderScale,
+            rotation,
+            isPreview: true,
+            dpr: 1,
+          }
+        );
+
+        // 2. High quality sharp render + text layers (deferred)
+        await renderer.renderPage(
+          pageIdx,
+          canvas,
+          {
+            scale: renderScale,
+            rotation,
+            isPreview: false,
+            dpr: Math.min(window.devicePixelRatio || 1, 2),
+          },
+          wrapper
+        );
+      } else {
+        // Direct render for DOM-based engines (PPTX, DOCX)
+        await renderer.renderPage(
+          pageIdx,
+          canvas,
+          {
+            scale: renderScale,
+            rotation,
+            dpr: 1,
+          },
+          wrapper
+        );
+      }
+
+      (canvas as any).__renderedKey = cacheKey;
+      (wrapper as any).__renderedKey = cacheKey;
     } catch (e) {
       // Handled in renderer
     }

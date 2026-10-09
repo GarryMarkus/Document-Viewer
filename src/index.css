@@ -1,5 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
+/* Metrically compatible font fallbacks for MS Office document formats */
+@font-face {
+  font-family: 'Calibri';
+  src: local('Calibri'), local('Carlito'), local('Segoe UI'), local('Arial');
+}
+@font-face {
+  font-family: 'Cambria';
+  src: local('Cambria'), local('Caladea'), local('Georgia');
+}
+@font-face {
+  font-family: 'Times New Roman';
+  src: local('Times New Roman'), local('Liberation Serif'), local('Times');
+}
+@font-face {
+  font-family: 'Arial';
+  src: local('Arial'), local('Liberation Sans'), local('Helvetica');
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

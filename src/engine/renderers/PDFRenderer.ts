@@ -129,7 +129,13 @@ export class PDFRenderer implements DocumentRenderer {
       const context = canvas.getContext('2d', { alpha: false });
       if (!context) return;
 
-      const dpr = options.isPreview ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+      let dpr = options.isPreview ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+      
+      const MAX_PIXELS = 2500;
+      if (viewport.width * dpr > MAX_PIXELS) {
+        dpr = MAX_PIXELS / viewport.width;
+      }
+      
       canvas.width = viewport.width * dpr;
       canvas.height = viewport.height * dpr;
       canvas.style.width = `${viewport.width}px`;

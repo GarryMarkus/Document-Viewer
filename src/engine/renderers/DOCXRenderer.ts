@@ -45,6 +45,25 @@ export class DOCXRenderer implements DocumentRenderer {
       throw new Error('DOCXRenderer was destroyed during parsing');
     }
 
+    // Preserve docx-preview styling in head
+    const styleTags = Array.from(this.offscreenContainer.querySelectorAll('style'));
+    let docxStyleEl = document.getElementById('docx-injected-styles') as HTMLStyleElement;
+    if (!docxStyleEl) {
+      docxStyleEl = document.createElement('style');
+      docxStyleEl.id = 'docx-injected-styles';
+      document.head.appendChild(docxStyleEl);
+    }
+    docxStyleEl.textContent = styleTags.map(s => s.innerHTML).join('\n') + `
+      .docx-page-content {
+        box-sizing: border-box !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+      }
+      .docx-page-content table {
+        max-width: 100% !important;
+      }
+    `;
+
     // Extract pages from docx-wrapper
     const sections = Array.from(
       this.offscreenContainer.querySelectorAll<HTMLElement>('.docx-wrapper > section.docx, .docx-wrapper > article')
@@ -154,9 +173,16 @@ export class DOCXRenderer implements DocumentRenderer {
 
     docxContainer.innerHTML = targetElement.innerHTML;
     docxContainer.className = `docx-page-content selectable-content ${targetElement.className}`;
+    docxContainer.style.cssText = targetElement.style.cssText;
+    docxContainer.style.position = 'absolute';
+    docxContainer.style.left = '0';
+    docxContainer.style.top = '0';
     docxContainer.style.width = `${size.width}px`;
     docxContainer.style.minHeight = `${size.height}px`;
     docxContainer.style.transform = `scale(${scale})`;
+    docxContainer.style.transformOrigin = 'top left';
+    docxContainer.style.boxSizing = 'border-box';
+    docxContainer.style.overflow = 'hidden';
     docxContainer.style.backgroundColor = '#FFFFFF';
     docxContainer.style.color = '#000000';
   }
@@ -196,6 +222,10 @@ export class DOCXRenderer implements DocumentRenderer {
     this.isDestroyed = true;
     if (this.offscreenContainer && this.offscreenContainer.parentNode) {
       this.offscreenContainer.parentNode.removeChild(this.offscreenContainer);
+    }
+    const injected = document.getElementById('docx-injected-styles');
+    if (injected && injected.parentNode) {
+      injected.parentNode.removeChild(injected);
     }
     this.offscreenContainer = null;
     this.pageElements = [];

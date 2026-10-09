@@ -1,6 +1,6 @@
 [package]
 name = "docs_reader"
-version = "3.0.0"
+version = "3.1.0"
 description = "Docs Reader - Fast, Offline Multi-Format Document Reader for Windows"
 authors = ["Garry Markus"]
 edition = "2021"

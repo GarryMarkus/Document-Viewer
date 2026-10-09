@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 const rootDir = path.join(__dirname, '..');
 
 const pkg = JSON.parse(fs.readFileSync(path.join(rootDir, 'package.json'), 'utf8'));
-const version = pkg.version || '3.0.0';
+const version = pkg.version || '3.1.0';
 
 const releaseDir = path.join(rootDir, 'src-tauri', 'target', 'release');
 const candidate1 = path.join(releaseDir, 'docs_reader.exe');

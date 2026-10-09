@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { invoke } from '@tauri-apps/api/core';
+import { listen } from '@tauri-apps/api/event';
 
 import TitleBar from './components/layout/TitleBar';
 import CommandRibbon from './components/layout/CommandRibbon';
@@ -78,11 +79,18 @@ function App() {
   // Document Error State
   const [documentError, setDocumentError] = useState<DocumentErrorInfo | null>(null);
 
+  // Conversion State
+  const [isConverting, setIsConverting] = useState(false);
+  const [conversionProgress, setConversionProgress] = useState<{status: string, percent: number} | null>(null);
+  const [isApproximatePreview, setIsApproximatePreview] = useState(false);
+  const [effectiveFormat, setEffectiveFormat] = useState<DocumentFormat>('unknown');
+  const [effectiveDocumentUrl, setEffectiveDocumentUrl] = useState<string | undefined>(undefined);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Active Tab Derived
   const activeTab = tabs.find(t => t.id === activeTabId);
-  const currentFormat: DocumentFormat = activeTab?.format || 'unknown';
+  const currentFormat: DocumentFormat = effectiveFormat !== 'unknown' ? effectiveFormat : (activeTab?.format || 'unknown');
 
   // Apply Dark Mode class & Dynamic Window Icon
   useEffect(() => {
@@ -150,20 +158,61 @@ function App() {
         return;
       }
 
+      setIsApproximatePreview(false);
+      let renderFormat = activeTab.format;
+      let finalBytes = activeTab.fileBytes!;
+      let displayUrl = activeTab.url;
+
+      if (['docx', 'xlsx', 'pptx'].includes(activeTab.format)) {
+        setIsConverting(true);
+        let unlisten: any;
+        try {
+          listen('conversion-progress', (event: any) => {
+            setConversionProgress(event.payload);
+          }).then(u => { unlisten = u; });
+
+          let cachedPdfPath: string;
+          if (activeTab.path) {
+            cachedPdfPath = await invoke<string>('convert_office_to_pdf', { path: activeTab.path });
+          } else {
+            cachedPdfPath = await invoke<string>('convert_office_bytes_to_pdf', { 
+              bytes: Array.from(activeTab.fileBytes!),
+              filename: activeTab.name
+            });
+          }
+          finalBytes = await invoke<Uint8Array>('read_file_bytes', { path: cachedPdfPath });
+          renderFormat = 'pdf'; // Render as PDF with high fidelity
+          const pdfBlob = new Blob([finalBytes as any], { type: 'application/pdf' });
+          displayUrl = URL.createObjectURL(pdfBlob);
+        } catch (e) {
+          console.warn('Office conversion failed, falling back to approximate JS renderer', e);
+          setIsApproximatePreview(true);
+        } finally {
+          if (unlisten) unlisten();
+          setIsConverting(false);
+          setConversionProgress(null);
+        }
+      }
+
+      setEffectiveFormat(renderFormat);
+      setEffectiveDocumentUrl(displayUrl);
+
+      if (isCancelled) return;
+
       let r: DocumentRenderer | null = null;
-      if (activeTab.format === 'pdf') {
+      if (renderFormat === 'pdf') {
         r = new PDFRenderer();
-      } else if (activeTab.format === 'docx') {
+      } else if (renderFormat === 'docx') {
         r = new DOCXRenderer();
-      } else if (activeTab.format === 'xlsx') {
+      } else if (renderFormat === 'xlsx') {
         r = new XLSXRenderer();
-      } else if (activeTab.format === 'pptx') {
+      } else if (renderFormat === 'pptx') {
         r = new PPTXRenderer();
       }
 
       if (r) {
         try {
-          const meta = await r.open(activeTab.fileBytes!, activeTab.name, password);
+          const meta = await r.open(finalBytes, activeTab.name, password);
           if (isCancelled) {
             r.destroy();
             return;
@@ -292,8 +341,8 @@ function App() {
         const filePath = await invoke<string | null>('check_startup_file');
         if (filePath) {
           const name = filePath.split(/[\\/]/).pop() || 'Document.pdf';
-          const fileBytes = await invoke<number[]>('read_file_bytes', { path: filePath });
-          await openDocumentBytes(name, new Uint8Array(fileBytes), filePath);
+          const fileBytes = await invoke<Uint8Array>('read_file_bytes', { path: filePath });
+          await openDocumentBytes(name, fileBytes, filePath);
         }
       } catch (e) {
         console.error('Failed to load startup file:', e);
@@ -305,15 +354,40 @@ function App() {
   // Open from native File object
   const openNativeFile = useCallback(async (file: File) => {
     const buffer = await file.arrayBuffer();
-    await openDocumentBytes(file.name, new Uint8Array(buffer));
+    const diskPath = (file as any).path || undefined;
+    await openDocumentBytes(file.name, new Uint8Array(buffer), diskPath);
+  }, [openDocumentBytes]);
+
+  // Native window drag-and-drop listener to always capture absolute file paths
+  useEffect(() => {
+    let unlisten: (() => void) | undefined;
+    appWindow.onDragDropEvent(async (event) => {
+      if (event.payload.type === 'drop') {
+        const paths = event.payload.paths;
+        if (paths && paths.length > 0) {
+          const filePath = paths[0];
+          const name = filePath.split(/[\\/]/).pop() || 'Document';
+          try {
+            const fileBytes = await invoke<Uint8Array>('read_file_bytes', { path: filePath });
+            await openDocumentBytes(name, fileBytes, filePath);
+          } catch (e) {
+            console.error('Failed to load dropped file:', e);
+          }
+        }
+      }
+    }).then(u => { unlisten = u; }).catch(() => {});
+
+    return () => {
+      if (unlisten) unlisten();
+    };
   }, [openDocumentBytes]);
 
   // Open from Recent Files
   const handleSelectRecent = useCallback(async (item: RecentFileItem) => {
     if (item.path && !item.path.startsWith('blob:')) {
       try {
-        const fileBytes = await invoke<number[]>('read_file_bytes', { path: item.path });
-        await openDocumentBytes(item.name, new Uint8Array(fileBytes), item.path);
+        const fileBytes = await invoke<Uint8Array>('read_file_bytes', { path: item.path });
+        await openDocumentBytes(item.name, fileBytes, item.path);
         if (item.lastPage) {
           setCurrentPage(item.lastPage);
           setGoToPage(item.lastPage);
@@ -357,7 +431,12 @@ function App() {
     e.stopPropagation();
     setIsDragging(false);
     const file = e.dataTransfer.files?.[0];
-    if (file) openNativeFile(file);
+    if (file) {
+      const diskPath = (file as any).path || undefined;
+      file.arrayBuffer().then(buf => {
+        openDocumentBytes(file.name, new Uint8Array(buf), diskPath);
+      });
+    }
   };
 
   // Bookmarking toggle
@@ -727,7 +806,7 @@ function App() {
               onPageSelect={handlePageChange}
               outline={outline}
               metadata={metadata || undefined}
-              documentUrl={activeTab.url}
+              documentUrl={effectiveDocumentUrl || activeTab.url}
               filePath={activeTab.path}
               bookmarks={bookmarks}
               onToggleBookmark={handleToggleBookmark}
@@ -747,6 +826,24 @@ function App() {
                 />
               ) : (
                 <>
+                  {isConverting && (
+                    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                      <div className="bg-white dark:bg-[#1E1E1E] p-8 rounded-lg shadow-2xl text-center max-w-sm w-full mx-4 border border-black/10 dark:border-white/10">
+                        <div className="mb-4 inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#0078D4] border-t-transparent"></div>
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Converting Document</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{conversionProgress?.status || 'Processing...'}</p>
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                          <div className="bg-[#0078D4] h-2 rounded-full transition-all duration-300" style={{ width: `${conversionProgress?.percent || 0}%` }}></div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {isApproximatePreview && (
+                    <div className="absolute top-0 left-0 right-0 z-40 bg-amber-100 dark:bg-amber-900/40 text-amber-900 dark:text-amber-200 text-xs px-4 py-2 text-center border-b border-amber-200 dark:border-amber-700 shadow-sm flex items-center justify-center gap-2">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                      <strong>Approximate Preview Mode:</strong> Native conversion failed or file was dropped without a path. Formatting may not be perfect.
+                    </div>
+                  )}
                   {/* Floating In-Document Find Bar */}
                   <SearchBar
                     isOpen={isSearchOpen}
