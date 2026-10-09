@@ -1,6 +1,6 @@
-# Document Viewer
+# Docs Reader
 
-A high-performance, offline desktop document reader for Windows built with **Tauri v2**, **React 19**, and **TypeScript**. Features a modern WinUI 3 Fluent design inspired by Stitch design specifications, supporting **PDF, DOCX, XLSX, and PPTX** documents with buttery smooth 60–120 fps continuous scrolling and zero telemetry.
+A high-performance, offline desktop document reader for Windows created by **Garry Markus**, built with **Tauri v2**, **React 19**, and **TypeScript**. Features a modern WinUI 3 Fluent design inspired by Stitch design specifications, supporting **PDF, DOCX, XLSX, and PPTX** documents with buttery smooth 60–120 fps continuous scrolling and zero telemetry.
 
 ![Version](https://img.shields.io/badge/version-3.0.0-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20x64-lightgrey)

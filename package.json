@@ -1,8 +1,8 @@
 {
-  "name": "document-viewer",
+  "name": "docs-reader",
   "private": true,
   "version": "3.0.0",
-  "description": "A high-performance, offline multi-format document reader for Windows supporting PDF, DOCX, XLSX, and PPTX with steady 60-120 fps scrolling.",
+  "description": "Docs Reader - High-Performance Offline Multi-Format Document Reader for Windows",
   "author": "Garry Markus",
   "license": "MIT",
   "repository": {

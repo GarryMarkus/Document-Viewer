@@ -125,9 +125,9 @@ export default function UnifiedHeaderbar({
       {aboutOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50" onClick={() => setAboutOpen(false)}>
           <div className={`${popoverBg} p-6 rounded-xl shadow-2xl max-w-sm w-full mx-4 border ${popoverBorder}`} onClick={e => e.stopPropagation()}>
-            <h2 className={`text-xl font-bold mb-2 ${text}`}>Document Viewer</h2>
-            <p className={`text-sm ${textDim} mb-4`}>Version 3.0.0</p>
-            <p className={`text-sm ${text} mb-6`}>A fast, elegant, and modern PDF reader for your documents.</p>
+            <h2 className={`text-xl font-bold mb-2 ${text}`}>Docs Reader</h2>
+            <p className={`text-sm ${textDim} mb-4`}>Version 3.0.0 by Garry Markus</p>
+            <p className={`text-sm ${text} mb-6`}>A fast, elegant, and modern multi-format document reader for Windows.</p>
             <button onClick={() => setAboutOpen(false)} className="w-full py-2 bg-[#3584e4] hover:bg-[#1c71d8] text-white rounded-lg text-sm font-medium transition-colors">
               Close
             </button>

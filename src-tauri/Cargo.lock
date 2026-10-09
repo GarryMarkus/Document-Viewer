@@ -769,7 +769,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "document_viewer"
+name = "docs_reader"
 version = "3.0.0"
 dependencies = [
  "serde",

@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    document_viewer_lib::run()
+    docs_reader_lib::run()
 }
