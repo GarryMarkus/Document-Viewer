@@ -54,30 +54,67 @@ Completely self-contained with zero dependencies on Microsoft Office or LibreOff
 
 ---
 
-## ⌨️ Keyboard Shortcuts
+## ⌨️ Standard Keyboard Shortcuts & Mouse Gestures
 
+Docs Reader adheres to universal Windows, browser, and document reader conventions—ensuring zero learning curve:
+
+### Multi-Tab Management
+| Shortcut / Gesture | Action |
+|--------------------|--------|
+| `Ctrl + W` / `Ctrl + F4` | Close active document tab |
+| `Ctrl + T` / `Ctrl + O` | New tab / Open document dialog |
+| `Ctrl + Tab` / `Ctrl + PageDown` | Cycle to next tab (with wrap-around) |
+| `Ctrl + Shift + Tab` / `Ctrl + PageUp` | Cycle to previous tab (with wrap-around) |
+| `Ctrl + 1` through `Ctrl + 8` | Directly switch to tab 1 through 8 |
+| `Ctrl + 9` | Directly switch to the last tab |
+| `Middle-Click Tab` | Close tab under cursor |
+
+### Navigation & Reading
+| Shortcut / Gesture | Action |
+|--------------------|--------|
+| `Space` | Scroll down one screen (85% viewport in continuous scroll; next page in single/dual view) |
+| `Shift + Space` | Scroll up one screen (85% viewport; previous page in single/dual view) |
+| `PageDown` / `PageUp` | Next / Previous page or viewport block |
+| `Home` / `End` | Jump to first / last page |
+| `Ctrl + Home` / `Ctrl + End` | Instant scroll to the absolute top / bottom of document |
+| `Mouse 4` / `Mouse 5` (Side buttons) | Hardware page back / forward navigation |
+| `Shift + Mousewheel` | Horizontal canvas and spreadsheet scrolling |
+| `Ctrl + G` | Jump to page number |
+
+### Touchpad, Touchscreen & Mouse Gestures
+| Gesture | Action |
+|---------|--------|
+| **Pinch-to-Zoom** (Precision Touchpad) | Smooth exponential continuous scaling ($e^{-\Delta y \cdot 0.0025}$) centered on viewport focal center |
+| **Two-Finger Multi-Touch Pinch** (Touchscreen) | Real-time Euclidean distance zoom tracking |
+| **Ctrl + Mousewheel** | Smooth zoom in / zoom out anchored to cursor coordinates |
+| **Middle-Click + Drag** | 2D canvas hand tool / panning across PDF, DOCX, and spreadsheet grids |
+| **Double-Click Canvas / Bed** | Quick-toggle between Fit Page Width and 100% actual size |
+
+### Zoom & View Layout
 | Shortcut | Action |
 |----------|--------|
-| `Ctrl + O` | Open file dialog |
-| `Ctrl + W` | Close current tab |
-| `Ctrl + P` | Print document |
-| `Ctrl + F` | Search in document |
-| `F3` / `Shift + F3` | Next / Previous search match |
-| `Ctrl + G` | Go to page number |
-| `Ctrl + =` / `Ctrl + -` | Zoom in / Zoom out |
-| `Ctrl + 0` | Reset zoom to 100% |
-| `Ctrl + Scroll` | Smooth mousewheel zoom |
-| `Ctrl + Right` / `Left` | Rotate document 90° clockwise / counter-clockwise |
-| `F5` | Start slideshow presentation (PPTX) |
-| `F9` | Toggle sidebar navigation drawer |
-| `F11` | Toggle fullscreen window |
+| `Ctrl + =` / `Ctrl + +` / `Numpad +` | Zoom in (+15%) |
+| `Ctrl + -` / `Numpad -` | Zoom out (-15%) |
+| `Ctrl + 0` / `Numpad 0` | Reset zoom to 100% |
+| `Ctrl + Right` / `Left` | Rotate page clockwise / counter-clockwise 90° |
 | `C` | Toggle continuous vertical scroll |
 | `D` | Toggle dual-page spread |
-| `PageUp` / `PageDown` | Previous / Next page |
-| `Home` / `End` | First / Last page |
-| `Esc` | Close Search HUD, Modals, or Presentation Mode |
-| `?` | Open Keyboard Shortcuts reference |
-| `Ctrl + Shift + D` | Toggle developer FPS & Benchmark HUD |
+| `F11` | Toggle fullscreen window |
+| `F5` | Start slideshow presentation (PowerPoint PPTX) |
+
+### Tools, Search & Utilities
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl + F` | Open floating search bar with match counter |
+| `F3` / `Shift + F3` | Cycle next / previous search match (also `Enter` / `Shift + Enter`) |
+| `Ctrl + B` / `F9` | Toggle sidebar navigation drawer (Pages, Outline, Bookmarks) |
+| `Ctrl + D` | Bookmark active page |
+| `Ctrl + P` | Print document with clean chrome-free styling |
+| `Ctrl + R` | Reload active document |
+| `Ctrl + Shift + L` | Toggle Zed One Dark / WinUI Light theme |
+| `Ctrl + Shift + D` | Toggle developer FPS & 60fps benchmark HUD |
+| `Esc` | Cascade dismiss: Search HUD $\rightarrow$ Modals $\rightarrow$ Fullscreen / Presentation $\rightarrow$ Drawer |
+| `?` | Open interactive searchable Keyboard Shortcuts & Gestures dialog |
 
 ---
 

@@ -129,7 +129,7 @@ export default function CommandRibbon({
                     ? 'text-on-surface bg-surface-active shadow-xs'
                     : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-hover'
                 }`}
-                title="Continuous Scroll Mode"
+                title="Continuous Scroll Mode (C)"
               >
                 <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="5" y="2" width="14" height="8" rx="1.5" />
@@ -146,7 +146,7 @@ export default function CommandRibbon({
                     ? 'text-on-surface bg-surface-active shadow-xs'
                     : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-hover'
                 }`}
-                title="Two-Page Spread Mode"
+                title="Two-Page Spread Mode (D)"
               >
                 <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
@@ -191,7 +191,7 @@ export default function CommandRibbon({
             <button
               onClick={onFitWidth}
               className="h-5 px-1.5 rounded text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-hover transition-colors font-medium ml-0.5"
-              title="Fit to Page Width"
+              title="Fit to Page Width (or Double-Click Canvas)"
             >
               Fit
             </button>
@@ -208,7 +208,7 @@ export default function CommandRibbon({
               onClick={() => onPageChange(Math.max(1, currentPage - 1))}
               disabled={currentPage <= 1}
               className="w-5 h-5 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-hover hover:text-on-surface disabled:opacity-30 disabled:pointer-events-none transition-colors"
-              title="Previous Page (ArrowLeft)"
+              title="Previous Page (ArrowLeft / PageUp)"
             >
               <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="15 18 9 12 15 6" />
@@ -232,7 +232,7 @@ export default function CommandRibbon({
               <span
                 onClick={() => setEditingPage(true)}
                 className="cursor-pointer hover:bg-surface-hover px-1 rounded text-on-surface font-semibold"
-                title="Click to jump to page"
+                title="Click to jump to page (Ctrl+G)"
               >
                 {currentPage}
               </span>
@@ -243,7 +243,7 @@ export default function CommandRibbon({
               onClick={() => onPageChange(Math.min(numPages, currentPage + 1))}
               disabled={currentPage >= numPages}
               className="w-5 h-5 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-hover hover:text-on-surface disabled:opacity-30 disabled:pointer-events-none transition-colors"
-              title="Next Page (ArrowRight)"
+              title="Next Page (ArrowRight / PageDown / Space)"
             >
               <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="9 18 15 12 9 6" />

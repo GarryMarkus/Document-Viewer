@@ -66,7 +66,7 @@ export default function NavigationRail({
         <button
           onClick={() => handleTabClick('bookmarks')}
           className={navItemClass('bookmarks')}
-          title="Bookmarks"
+          title="Bookmarks (Ctrl+D)"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 21l-7-4.5L5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
@@ -91,8 +91,8 @@ export default function NavigationRail({
       <div className="mt-auto flex flex-col items-center gap-1.5 w-full px-1.5">
         <button
           onClick={onOpenShortcuts}
-          className="w-9 h-9 rounded-md flex items-center justify-center text-on-surface-variant hover:bg-surface-hover hover:text-on-surface transition-colors"
-          title="Keyboard Shortcuts & Reference"
+          className="w-9 h-9 rounded-md flex items-center justify-center text-on-surface-variant hover:bg-surface-hover hover:text-on-surface transition-colors cursor-pointer"
+          title="Keyboard Shortcuts & Gestures (?)"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
             <rect x="2" y="4" width="20" height="16" rx="2" />

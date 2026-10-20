@@ -188,9 +188,9 @@ export default function TitleBar({
       <div className="flex items-center gap-1 shrink-0" data-tauri-drag-region>
         <button
           onClick={onToggleDarkMode}
-          className="w-7 h-7 rounded-md flex items-center justify-center text-on-surface-variant hover:bg-black/[0.06] dark:hover:bg-white/[0.08] hover:text-on-surface transition-colors"
-          title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-          aria-label={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          className="w-7 h-7 rounded-md flex items-center justify-center text-on-surface-variant hover:bg-black/[0.06] dark:hover:bg-white/[0.08] hover:text-on-surface transition-colors cursor-pointer"
+          title={darkMode ? "Switch to Light Mode (Ctrl+Shift+L)" : "Switch to Dark Mode (Ctrl+Shift+L)"}
+          aria-label={darkMode ? "Switch to Light Mode (Ctrl+Shift+L)" : "Switch to Dark Mode (Ctrl+Shift+L)"}
         >
           {darkMode ? (
             <svg className="w-4 h-4 text-warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
