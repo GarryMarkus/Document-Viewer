@@ -183,10 +183,17 @@ export const tabStore = {
       }
     }
 
+    const closedIndex = state.tabs.findIndex((t) => t.id === id);
     const nextTabs = state.tabs.filter((t) => t.id !== id);
     let nextActiveId = state.activeTabId;
     if (state.activeTabId === id) {
-      nextActiveId = nextTabs[nextTabs.length - 1]?.id;
+      if (nextTabs.length > 0) {
+        // Activate adjacent tab (right neighbor, or left neighbor if closed the rightmost tab)
+        const nextIndex = Math.min(Math.max(closedIndex, 0), nextTabs.length - 1);
+        nextActiveId = nextTabs[nextIndex]?.id;
+      } else {
+        nextActiveId = undefined;
+      }
     }
 
     state = {

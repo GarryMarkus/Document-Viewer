@@ -639,12 +639,14 @@ function App() {
         }
       }
 
-      // Ctrl + 1..9: Direct tab switching (1-8 first tabs, 9 last tab)
-      if (e.ctrlKey && !e.shiftKey && !e.altKey && e.key >= '1' && e.key <= '9') {
+      // Ctrl + 1..9: Direct tab switching (1-8 first tabs, 9 last tab, supports Numpad)
+      const isDigit = e.key >= '1' && e.key <= '9';
+      const isNumpadDigit = e.code.startsWith('Numpad') && e.code.length === 7 && e.code[6] >= '1' && e.code[6] <= '9';
+      if (e.ctrlKey && !e.shiftKey && !e.altKey && (isDigit || isNumpadDigit)) {
         const currentTabs = stateRef.current.tabs;
         if (currentTabs.length > 0) {
           e.preventDefault();
-          const digit = parseInt(e.key, 10);
+          const digit = isDigit ? parseInt(e.key, 10) : parseInt(e.code[6], 10);
           const targetIndex = digit === 9 ? currentTabs.length - 1 : Math.min(digit - 1, currentTabs.length - 1);
           if (currentTabs[targetIndex]) {
             setActiveTab(currentTabs[targetIndex].id);

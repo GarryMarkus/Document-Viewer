@@ -152,7 +152,7 @@ export default function TitleBar({
           <button
             onClick={onOpenFileClick}
             className="h-7 w-7 rounded-md flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-black/[0.06] dark:hover:bg-white/[0.08] active:scale-95 transition-all shrink-0 ml-0.5"
-            title="Open Document (Ctrl+O)"
+            title="Open Document (Ctrl+O / Ctrl+T)"
             aria-label="Open Document"
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
