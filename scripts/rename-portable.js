@@ -7,17 +7,20 @@ const __dirname = path.dirname(__filename);
 const rootDir = path.join(__dirname, '..');
 
 const pkg = JSON.parse(fs.readFileSync(path.join(rootDir, 'package.json'), 'utf8'));
-const version = pkg.version || '3.2.0';
+const version = pkg.version || '3.2.1';
 
 const releaseDir = path.join(rootDir, 'src-tauri', 'target', 'release');
 const candidate1 = path.join(releaseDir, 'docs_reader.exe');
 const candidate2 = path.join(releaseDir, 'document_viewer.exe');
 const sourceFile = fs.existsSync(candidate1) ? candidate1 : candidate2;
 const newName = path.join(releaseDir, `Docs Reader-v${version}-Portable.exe`);
+const releaseName = path.join(releaseDir, `Docs Reader-v${version}.exe`);
 
 if (fs.existsSync(sourceFile)) {
   fs.copyFileSync(sourceFile, newName);
+  fs.copyFileSync(sourceFile, releaseName);
   console.log(`Successfully created portable version: ${newName}`);
+  console.log(`Successfully created release version: ${releaseName}`);
 } else {
   console.warn(`Could not find source binary (${candidate1} or ${candidate2}). Ensure you have run 'npm run tauri build'.`);
 }

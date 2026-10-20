@@ -45,6 +45,8 @@ export default {
         'tab-active': 'var(--tab-active-bg)',
         'tab-inactive': 'var(--tab-inactive-bg)',
         'tab-hover': 'var(--tab-hover-bg)',
+        titlebar: 'var(--titlebar-bg)',
+        'titlebar-border': 'var(--titlebar-border)',
 
         // Format-specific tokens (PDF, DOCX, XLSX, PPTX)
         'format-pdf': 'var(--format-pdf)',

@@ -55,9 +55,22 @@
   --background: #F3F3F3;
   --on-background: #1A1A1A;
   --doc-bed: #E6E8EB;
-  --tab-active-bg: #EBEBEB;
+
+  /* Titlebar & Tab Bar (Light Theme) */
+  --titlebar-bg: #F0F2F5;
+  --titlebar-border: #DCE0E6;
+  --tab-active-bg: #FFFFFF;
+  --tab-active-border: #D0D5DD;
+  --tab-active-text: #0F172A;
+  --tab-active-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
   --tab-inactive-bg: transparent;
-  --tab-hover-bg: #F5F5F5;
+  --tab-inactive-text: #525E6F;
+  --tab-hover-bg: rgba(0, 0, 0, 0.05);
+  --tab-hover-text: #0F172A;
+  --tab-divider: rgba(0, 0, 0, 0.10);
+  --tab-close-hover: rgba(0, 0, 0, 0.08);
+  --primary-glow: rgba(0, 120, 212, 0.35);
+
   --page-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.10), 0 2px 6px -1px rgba(0, 0, 0, 0.06);
   --page-border: rgba(0, 0, 0, 0.08);
   --surface-hover: rgba(0, 0, 0, 0.04);
@@ -97,10 +110,20 @@
   --surface-hover: #363C46;               /* Element hover: #363C46 */
   --surface-active: #454A56;              /* Element selected / active: #454A56 */
 
-  /* Tab-specific tokens: active tab uses editor-canvas #282C33 and blends into content */
-  --tab-active-bg: #282C33;               /* Active tab color: #282C33 */
-  --tab-inactive-bg: transparent;         /* Inactive tabs sit on tab bar color #3B414D */
-  --tab-hover-bg: #363C46;                /* Subtle tone shift on tab hover */
+  /* Titlebar & Tab Bar (Dark Theme) */
+  --titlebar-bg: #1E2228;
+  --titlebar-border: rgba(255, 255, 255, 0.08);
+  --tab-active-bg: #282C34;
+  --tab-active-border: rgba(255, 255, 255, 0.12);
+  --tab-active-text: #F8FAFC;
+  --tab-active-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --tab-inactive-bg: transparent;
+  --tab-inactive-text: #8E96A5;
+  --tab-hover-bg: rgba(255, 255, 255, 0.06);
+  --tab-hover-text: #F1F5F9;
+  --tab-divider: rgba(255, 255, 255, 0.08);
+  --tab-close-hover: rgba(255, 255, 255, 0.12);
+  --primary-glow: rgba(116, 173, 232, 0.50);
 
   /* Borders: border #464B57, subtle divider #363C46 */
   --outline: #464B57;                     /* Border: #464B57 */
