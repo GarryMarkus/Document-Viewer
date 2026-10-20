@@ -688,6 +688,14 @@ function App() {
           setShowGoToPageModal(false);
           return;
         }
+        if (isPresentationMode) {
+          setIsPresentationMode(false);
+          return;
+        }
+        if (stateRef.current.activeTabId && drawerTab !== 'none') {
+          setTabDrawer(stateRef.current.activeTabId, 'none');
+          return;
+        }
       }
       if (!isTyping && e.key === '?') {
         e.preventDefault();
@@ -805,8 +813,10 @@ function App() {
         return;
       }
 
-      // ===== 5. Document Navigation Shortcuts =====
-      // Ctrl + Home: Jump to page 1
+      // ===== 5. Standard Document Navigation Shortcuts =====
+      const st = stateRef.current;
+
+      // Ctrl + Home: Jump to page 1 in all modes
       if (e.ctrlKey && e.key === 'Home') {
         e.preventDefault();
         handlePageChange(1);
@@ -815,11 +825,11 @@ function App() {
         return;
       }
 
-      // Ctrl + End: Jump to last page
+      // Ctrl + End: Jump to last page in all modes
       if (e.ctrlKey && e.key === 'End') {
         e.preventDefault();
-        if (stateRef.current.numPages > 0) {
-          handlePageChange(stateRef.current.numPages);
+        if (st.numPages > 0) {
+          handlePageChange(st.numPages);
         }
         const viewport = document.querySelector('.virtual-scroll-viewport');
         if (viewport) viewport.scrollTo({ top: viewport.scrollHeight, behavior: 'smooth' });
@@ -829,47 +839,72 @@ function App() {
       // Space / Shift + Space: Scroll down / up one page screen
       if (!isTyping && e.key === ' ' && !e.ctrlKey && !e.altKey) {
         e.preventDefault();
-        const st = stateRef.current;
         if (e.shiftKey) {
           if (!st.isContinuous && st.numPages > 0) {
             handlePageChange(Math.max(st.currentPage - 1, 1));
           } else {
             const viewport = document.querySelector('.virtual-scroll-viewport');
-            if (viewport) viewport.scrollBy({ top: -viewport.clientHeight * 0.8, behavior: 'smooth' });
+            if (viewport) viewport.scrollBy({ top: -viewport.clientHeight * 0.85, behavior: 'smooth' });
           }
         } else {
           if (!st.isContinuous && st.numPages > 0) {
             handlePageChange(Math.min(st.currentPage + 1, st.numPages));
           } else {
             const viewport = document.querySelector('.virtual-scroll-viewport');
-            if (viewport) viewport.scrollBy({ top: viewport.clientHeight * 0.8, behavior: 'smooth' });
+            if (viewport) viewport.scrollBy({ top: viewport.clientHeight * 0.85, behavior: 'smooth' });
           }
         }
         return;
       }
 
-      // Single-page navigation
-      const st = stateRef.current;
-      if (!st.isContinuous && st.numPages > 0 && st.activeTabId) {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') {
+      // PageDown / PageUp across all modes (continuous and single-page)
+      if (!isTyping && (e.key === 'PageDown' || e.key === 'PageUp') && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        const isUp = e.key === 'PageUp';
+        if (!st.isContinuous && st.numPages > 0) {
+          const step = st.isDual ? 2 : 1;
+          const target = isUp ? Math.max(st.currentPage - step, 1) : Math.min(st.currentPage + step, st.numPages);
+          handlePageChange(target);
+        } else {
+          const viewport = document.querySelector('.virtual-scroll-viewport');
+          if (viewport) {
+            viewport.scrollBy({ top: (isUp ? -1 : 1) * viewport.clientHeight * 0.85, behavior: 'smooth' });
+          }
+        }
+        return;
+      }
+
+      // Home / End (without Ctrl) across all modes
+      if (!isTyping && (e.key === 'Home' || e.key === 'End') && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        const isHome = e.key === 'Home';
+        if (isHome) {
+          handlePageChange(1);
+          const viewport = document.querySelector('.virtual-scroll-viewport');
+          if (viewport) viewport.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          if (st.numPages > 0) {
+            handlePageChange(st.numPages);
+          }
+          const viewport = document.querySelector('.virtual-scroll-viewport');
+          if (viewport) viewport.scrollTo({ top: viewport.scrollHeight, behavior: 'smooth' });
+        }
+        return;
+      }
+
+      // Arrow keys navigation in single / dual page mode
+      if (!isTyping && !st.isContinuous && st.numPages > 0 && st.activeTabId) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
           e.preventDefault();
           const step = st.isDual ? 2 : 1;
           const next = Math.min(st.currentPage + step, st.numPages);
           handlePageChange(next);
         }
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
           e.preventDefault();
           const step = st.isDual ? 2 : 1;
           const prev = Math.max(st.currentPage - step, 1);
           handlePageChange(prev);
-        }
-        if (e.key === 'Home') {
-          e.preventDefault();
-          handlePageChange(1);
-        }
-        if (e.key === 'End') {
-          e.preventDefault();
-          handlePageChange(st.numPages);
         }
       }
     };
