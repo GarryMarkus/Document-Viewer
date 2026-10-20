@@ -35,11 +35,11 @@ export default function StatusFooter({
   };
 
   return (
-    <footer className="h-7 shrink-0 bg-surface-container-lowest/95 border-t border-surface-container-high/60 px-3 flex items-center justify-between text-[11px] text-on-surface-variant select-none z-50">
+    <footer className="h-7 shrink-0 bg-surface-bright border-t border-outline-variant px-3 flex items-center justify-between text-[11px] text-on-surface-variant select-none z-50">
       {/* Left Metadata Status */}
       <div className="flex items-center gap-3">
         <span className="flex items-center gap-1.5 font-medium text-on-surface">
-          <span className="w-2 h-2 rounded-full bg-primary" />
+          <span className="w-2 h-2 rounded-full bg-success" />
           Ready
         </span>
 

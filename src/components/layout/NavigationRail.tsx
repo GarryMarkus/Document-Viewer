@@ -27,13 +27,13 @@ export default function NavigationRail({
     const isActive = activeTab === tab;
     return `w-9 h-9 rounded-md flex items-center justify-center transition-colors ${
       isActive
-        ? 'bg-primary-container text-on-primary-container shadow-xs'
-        : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
+        ? 'bg-surface-active text-primary shadow-xs'
+        : 'text-on-surface-variant hover:bg-surface-hover hover:text-on-surface'
     }`;
   };
 
   return (
-    <aside className="w-12 bg-surface-container-lowest border-r border-surface-container-high/60 z-30 flex flex-col items-center py-2 select-none shrink-0 h-full">
+    <aside className="w-12 bg-surface-container-low border-r border-outline-variant z-30 flex flex-col items-center py-2 select-none shrink-0 h-full">
       {/* Top Navigation Icons */}
       <nav className="flex flex-col items-center gap-1.5 w-full px-1.5">
         {/* Pages / Thumbnails / Slides */}
@@ -91,7 +91,7 @@ export default function NavigationRail({
       <div className="mt-auto flex flex-col items-center gap-1.5 w-full px-1.5">
         <button
           onClick={onOpenShortcuts}
-          className="w-9 h-9 rounded-md flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"
+          className="w-9 h-9 rounded-md flex items-center justify-center text-on-surface-variant hover:bg-surface-hover hover:text-on-surface transition-colors"
           title="Keyboard Shortcuts & Reference"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">

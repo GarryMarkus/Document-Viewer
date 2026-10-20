@@ -1,8 +1,8 @@
 [package]
 name = "docs_reader"
-version = "3.1.0"
+version = "3.2.0"
 description = "Docs Reader - Fast, Offline Multi-Format Document Reader for Windows"
-authors = ["Garry Markus"]
+authors = ["GarryMarkus"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

@@ -15,6 +15,10 @@ interface VirtualScrollContainerProps {
   searchQuery?: string;
   activeMatchPageIndex?: number;
   activeMatchIndex?: number;
+  initialScrollTop?: number;
+  onScrollPositionChange?: (scrollTop: number) => void;
+  isVisible?: boolean;
+  dimPages?: boolean;
 }
 
 interface PageRow {
@@ -34,10 +38,14 @@ export default function VirtualScrollContainer({
   currentPage,
   goToPage,
   onPageChange,
-  darkMode,
+  darkMode: _darkMode,
   searchQuery = '',
   activeMatchPageIndex,
   activeMatchIndex = 0,
+  initialScrollTop = 0,
+  onScrollPositionChange,
+  isVisible = true,
+  dimPages = false,
 }: VirtualScrollContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRefs = useRef<Map<number, HTMLCanvasElement>>(new Map());
@@ -46,9 +54,19 @@ export default function VirtualScrollContainer({
   // Debounced rendering scale to prevent lag during rapid Ctrl+Wheel zooming
   const [renderScale, setRenderScale] = useState(scale);
   const [viewportHeight, setViewportHeight] = useState(800);
-  const [scrollTop, setScrollTop] = useState(0);
-  const lastScrollTopRef = useRef(0);
+  const [scrollTop, setScrollTop] = useState(initialScrollTop);
+  const lastScrollTopRef = useRef(initialScrollTop);
   const isScrollingDownRef = useRef(true);
+
+  // Restore scroll position when becoming visible or when initialScrollTop changes
+  useEffect(() => {
+    if (isVisible && containerRef.current && initialScrollTop > 0) {
+      if (Math.abs(containerRef.current.scrollTop - initialScrollTop) > 2) {
+        containerRef.current.scrollTop = initialScrollTop;
+        setScrollTop(initialScrollTop);
+      }
+    }
+  }, [isVisible, initialScrollTop]);
 
   // Debounce scale changes for sharp re-renders
   useEffect(() => {
@@ -147,6 +165,7 @@ export default function VirtualScrollContainer({
         isScrollingDownRef.current = curTop >= lastScrollTopRef.current;
         lastScrollTopRef.current = curTop;
         setScrollTop(curTop);
+        onScrollPositionChange?.(curTop);
 
         // Calculate active current page
         if (isContinuous && rows.length > 0) {
@@ -304,7 +323,7 @@ export default function VirtualScrollContainer({
         scale !== renderScale ? 'zooming' : ''
       }`}
       style={{
-        backgroundColor: darkMode ? 'var(--doc-bed, #191919)' : 'var(--doc-bed, #E6E8EB)',
+        backgroundColor: 'var(--doc-bed)',
       }}
     >
       {/* Phantom Scroll Spacer for 100% stable scrollbar geometry */}
@@ -338,15 +357,15 @@ export default function VirtualScrollContainer({
                     if (el) wrapperRefs.current.set(pageIdx, el);
                     else wrapperRefs.current.delete(pageIdx);
                   }}
-                  className={`relative bg-white shrink-0 overflow-hidden ${
-                    darkMode
-                      ? 'shadow-[0_2px_8px_rgba(0,0,0,0.40),0_0_1px_rgba(255,255,255,0.1)] border border-white/5'
-                      : 'shadow-[0_2px_8px_rgba(0,0,0,0.18),0_0_1px_rgba(0,0,0,0.2)] border border-black/5'
-                  }`}
+                  className="relative bg-white shrink-0 overflow-hidden"
                   style={{
                     width: `${pw}px`,
                     height: `${ph}px`,
                     transform: 'translate3d(0, 0, 0)',
+                    boxShadow: 'var(--page-shadow)',
+                    border: '1px solid var(--page-border)',
+                    filter: dimPages ? 'brightness(0.90) contrast(0.98)' : undefined,
+                    transition: 'filter 180ms ease',
                   }}
                 >
                   <canvas

@@ -35,7 +35,7 @@ export default function RecentFilesView({
         {/* Header & Logo */}
         <div className="text-center space-y-2">
           <div className="w-16 h-16 rounded-2xl bg-primary-container text-on-primary-container mx-auto flex items-center justify-center shadow-lg shadow-primary/20">
-            <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg className="w-8 h-8 text-on-primary-container" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
               <polyline points="14 2 14 8 20 8" />
               <line x1="16" y1="13" x2="8" y2="13" />
@@ -57,10 +57,10 @@ export default function RecentFilesView({
           className="w-full p-8 rounded-xl border-2 border-dashed border-surface-container-highest hover:border-primary bg-surface-container-lowest/70 hover:bg-surface-container-low transition-all cursor-pointer flex flex-col items-center justify-center gap-3 text-center group shadow-xs"
         >
           <div className="flex items-center gap-3">
-            <span className="px-2.5 py-1 rounded-md bg-[#E02424]/10 text-[#E02424] text-xs font-semibold">PDF</span>
-            <span className="px-2.5 py-1 rounded-md bg-[#185ABD]/10 text-[#185ABD] text-xs font-semibold">DOCX</span>
-            <span className="px-2.5 py-1 rounded-md bg-[#107C41]/10 text-[#107C41] text-xs font-semibold">XLSX</span>
-            <span className="px-2.5 py-1 rounded-md bg-[#D83B01]/10 text-[#D83B01] text-xs font-semibold">PPTX</span>
+            <span className="px-2.5 py-1 rounded-md bg-format-pdf-bg text-format-pdf text-xs font-semibold">PDF</span>
+            <span className="px-2.5 py-1 rounded-md bg-format-docx-bg text-format-docx text-xs font-semibold">DOCX</span>
+            <span className="px-2.5 py-1 rounded-md bg-format-xlsx-bg text-format-xlsx text-xs font-semibold">XLSX</span>
+            <span className="px-2.5 py-1 rounded-md bg-format-pptx-bg text-format-pptx text-xs font-semibold">PPTX</span>
           </div>
 
           <div className="space-y-1">
@@ -113,7 +113,7 @@ export default function RecentFilesView({
                       <div className="text-xs font-semibold text-on-surface group-hover:text-primary transition-colors truncate">
                         {file.name}
                       </div>
-                      <div className="text-[11px] text-outline truncate flex items-center gap-2">
+                      <div className="text-[11px] text-on-surface-variant truncate flex items-center gap-2">
                         {file.size ? <span>{formatBytes(file.size)}</span> : null}
                         {file.lastPage && file.lastPage > 1 ? (
                           <>
@@ -132,7 +132,7 @@ export default function RecentFilesView({
                       e.stopPropagation();
                       onRemoveRecent(file.path || file.name);
                     }}
-                    className="w-6 h-6 rounded flex items-center justify-center text-outline hover:text-error hover:bg-surface-container-highest transition-colors opacity-0 group-hover:opacity-100"
+                    className="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-surface-container-highest transition-colors opacity-0 group-hover:opacity-100"
                     title="Remove from recents"
                   >
                     ×
@@ -144,7 +144,7 @@ export default function RecentFilesView({
         )}
 
         {/* Quick Shortcuts Hint */}
-        <div className="text-center text-[11px] text-on-surface-variant/70 flex items-center gap-4 flex-wrap justify-center pt-2">
+        <div className="text-center text-[11px] text-on-surface-variant flex items-center gap-4 flex-wrap justify-center pt-2">
           <span><kbd className="px-1.5 py-0.5 rounded bg-surface-container text-on-surface font-mono">Ctrl+O</kbd> Open</span>
           <span><kbd className="px-1.5 py-0.5 rounded bg-surface-container text-on-surface font-mono">Ctrl+F</kbd> Search</span>
           <span><kbd className="px-1.5 py-0.5 rounded bg-surface-container text-on-surface font-mono">F11</kbd> Fullscreen</span>

@@ -29,6 +29,7 @@ export default function DocumentErrorView({
 }: DocumentErrorViewProps) {
   const [passwordInput, setPasswordInput] = React.useState('');
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [showDetails, setShowDetails] = React.useState(false);
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,15 +39,27 @@ export default function DocumentErrorView({
     setTimeout(() => setIsSubmitting(false), 500);
   };
 
+  const getFriendlyMessage = () => {
+    if (error.type === 'password') {
+      return error.isIncorrectPassword
+        ? 'The password entered is incorrect. Please check and try again.'
+        : 'This document is password-protected. Enter the password below to view it.';
+    }
+    if (error.type === 'unsupported') {
+      return 'This file type is not supported. Supported formats include PDF, Word (.docx), Excel (.xlsx), and PowerPoint (.pptx).';
+    }
+    return 'We were unable to open this document. The file may be damaged, partially downloaded, or using an unsupported layout.';
+  };
+
   return (
     <div className="w-full h-full flex items-center justify-center p-6 select-none bg-background">
-      <div className="max-w-md w-full bg-surface-container-low dark:bg-surface-container border border-surface-container-high/80 rounded-2xl p-6 shadow-xl flex flex-col items-center text-center animate-in fade-in zoom-in-95 duration-200">
+      <div className="max-w-md w-full bg-surface-container border border-outline-variant rounded-2xl p-6 shadow-xl flex flex-col items-center text-center animate-in fade-in zoom-in-95 duration-200 motion-reduce:animate-none">
         {/* Error / Format Icon Badge */}
         <div className="relative mb-4">
           <div className="w-16 h-16 rounded-2xl bg-surface-container flex items-center justify-center shadow-inner">
             <FormatIcon format={format} size={32} />
           </div>
-          <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-error text-on-error flex items-center justify-center shadow-md">
+          <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-error text-white flex items-center justify-center shadow-md">
             {error.type === 'password' ? (
               <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
@@ -74,17 +87,13 @@ export default function DocumentErrorView({
           {fileName}
         </p>
 
-        <p className="text-xs text-on-surface-variant/80 mb-5 leading-relaxed">
-          {error.type === 'password'
-            ? error.isIncorrectPassword
-              ? 'The password entered is incorrect. Please try again.'
-              : 'This document is encrypted and requires a password to view.'
-            : error.message || 'The file could not be parsed. It may be corrupt or damaged.'}
+        <p className="text-xs text-on-surface-variant/90 mb-4 leading-relaxed">
+          {getFriendlyMessage()}
         </p>
 
         {/* Password Form (if password protected) */}
         {error.type === 'password' && onUnlock && (
-          <form onSubmit={handlePasswordSubmit} className="w-full mb-5 space-y-2">
+          <form onSubmit={handlePasswordSubmit} className="w-full mb-4 space-y-2">
             <div className="relative">
               <input
                 type="password"
@@ -98,18 +107,45 @@ export default function DocumentErrorView({
             <button
               type="submit"
               disabled={!passwordInput.trim() || isSubmitting}
-              className="w-full py-2 px-4 rounded-lg bg-primary text-on-primary text-xs font-semibold hover:brightness-110 disabled:opacity-40 transition-all shadow-xs"
+              className="w-full py-2 px-4 rounded-lg bg-primary text-on-primary text-xs font-semibold hover:brightness-110 disabled:opacity-40 transition-all motion-reduce:transition-none shadow-xs"
             >
               {isSubmitting ? 'Unlocking...' : 'Unlock Document'}
             </button>
           </form>
         )}
 
+        {/* Technical Details Toggle */}
+        {error.type !== 'password' && error.message && (
+          <div className="w-full mb-4 text-left">
+            <button
+              type="button"
+              onClick={() => setShowDetails((d) => !d)}
+              className="text-[11px] text-on-surface-variant hover:text-on-surface flex items-center gap-1.5 mx-auto font-medium transition-colors"
+            >
+              <span>{showDetails ? 'Hide Technical Details' : 'Show Technical Details'}</span>
+              <svg
+                className={`w-3 h-3 transition-transform duration-200 motion-reduce:transition-none ${showDetails ? 'rotate-180' : ''}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {showDetails && (
+              <div className="mt-2 p-3 bg-surface-container-lowest rounded-lg border border-outline-variant/60 text-[11px] text-on-surface-variant font-mono max-h-36 overflow-y-auto break-all leading-normal">
+                {error.message}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Action Buttons */}
-        <div className="flex items-center gap-2 w-full pt-2 border-t border-surface-container-high/60">
+        <div className="flex items-center gap-2 w-full pt-3 border-t border-surface-container-high/60">
           <button
             onClick={onCloseTab}
-            className="flex-1 py-1.5 px-3 rounded-lg border border-surface-container-high text-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"
+            className="flex-1 py-1.5 px-3 rounded-lg border border-surface-container-high text-xs text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors motion-reduce:transition-none"
           >
             Close Tab
           </button>
@@ -117,15 +153,15 @@ export default function DocumentErrorView({
           {error.type !== 'password' ? (
             <button
               onClick={onRetry}
-              className="flex-1 py-1.5 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-xs text-on-surface font-medium transition-colors"
+              className="flex-1 py-1.5 px-3 rounded-lg bg-primary text-on-primary hover:brightness-110 text-xs font-semibold transition-all motion-reduce:transition-none shadow-xs"
             >
-              Try Again
+              Retry
             </button>
           ) : null}
 
           <button
             onClick={onOpenFile}
-            className="flex-1 py-1.5 px-3 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-xs font-semibold transition-colors"
+            className="flex-1 py-1.5 px-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-xs text-on-surface font-medium transition-colors motion-reduce:transition-none"
           >
             Open Another
           </button>

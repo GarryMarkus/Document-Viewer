@@ -34,7 +34,7 @@ export default function TitleBar({
 
   return (
     <header 
-      className="h-10 shrink-0 select-none bg-surface-container-lowest/95 border-b border-surface-container-high/80 px-2 flex items-center justify-between gap-2 z-50 relative"
+      className="h-10 shrink-0 select-none bg-surface-bright border-b border-outline-variant px-2 flex items-center justify-between gap-2 z-50 relative"
       data-tauri-drag-region
       onDoubleClick={(e) => {
         if ((e.target as HTMLElement).closest('button, input')) return;
@@ -59,19 +59,29 @@ export default function TitleBar({
         <div className="flex items-center gap-1 overflow-x-auto min-w-0" data-tauri-drag-region>
           {tabs.map((tab) => {
             const isActive = tab.id === activeTabId;
+            const isLoading = tab.status === 'loading';
+            const percent = tab.progress?.percent ?? 0;
+            const tooltip = isLoading && tab.progress
+              ? `${tab.name} (${percent}% - ${tab.progress.status})`
+              : tab.name;
+
             return (
               <div
                 key={tab.id}
                 onClick={() => onSelectTab(tab.id)}
-                className={`h-7 px-2.5 rounded-t-md flex items-center gap-1.5 cursor-pointer text-xs transition-colors shrink-0 max-w-[200px] border-b-2 ${
+                className={`h-7 px-2.5 rounded-t-md flex items-center gap-1.5 cursor-pointer text-xs transition-colors shrink-0 max-w-[200px] border-b-2 relative overflow-hidden ${
                   isActive
-                    ? 'bg-surface-container text-on-surface border-primary shadow-xs'
-                    : 'bg-transparent text-on-surface-variant hover:bg-surface-container-low border-transparent'
+                    ? 'bg-[var(--tab-active-bg)] text-on-surface border-[var(--tab-active-bg)] shadow-xs font-medium'
+                    : 'bg-[var(--tab-inactive-bg)] text-on-surface-variant hover:bg-[var(--tab-hover-bg)] hover:text-on-surface border-transparent'
                 }`}
-                title={tab.name}
+                title={tooltip}
               >
-                <FormatIcon format={tab.format} size={14} />
-                <span className="truncate max-w-[120px] font-medium">
+                {isLoading ? (
+                  <div className="w-3.5 h-3.5 border-[1.5px] border-primary border-t-transparent rounded-full animate-spin motion-reduce:animate-none shrink-0" />
+                ) : (
+                  <FormatIcon format={tab.format} size={14} />
+                )}
+                <span className="truncate max-w-[120px]">
                   {tab.name}
                 </span>
                 <button
@@ -79,7 +89,7 @@ export default function TitleBar({
                     e.stopPropagation();
                     onCloseTab(tab.id);
                   }}
-                  className="w-4 h-4 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors ml-0.5"
+                  className="w-4 h-4 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-active hover:text-on-surface transition-colors ml-0.5"
                   title="Close Tab"
                 >
                   <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -87,13 +97,23 @@ export default function TitleBar({
                     <line x1="6" y1="6" x2="18" y2="18" />
                   </svg>
                 </button>
+
+                {/* Progress bar along the tab bottom edge for active and background tabs */}
+                {isLoading && (
+                  <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-surface-container-highest/60 overflow-hidden">
+                    <div
+                      className="h-full bg-primary transition-all duration-300 ease-out motion-reduce:transition-none"
+                      style={{ width: `${percent}%` }}
+                    />
+                  </div>
+                )}
               </div>
             );
           })}
 
           <button
             onClick={onOpenFileClick}
-            className="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors shrink-0"
+            className="w-6 h-6 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-hover hover:text-on-surface transition-colors shrink-0"
             title="Open Document (Ctrl+O)"
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -106,7 +126,7 @@ export default function TitleBar({
 
       {/* ===== Center: In-Document Search Input ===== */}
       <div className="flex-1 max-w-sm mx-auto px-2" data-tauri-drag-region>
-        <div className="h-7 px-2.5 rounded bg-surface-container-low border border-surface-container-high/60 flex items-center gap-1.5 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/40 transition-all">
+        <div className="h-7 px-2.5 rounded bg-surface-container border border-outline-variant flex items-center gap-1.5 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/40 transition-all">
           <svg className="w-3.5 h-3.5 text-on-surface-variant shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -117,9 +137,9 @@ export default function TitleBar({
             onChange={(e) => onSearchChange(e.target.value)}
             onFocus={onSearchFocus}
             placeholder={activeTab ? "Search in document (Ctrl+F)" : "Search..."}
-            className="w-full bg-transparent text-xs text-on-surface placeholder:text-outline focus:outline-none"
+            className="w-full bg-transparent text-xs text-on-surface placeholder:text-placeholder focus:outline-none"
           />
-          <kbd className="text-[10px] text-on-surface-variant bg-surface-container px-1 py-0.5 rounded font-mono shrink-0 hidden sm:inline">
+          <kbd className="text-[10px] text-on-surface-variant bg-surface-container-highest px-1 py-0.5 rounded font-mono shrink-0 hidden sm:inline">
             Ctrl+F
           </kbd>
         </div>
@@ -129,11 +149,11 @@ export default function TitleBar({
       <div className="flex items-center gap-1 shrink-0" data-tauri-drag-region>
         <button
           onClick={onToggleDarkMode}
-          className="w-7 h-7 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"
+          className="w-7 h-7 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-hover hover:text-on-surface transition-colors"
           title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
         >
           {darkMode ? (
-            <svg className="w-4 h-4 text-amber-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg className="w-4 h-4 text-warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="5" />
               <line x1="12" y1="1" x2="12" y2="3" />
               <line x1="12" y1="21" x2="12" y2="23" />
@@ -155,7 +175,7 @@ export default function TitleBar({
         <div className="flex items-center ml-1">
           <button
             onClick={() => appWindow.minimize()}
-            className="w-9 h-7 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
+            className="w-9 h-7 flex items-center justify-center text-on-surface-variant hover:bg-surface-hover hover:text-on-surface transition-colors"
             title="Minimize"
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -164,7 +184,7 @@ export default function TitleBar({
           </button>
           <button
             onClick={() => appWindow.toggleMaximize()}
-            className="w-9 h-7 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
+            className="w-9 h-7 flex items-center justify-center text-on-surface-variant hover:bg-surface-hover hover:text-on-surface transition-colors"
             title="Maximize"
           >
             <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -173,7 +193,7 @@ export default function TitleBar({
           </button>
           <button
             onClick={() => appWindow.close()}
-            className="w-9 h-7 flex items-center justify-center text-on-surface-variant hover:bg-[#C42B1C] hover:text-white transition-colors"
+            className="w-9 h-7 flex items-center justify-center text-on-surface-variant hover:bg-error hover:text-on-primary transition-colors"
             title="Close"
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

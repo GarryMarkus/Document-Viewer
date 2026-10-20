@@ -34,10 +34,10 @@ export default function ShortcutsModal({ isOpen, onClose }: ShortcutsModalProps)
       onClick={onClose}
     >
       <div 
-        className="bg-surface-container-low border border-surface-container-high text-on-surface rounded-xl shadow-2xl max-w-md w-full overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+        className="bg-surface-container-high border border-outline-variant text-on-surface rounded-xl shadow-2xl max-w-md w-full overflow-hidden animate-in fade-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="px-5 py-3.5 border-b border-surface-container-high/60 flex items-center justify-between">
+        <div className="px-5 py-3.5 border-b border-outline-variant/60 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <svg className="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <rect x="2" y="4" width="20" height="16" rx="2" />
@@ -57,14 +57,14 @@ export default function ShortcutsModal({ isOpen, onClose }: ShortcutsModalProps)
           {shortcuts.map((sc) => (
             <div key={sc.key} className="flex items-center justify-between text-xs">
               <span className="text-on-surface-variant">{sc.action}</span>
-              <kbd className="px-2 py-1 rounded bg-surface-container text-on-surface font-mono text-[11px] border border-surface-container-high/60 shadow-xs">
+              <kbd className="px-2 py-1 rounded bg-surface-container text-on-surface font-mono text-[11px] border border-outline-variant/50 shadow-xs">
                 {sc.key}
               </kbd>
             </div>
           ))}
         </div>
 
-        <div className="px-5 py-3 bg-surface-container-lowest/60 border-t border-surface-container-high/40 flex justify-end">
+        <div className="px-5 py-3 bg-surface-container/60 border-t border-outline-variant/40 flex justify-end">
           <button 
             onClick={onClose}
             className="px-4 py-1.5 rounded-md bg-primary hover:brightness-110 text-on-primary text-xs font-semibold shadow-xs transition-all"

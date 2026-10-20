@@ -17,6 +17,10 @@ export interface DocumentTab {
   format: DocumentFormat;
   fileBytes?: Uint8Array;
   url?: string;
+  cachedPdfPath?: string;
+  convertedBytes?: Uint8Array;
+  status?: 'idle' | 'loading' | 'ready' | 'error';
+  progress?: { status: string; percent: number } | null;
 }
 
 export interface DocumentOutlineItem {

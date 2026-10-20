@@ -22,6 +22,8 @@ interface CommandRibbonProps {
   wordCount?: number;
   sheetCount?: number;
   onStartPresentation?: () => void;
+  dimPages?: boolean;
+  onToggleDimPages?: () => void;
 }
 
 export default function CommandRibbon({
@@ -44,6 +46,8 @@ export default function CommandRibbon({
   wordCount,
   sheetCount,
   onStartPresentation,
+  dimPages = false,
+  onToggleDimPages,
 }: CommandRibbonProps) {
   const [editingPage, setEditingPage] = React.useState(false);
   const [pageInput, setPageInput] = React.useState(String(currentPage));
@@ -64,12 +68,12 @@ export default function CommandRibbon({
   const zoomPercent = Math.round(scale * 100);
 
   return (
-    <div className="h-10 px-3 bg-surface-container-low/95 border-b border-surface-container-high/60 flex items-center justify-between text-xs select-none shrink-0 z-40">
+    <div className="h-10 px-3 bg-surface-bright border-b border-outline-variant flex items-center justify-between text-xs select-none shrink-0 z-40">
       {/* ===== Left Side Tools ===== */}
       <div className="flex items-center gap-1.5 overflow-x-auto min-w-0">
         <button
           onClick={onOpenFileClick}
-          className="h-7 px-2 rounded flex items-center gap-1.5 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-medium"
+          className="h-7 px-2 rounded flex items-center gap-1.5 text-on-surface-variant hover:bg-surface-hover hover:text-on-surface transition-colors font-medium"
           title="Open Document (Ctrl+O)"
         >
           <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -81,7 +85,7 @@ export default function CommandRibbon({
         {onPrint && (
           <button
             onClick={onPrint}
-            className="h-7 w-7 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"
+            className="h-7 w-7 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-hover hover:text-on-surface transition-colors"
             title="Print Document (Ctrl+P)"
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -92,7 +96,7 @@ export default function CommandRibbon({
           </button>
         )}
 
-        <div className="h-4 w-[1px] bg-outline-variant/60 mx-1" />
+        <div className="h-4 w-[1px] bg-outline-variant mx-1" />
 
         {/* Reading Layout Modes (Only applicable to pages/slides) */}
         {format !== 'xlsx' && (
@@ -105,8 +109,8 @@ export default function CommandRibbon({
                 }}
                 className={`h-6 w-6 rounded flex items-center justify-center transition-colors ${
                   !isContinuous && !isDual
-                    ? 'text-on-surface bg-surface-container-high shadow-xs'
-                    : 'text-on-surface-variant hover:text-on-surface'
+                    ? 'text-on-surface bg-surface-active shadow-xs'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-hover'
                 }`}
                 title="Single Page Mode"
               >
@@ -122,8 +126,8 @@ export default function CommandRibbon({
                 }}
                 className={`h-6 w-6 rounded flex items-center justify-center transition-colors ${
                   isContinuous && !isDual
-                    ? 'text-on-surface bg-surface-container-high shadow-xs'
-                    : 'text-on-surface-variant hover:text-on-surface'
+                    ? 'text-on-surface bg-surface-active shadow-xs'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-hover'
                 }`}
                 title="Continuous Scroll Mode"
               >
@@ -139,8 +143,8 @@ export default function CommandRibbon({
                 }}
                 className={`h-6 w-6 rounded flex items-center justify-center transition-colors ${
                   isDual
-                    ? 'text-on-surface bg-surface-container-high shadow-xs'
-                    : 'text-on-surface-variant hover:text-on-surface'
+                    ? 'text-on-surface bg-surface-active shadow-xs'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-hover'
                 }`}
                 title="Two-Page Spread Mode"
               >
@@ -151,7 +155,7 @@ export default function CommandRibbon({
               </button>
             </div>
 
-            <div className="h-4 w-[1px] bg-outline-variant/60 mx-1" />
+            <div className="h-4 w-[1px] bg-outline-variant mx-1" />
           </>
         )}
 
@@ -159,7 +163,7 @@ export default function CommandRibbon({
         <div className="flex items-center bg-surface-container rounded px-1.5 h-7 gap-1">
           <button
             onClick={onZoomOut}
-            className="w-5 h-5 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors"
+            className="w-5 h-5 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-hover rounded transition-colors"
             title="Zoom Out (Ctrl+-)"
           >
             <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -168,14 +172,14 @@ export default function CommandRibbon({
           </button>
           <button
             onClick={onResetZoom}
-            className="font-medium text-on-surface px-1 min-w-[42px] text-center hover:bg-surface-container-high rounded transition-colors text-xs"
+            className="font-medium text-on-surface px-1 min-w-[42px] text-center hover:bg-surface-hover rounded transition-colors text-xs"
             title="Reset Zoom (Ctrl+0)"
           >
             {zoomPercent}%
           </button>
           <button
             onClick={onZoomIn}
-            className="w-5 h-5 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors"
+            className="w-5 h-5 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-hover rounded transition-colors"
             title="Zoom In (Ctrl+=)"
           >
             <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -186,7 +190,7 @@ export default function CommandRibbon({
           {onFitWidth && (
             <button
               onClick={onFitWidth}
-              className="h-5 px-1.5 rounded text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-medium ml-0.5"
+              className="h-5 px-1.5 rounded text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-surface-hover transition-colors font-medium ml-0.5"
               title="Fit to Page Width"
             >
               Fit
@@ -199,11 +203,11 @@ export default function CommandRibbon({
       <div className="flex items-center gap-1.5 shrink-0">
         {/* Page Paging Pill */}
         {numPages > 0 && (
-          <div className="flex items-center gap-1 bg-surface-container/60 px-2 py-0.5 rounded">
+          <div className="flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded">
             <button
               onClick={() => onPageChange(Math.max(1, currentPage - 1))}
               disabled={currentPage <= 1}
-              className="w-5 h-5 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface disabled:opacity-30 disabled:pointer-events-none transition-colors"
+              className="w-5 h-5 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-hover hover:text-on-surface disabled:opacity-30 disabled:pointer-events-none transition-colors"
               title="Previous Page (ArrowLeft)"
             >
               <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -221,13 +225,13 @@ export default function CommandRibbon({
                   onChange={(e) => setPageInput(e.target.value)}
                   onBlur={() => handlePageSubmit()}
                   autoFocus
-                  className="w-10 text-center bg-surface-container-high text-on-surface rounded text-xs px-1 py-0.5 focus:outline-none ring-1 ring-primary"
+                  className="w-10 text-center bg-surface-active text-on-surface rounded text-xs px-1 py-0.5 focus:outline-none ring-1 ring-primary"
                 />
               </form>
             ) : (
               <span
                 onClick={() => setEditingPage(true)}
-                className="cursor-pointer hover:bg-surface-container-high px-1 rounded text-on-surface font-semibold"
+                className="cursor-pointer hover:bg-surface-hover px-1 rounded text-on-surface font-semibold"
                 title="Click to jump to page"
               >
                 {currentPage}
@@ -238,7 +242,7 @@ export default function CommandRibbon({
             <button
               onClick={() => onPageChange(Math.min(numPages, currentPage + 1))}
               disabled={currentPage >= numPages}
-              className="w-5 h-5 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface disabled:opacity-30 disabled:pointer-events-none transition-colors"
+              className="w-5 h-5 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-hover hover:text-on-surface disabled:opacity-30 disabled:pointer-events-none transition-colors"
               title="Next Page (ArrowRight)"
             >
               <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -250,13 +254,13 @@ export default function CommandRibbon({
 
         {/* Word count or Sheet count badges if present */}
         {wordCount && wordCount > 0 && (
-          <div className="hidden md:flex items-center gap-1 text-[11px] text-on-surface-variant px-2 py-0.5 rounded bg-surface-container/60">
+          <div className="hidden md:flex items-center gap-1 text-[11px] text-on-surface-variant px-2 py-0.5 rounded bg-surface-container">
             <span>{wordCount.toLocaleString()} words</span>
           </div>
         )}
 
         {sheetCount && sheetCount > 0 && (
-          <div className="hidden md:flex items-center gap-1 text-[11px] text-on-surface-variant px-2 py-0.5 rounded bg-surface-container/60">
+          <div className="hidden md:flex items-center gap-1 text-[11px] text-on-surface-variant px-2 py-0.5 rounded bg-surface-container">
             <span>{sheetCount} sheets</span>
           </div>
         )}
@@ -265,21 +269,38 @@ export default function CommandRibbon({
         {format === 'pptx' && onStartPresentation && (
           <button
             onClick={onStartPresentation}
-            className="h-7 px-2 rounded bg-primary-container text-on-primary-container hover:brightness-110 flex items-center gap-1.5 font-medium transition-colors shadow-xs"
+            className="h-7 px-2 rounded bg-primary-container text-on-primary-container hover:bg-surface-active flex items-center gap-1.5 font-medium transition-colors shadow-xs"
             title="Start Slideshow (F5)"
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="5 3 19 12 5 21 5 3" />
             </svg>
             <span>Slideshow</span>
-            <kbd className="px-1 py-0.2 bg-black/20 rounded text-[10px] font-mono">F5</kbd>
+            <kbd className="px-1 py-0.2 bg-surface-active rounded text-[10px] font-mono">F5</kbd>
+          </button>
+        )}
+
+        {/* Dim Pages Toggle (softens white page glare) */}
+        {format !== 'xlsx' && onToggleDimPages && (
+          <button
+            onClick={onToggleDimPages}
+            className={`h-7 w-7 rounded flex items-center justify-center transition-colors ${
+              dimPages
+                ? 'bg-primary-container text-on-primary-container shadow-xs'
+                : 'text-on-surface-variant hover:bg-surface-hover hover:text-on-surface'
+            }`}
+            title={dimPages ? "Dim Pages: Active (Softens page white)" : "Dim Pages: Inactive (Click to soften page white glare)"}
+          >
+            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </svg>
           </button>
         )}
 
         {/* Rotate Clockwise */}
         <button
           onClick={onRotate}
-          className="h-7 w-7 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"
+          className="h-7 w-7 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-hover hover:text-on-surface transition-colors"
           title="Rotate Clockwise (Ctrl+Right)"
         >
           <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

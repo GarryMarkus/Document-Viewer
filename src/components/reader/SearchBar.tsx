@@ -55,9 +55,9 @@ export default function SearchBar({
   };
 
   return (
-    <div className="absolute top-3 right-5 z-40 flex items-center gap-1.5 p-1.5 rounded-lg bg-surface-container-lowest/95 dark:bg-surface-container-low/95 backdrop-blur-md border border-surface-container-high/80 shadow-[0_8px_24px_rgba(0,0,0,0.18)] text-on-surface select-none transition-all animate-in fade-in slide-in-from-top-2 duration-150">
+    <div className="absolute top-3 right-5 z-40 flex items-center gap-1.5 p-1.5 rounded-lg bg-surface-container-high/95 backdrop-blur-md border border-outline-variant shadow-[0_8px_24px_rgba(0,0,0,0.25)] text-on-surface select-none transition-all animate-in fade-in slide-in-from-top-2 duration-150">
       {/* Search Input Box */}
-      <div className="flex items-center gap-1.5 px-2 py-1 bg-surface-container-low dark:bg-surface-container rounded-md border border-surface-container-high/60 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/40">
+      <div className="flex items-center gap-1.5 px-2 py-1 bg-surface-container rounded-md border border-outline-variant/60 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/40">
         <svg className="w-3.5 h-3.5 text-on-surface-variant shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
           <circle cx="11" cy="11" r="8" />
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -70,7 +70,7 @@ export default function SearchBar({
           onChange={(e) => onQueryChange(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Find in document..."
-          className="w-44 sm:w-56 bg-transparent text-xs text-on-surface placeholder:text-outline focus:outline-none"
+          className="w-44 sm:w-56 bg-transparent text-xs text-on-surface placeholder:text-placeholder focus:outline-none"
         />
 
         {query && (

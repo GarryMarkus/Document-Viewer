@@ -23,7 +23,7 @@
 @tailwind utilities;
 
 :root {
-  /* Stitch WinUI 3 Fluent — Light Mode Tokens */
+  /* Stitch WinUI 3 Fluent — Light Mode Tokens (Untouched) */
   --surface: #FAFAFA;
   --surface-dim: #EAEAEA;
   --surface-bright: #FFFFFF;
@@ -36,6 +36,8 @@
   --on-surface-variant: #555D67;
   --outline: #757D8A;
   --outline-variant: #D0D4DC;
+  --placeholder: #757D8A;
+  --disabled: #A0A5AD;
   --primary: #0078D4;
   --primary-container: #D6E8FF;
   --on-primary: #FFFFFF;
@@ -44,40 +46,109 @@
   --secondary-container: #D3E4FF;
   --on-secondary: #FFFFFF;
   --on-secondary-container: #001D36;
-  --background: #F3F3F3;
-  --on-background: #1A1A1A;
+  --success: #107C41;
+  --warning: #B45309;
+  --warning-orange: #C2410C;
   --error: #BA1A1A;
   --error-container: #FFDAD6;
+  --special-purple: #8B5CF6;
+  --background: #F3F3F3;
+  --on-background: #1A1A1A;
   --doc-bed: #E6E8EB;
+  --tab-active-bg: #EBEBEB;
+  --tab-inactive-bg: transparent;
+  --tab-hover-bg: #F5F5F5;
+  --page-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.10), 0 2px 6px -1px rgba(0, 0, 0, 0.06);
+  --page-border: rgba(0, 0, 0, 0.08);
+  --surface-hover: rgba(0, 0, 0, 0.04);
+  --surface-active: rgba(0, 0, 0, 0.08);
+  --scrollbar-thumb: rgba(120, 120, 120, 0.25);
+  --scrollbar-thumb-hover: rgba(120, 120, 120, 0.45);
+  --focus-ring: #0078D4;
+
+  /* Format Tokens (Light Mode - Untouched) */
+  --format-pdf: #E02424;
+  --format-pdf-bg: rgba(224, 36, 36, 0.10);
+  --format-docx: #185ABD;
+  --format-docx-bg: rgba(24, 90, 189, 0.10);
+  --format-xlsx: #107C41;
+  --format-xlsx-bg: rgba(16, 124, 65, 0.10);
+  --format-pptx: #D83B01;
+  --format-pptx-bg: rgba(216, 59, 1, 0.10);
 }
 
 .dark {
-  /* Stitch WinUI 3 Fluent — Dark Mode Tokens */
-  --surface: #131313;
-  --surface-dim: #131313;
-  --surface-bright: #393939;
-  --surface-container-lowest: #0E0E0E;
-  --surface-container-low: #1B1C1C;
-  --surface-container: #202020;
-  --surface-container-high: #2A2A2A;
-  --surface-container-highest: #353535;
-  --on-surface: #E5E2E1;
-  --on-surface-variant: #C0C7D4;
-  --outline: #8A919E;
-  --outline-variant: #404752;
-  --primary: #A3C9FF;
-  --primary-container: #0078D4;
-  --on-primary: #00315C;
-  --on-primary-container: #FFFFFF;
-  --secondary: #9ECAFF;
-  --secondary-container: #0075C4;
-  --on-secondary: #003258;
-  --on-secondary-container: #F6F8FF;
-  --background: #131313;
-  --on-background: #E5E2E1;
-  --error: #FFB4AB;
-  --error-container: #93000A;
-  --doc-bed: #191919;
+  /* ==========================================================================
+     Zed Editor "One Dark" Theme Design Tokens
+     Layered cool blue-grey surfaces, subtle tone steps, never pure black
+     ========================================================================== */
+
+  /* Surfaces */
+  --background: #282C33;                  /* Viewer canvas / editor-like background */
+  --doc-bed: #282C33;                     /* Page background around documents */
+  --surface: #2F343E;                     /* Panels, sidebar, popovers, menus, dialogs */
+  --surface-dim: #282C33;                 /* Blended editor canvas level */
+  --surface-bright: #3B414D;              /* Title bar, tab bar, status bar, toolbar */
+  --surface-container-lowest: #3B414D;    /* Title bar / Tab bar base */
+  --surface-container-low: #2F343E;       /* Panels and sidebar */
+  --surface-container: #2E343E;           /* Element (buttons, inputs) background */
+  --surface-container-high: #2F343E;      /* Popovers, menus, dialogs, cards */
+  --surface-container-highest: #363C46;   /* Element hover / elevated state */
+  --surface-hover: #363C46;               /* Element hover: #363C46 */
+  --surface-active: #454A56;              /* Element selected / active: #454A56 */
+
+  /* Tab-specific tokens: active tab uses editor-canvas #282C33 and blends into content */
+  --tab-active-bg: #282C33;               /* Active tab color: #282C33 */
+  --tab-inactive-bg: transparent;         /* Inactive tabs sit on tab bar color #3B414D */
+  --tab-hover-bg: #363C46;                /* Subtle tone shift on tab hover */
+
+  /* Borders: border #464B57, subtle divider #363C46 */
+  --outline: #464B57;                     /* Border: #464B57 */
+  --outline-variant: #363C46;             /* Subtle divider / variant border: #363C46 */
+
+  /* Typography - tuned for >=7:1 primary, >=4.5:1 secondary & placeholder */
+  --on-surface: #DCE0E5;                  /* Primary text: #DCE0E5 (10.35:1 on canvas, 8.93:1 on panel) */
+  --on-background: #DCE0E5;               /* Primary text on background */
+  --on-surface-variant: #BAC0CC;          /* Muted / secondary / meta text: #BAC0CC (7.68:1 on canvas, 6.08:1 on hover, 5.61:1 on toolbar) */
+  --placeholder: #A8AEBC;                 /* Placeholder & hints: #A8AEBC (5.63:1 on inputs, 4.61:1 on toolbar) */
+  --disabled: #555A63;                    /* Disabled: #555A63 */
+
+  /* Format Tokens (Dark Mode - Lightened for rich contrast, >=4.5:1 on chips, >=3:1 on tiles) */
+  --format-pdf: #FFB0B0;                  /* Lightened soft rose-red (7.37:1 icon on tile, 4.84:1 chip text) */
+  --format-pdf-bg: rgba(255, 100, 100, 0.18); /* 18% tint background */
+  --format-docx: #A0C6FF;                 /* Lightened sky blue (7.17:1 icon on tile, 4.71:1 chip text) */
+  --format-docx-bg: rgba(80, 140, 255, 0.18);
+  --format-xlsx: #86EFAC;                 /* Lightened mint-green (8.92:1 icon on tile, 5.29:1 chip text) */
+  --format-xlsx-bg: rgba(52, 211, 153, 0.18);
+  --format-pptx: #FDBA74;                 /* Lightened peach-orange (7.43:1 icon on tile, 4.57:1 chip text) */
+  --format-pptx-bg: rgba(251, 146, 60, 0.18);
+
+  /* Accents */
+  --primary: #74ADE8;                     /* Primary accent / focus ring / selection: blue #74ADE8 */
+  --primary-container: rgba(116, 173, 232, 0.18); /* Selection background: blue at ~20-25% opacity */
+  --on-primary: #1E2530;                  /* High-contrast dark text on solid primary button */
+  --on-primary-container: #74ADE8;        /* Blue accent text / icon on selection container */
+  --secondary: #6EB4BF;                   /* Info / cyan highlight: #6EB4BF */
+  --secondary-container: rgba(110, 180, 191, 0.18);
+  --on-secondary: #162529;
+  --on-secondary-container: #6EB4BF;
+  --success: #A1C181;                     /* Success: green #A1C181 */
+  --warning: #DFC184;                     /* Warning: yellow #DFC184 */
+  --warning-orange: #BF956A;              /* Warning: orange #BF956A */
+  --error: #D07277;                       /* Error: red #D07277 */
+  --error-container: rgba(208, 114, 119, 0.20);
+  --special-purple: #B477CF;              /* Special highlight / tags: purple #B477CF */
+
+  /* Document area */
+  --page-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.40), 0 2px 6px -1px rgba(0, 0, 0, 0.30);
+  --page-border: rgba(255, 255, 255, 0.05);
+
+  /* Scrollbars: thin, low-contrast thumbs (about 20-30% opacity of text color #DCE0E5), rounded, no tracks */
+  --scrollbar-thumb: rgba(220, 224, 229, 0.22);
+  --scrollbar-thumb-hover: rgba(220, 224, 229, 0.35);
+
+  /* Focus ring: 1-2px blue #74ADE8 at reduced opacity; no glowing effects */
+  --focus-ring: rgba(116, 173, 232, 0.60);
 }
 
 html, body, #root {
@@ -107,13 +178,21 @@ html, body, #root {
   border-color: var(--outline-variant);
 }
 
+/* ===== Soft Page Dimming (reduces white page glare without inverting) ===== */
+.page-dimmed canvas,
+.page-dimmed .docx-page,
+.page-dimmed .pptx-slide {
+  filter: brightness(0.89) contrast(0.97) sepia(0.03);
+  transition: filter 180ms ease;
+}
+
 /* PDF Selection visibility */
 .textLayer ::selection {
-  background: rgba(0, 120, 212, 0.35) !important;
+  background: var(--primary-container, rgba(116, 173, 232, 0.25)) !important;
   color: transparent !important;
 }
 .textLayer span::selection {
-  background: rgba(0, 120, 212, 0.35) !important;
+  background: var(--primary-container, rgba(116, 173, 232, 0.25)) !important;
   color: transparent !important;
 }
 
@@ -134,22 +213,28 @@ html, body, #root {
 
 /* ===== Custom Minimal Scrollbars ===== */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(120, 120, 120, 0.25);
+  background: var(--scrollbar-thumb, rgba(120, 120, 120, 0.25));
   border-radius: 9999px;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   background-clip: content-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(120, 120, 120, 0.45);
-  border: 2px solid transparent;
+  background: var(--scrollbar-thumb-hover, rgba(120, 120, 120, 0.45));
+  border-radius: 9999px;
+  border: 1px solid transparent;
   background-clip: content-box;
+}
+
+.hover-simulated {
+  background-color: var(--surface-hover) !important;
+  color: var(--on-surface) !important;
 }
 
 /* Text selection behavior */
@@ -220,29 +305,28 @@ button, input, select {
 }
 
 button:focus-visible, input:focus-visible {
-  outline: 2px solid var(--primary);
+  outline: 2px solid var(--focus-ring, var(--primary));
   outline-offset: 1px;
 }
 
 /* Drag & Drop Feedback */
 .drag-over-active {
-  outline: 2px dashed #0078D4 !important;
+  outline: 2px dashed var(--primary) !important;
   outline-offset: -3px;
 }
 
 /* ===== Search Highlight Tokens ===== */
 .search-highlight {
-  background-color: rgba(255, 235, 59, 0.45) !important;
-  color: #111111 !important;
+  background-color: rgba(223, 193, 132, 0.35) !important;
+  color: inherit !important;
   border-radius: 2px;
-  box-shadow: 0 0 0 1px rgba(234, 179, 8, 0.4);
 }
 
 .search-highlight-active {
-  background-color: #F97316 !important;
-  color: #FFFFFF !important;
+  background-color: rgba(223, 193, 132, 0.75) !important;
+  color: #1E2530 !important;
   border-radius: 2px;
-  box-shadow: 0 0 0 2px #EA580C, 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 1.5px #DFC184, 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 /* ===== Print Optimization ===== */

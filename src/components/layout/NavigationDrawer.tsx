@@ -105,7 +105,7 @@ export default function NavigationDrawer({
           >
             <span className="truncate mr-2 font-medium">{item.title}</span>
             {item.pageNum && (
-              <span className="text-[10px] text-outline opacity-60 group-hover:opacity-100 shrink-0 font-mono">
+              <span className="text-[10px] text-on-surface-variant shrink-0 font-mono">
                 {item.pageNum}
               </span>
             )}
@@ -116,9 +116,9 @@ export default function NavigationDrawer({
   };
 
   return (
-    <aside className="w-60 bg-surface-container-low border-r border-surface-container-high/60 flex flex-col shrink-0 select-none h-full z-20 transition-all duration-200">
+    <aside className="w-60 bg-surface-container-low border-r border-outline-variant flex flex-col shrink-0 select-none h-full z-20 transition-all duration-200">
       {/* Header */}
-      <div className="p-2.5 bg-surface-container-lowest/60 border-b border-surface-container-high/40 flex items-center justify-between">
+      <div className="p-2.5 bg-surface-container/60 border-b border-outline-variant/60 flex items-center justify-between">
         <span className="font-semibold text-xs text-on-surface uppercase tracking-wider pl-1">
           {activeTab === 'pages' ? (format === 'pptx' ? 'Slide Deck' : 'Pages') :
            activeTab === 'outline' ? (format === 'docx' ? 'Headings Map' : 'Outline') :
@@ -126,7 +126,7 @@ export default function NavigationDrawer({
         </span>
         <button
           onClick={onClose}
-          className="w-5 h-5 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"
+          className="w-5 h-5 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-hover hover:text-on-surface transition-colors"
           title="Collapse Panel (F9)"
         >
           <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -166,13 +166,13 @@ export default function NavigationDrawer({
                     } bg-white rounded shadow-xs group-hover:shadow-md transition-all p-1 flex flex-col justify-between overflow-hidden relative border ${
                       isCurrent
                         ? 'ring-2 ring-primary border-primary shadow-sm'
-                        : 'border-surface-container-highest/60'
+                        : 'border-outline-variant'
                     }`}
                   >
                     {thumbnails.has(pageNum) ? (
                       <img src={thumbnails.get(pageNum)} alt={`Page ${pageNum}`} className="w-full h-full object-contain" />
                     ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center bg-neutral-50 dark:bg-neutral-900/40 text-[10px] text-outline">
+                      <div className="w-full h-full flex flex-col items-center justify-center bg-surface-container text-[10px] text-on-surface-variant">
                         <span className="font-mono">{format === 'pptx' ? `Slide ${pageNum}` : pageNum}</span>
                       </div>
                     )}
@@ -186,7 +186,7 @@ export default function NavigationDrawer({
                       className={`absolute top-1 right-1 w-5 h-5 rounded flex items-center justify-center transition-opacity ${
                         isMarked
                           ? 'text-amber-500 opacity-100'
-                          : 'text-on-surface-variant opacity-0 group-hover:opacity-70 hover:opacity-100 bg-black/20'
+                          : 'text-on-surface-variant opacity-0 group-hover:opacity-70 hover:opacity-100 bg-surface-container-highest/80'
                       }`}
                       title={isMarked ? "Remove Bookmark" : "Bookmark Page"}
                     >
@@ -217,7 +217,7 @@ export default function NavigationDrawer({
                 value={outlineFilter}
                 onChange={(e) => setOutlineFilter(e.target.value)}
                 placeholder="Filter outline..."
-                className="w-full bg-transparent text-xs text-on-surface placeholder:text-outline focus:outline-none"
+                className="w-full bg-transparent text-xs text-on-surface placeholder:text-placeholder focus:outline-none"
               />
             </div>
 
@@ -226,7 +226,7 @@ export default function NavigationDrawer({
                 {renderOutlineItems(outline)}
               </div>
             ) : (
-              <div className="py-8 text-center text-xs text-on-surface-variant/70">
+              <div className="py-8 text-center text-xs text-on-surface-variant">
                 No outline available for this document.
               </div>
             )}
@@ -254,7 +254,7 @@ export default function NavigationDrawer({
                       e.stopPropagation();
                       onToggleBookmark(bm);
                     }}
-                    className="w-4 h-4 text-outline hover:text-error rounded flex items-center justify-center transition-colors"
+                    className="w-4 h-4 text-on-surface-variant hover:text-error rounded flex items-center justify-center transition-colors"
                     title="Remove Bookmark"
                   >
                     ×
@@ -262,7 +262,7 @@ export default function NavigationDrawer({
                 </div>
               ))
             ) : (
-              <div className="py-8 text-center text-xs text-on-surface-variant/70">
+              <div className="py-8 text-center text-xs text-on-surface-variant">
                 No bookmarks added yet.
               </div>
             )}
@@ -274,30 +274,30 @@ export default function NavigationDrawer({
           <div className="space-y-3 p-1">
             <div className="space-y-2 text-xs">
               <div className="flex flex-col">
-                <span className="text-outline text-[10px] uppercase font-semibold">Title</span>
+                <span className="text-on-surface-variant text-[10px] uppercase font-semibold">Title</span>
                 <span className="text-on-surface font-medium truncate">{metadata?.title || 'Unknown Title'}</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-outline text-[10px] uppercase font-semibold">Author</span>
+                <span className="text-on-surface-variant text-[10px] uppercase font-semibold">Author</span>
                 <span className="text-on-surface">{metadata?.author || 'Unknown Author'}</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-outline text-[10px] uppercase font-semibold">Format</span>
+                <span className="text-on-surface-variant text-[10px] uppercase font-semibold">Format</span>
                 <span className="text-on-surface uppercase font-mono">{format}</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-outline text-[10px] uppercase font-semibold">Pages / Slides</span>
+                <span className="text-on-surface-variant text-[10px] uppercase font-semibold">Pages / Slides</span>
                 <span className="text-on-surface">{numPages}</span>
               </div>
               {metadata?.fileSize && (
                 <div className="flex flex-col">
-                  <span className="text-outline text-[10px] uppercase font-semibold">File Size</span>
+                  <span className="text-on-surface-variant text-[10px] uppercase font-semibold">File Size</span>
                   <span className="text-on-surface">{metadata.fileSize}</span>
                 </div>
               )}
               {metadata?.creator && (
                 <div className="flex flex-col">
-                  <span className="text-outline text-[10px] uppercase font-semibold">Application</span>
+                  <span className="text-on-surface-variant text-[10px] uppercase font-semibold">Application</span>
                   <span className="text-on-surface truncate">{metadata.creator}</span>
                 </div>
               )}

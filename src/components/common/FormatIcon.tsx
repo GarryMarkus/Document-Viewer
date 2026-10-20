@@ -14,7 +14,7 @@ export default function FormatIcon({ format, className = '', size = 16 }: Format
       return (
         <span 
           style={{ width: iconSize, height: iconSize }} 
-          className={`inline-flex items-center justify-center text-[#E02424] shrink-0 ${className}`}
+          className={`inline-flex items-center justify-center text-format-pdf shrink-0 ${className}`}
           title="PDF Document"
         >
           <svg className="w-full h-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -30,7 +30,7 @@ export default function FormatIcon({ format, className = '', size = 16 }: Format
       return (
         <span 
           style={{ width: iconSize, height: iconSize }} 
-          className={`inline-flex items-center justify-center text-[#185ABD] shrink-0 ${className}`}
+          className={`inline-flex items-center justify-center text-format-docx shrink-0 ${className}`}
           title="Word Document"
         >
           <svg className="w-full h-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -47,7 +47,7 @@ export default function FormatIcon({ format, className = '', size = 16 }: Format
       return (
         <span 
           style={{ width: iconSize, height: iconSize }} 
-          className={`inline-flex items-center justify-center text-[#107C41] shrink-0 ${className}`}
+          className={`inline-flex items-center justify-center text-format-xlsx shrink-0 ${className}`}
           title="Excel Spreadsheet"
         >
           <svg className="w-full h-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -64,7 +64,7 @@ export default function FormatIcon({ format, className = '', size = 16 }: Format
       return (
         <span 
           style={{ width: iconSize, height: iconSize }} 
-          className={`inline-flex items-center justify-center text-[#D83B01] shrink-0 ${className}`}
+          className={`inline-flex items-center justify-center text-format-pptx shrink-0 ${className}`}
           title="PowerPoint Presentation"
         >
           <svg className="w-full h-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

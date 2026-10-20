@@ -41,7 +41,7 @@ export default function GoToPageModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs select-none">
-      <div className="w-80 bg-surface-container-lowest dark:bg-surface-container rounded-xl p-4 shadow-2xl border border-surface-container-high animate-in fade-in zoom-in-95 duration-150">
+      <div className="w-80 bg-surface-container-high rounded-xl p-4 shadow-2xl border border-outline-variant animate-in fade-in zoom-in-95 duration-150">
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-semibold text-sm text-on-surface">Go to Page</h3>
           <span className="text-xs text-on-surface-variant font-mono">1 – {numPages}</span>
@@ -59,7 +59,7 @@ export default function GoToPageModal({
               max={numPages}
               value={pageInput}
               onChange={(e) => setPageInput(e.target.value)}
-              className="w-full px-3 py-1.5 rounded-md bg-surface-container-low border border-surface-container-high text-on-surface text-sm font-mono focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/40"
+              className="w-full px-3 py-1.5 rounded-md bg-surface-container border border-outline-variant text-on-surface text-sm font-mono focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/40"
             />
           </div>
 
@@ -67,7 +67,7 @@ export default function GoToPageModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-3 py-1.5 rounded-md text-xs text-on-surface-variant hover:bg-surface-container-high transition-colors"
+              className="px-3 py-1.5 rounded-md text-xs text-on-surface-variant hover:bg-surface-container-highest transition-colors"
             >
               Cancel
             </button>

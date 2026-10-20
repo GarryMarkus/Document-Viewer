@@ -5,7 +5,7 @@ import { listen } from '@tauri-apps/api/event';
 
 import TitleBar from './components/layout/TitleBar';
 import CommandRibbon from './components/layout/CommandRibbon';
-import NavigationRail, { NavDrawerTab } from './components/layout/NavigationRail';
+import NavigationRail from './components/layout/NavigationRail';
 import NavigationDrawer from './components/layout/NavigationDrawer';
 import StatusFooter from './components/layout/StatusFooter';
 import RecentFilesView from './components/home/RecentFilesView';
@@ -17,15 +17,17 @@ import PresentationView from './components/reader/PresentationView';
 import FPSOverlay from './components/dev/FPSOverlay';
 import FloatingActionButtons from './components/reader/FloatingActionButtons';
 import SearchBar from './components/reader/SearchBar';
-import DocumentErrorView, { DocumentErrorInfo } from './components/common/DocumentErrorView';
+import DocumentErrorView from './components/common/DocumentErrorView';
+import DocumentLoadingView from './components/common/DocumentLoadingView';
 
-import { DocumentTab, DocumentFormat, DocumentOutlineItem, DocumentMetadata, RecentFileItem } from './types/document';
+import { DocumentFormat, RecentFileItem } from './types/document';
 import { detectFormat, formatBytes, getRecentFiles, addRecentFile, removeRecentFile, updateFilePosition } from './utils/recentFiles';
 import { DocumentRenderer, SearchResult } from './engine/types';
 import { PDFRenderer } from './engine/renderers/PDFRenderer';
 import { DOCXRenderer } from './engine/renderers/DOCXRenderer';
 import { XLSXRenderer } from './engine/renderers/XLSXRenderer';
 import { PPTXRenderer } from './engine/renderers/PPTXRenderer';
+import { useTabStore, TabState } from './store/tabStore';
 
 const appWindow = getCurrentWindow();
 
@@ -35,29 +37,39 @@ function App() {
     return localStorage.getItem('darkMode') === 'true';
   });
 
-  // Document Tabs & Active Document State
-  const [tabs, setTabs] = useState<DocumentTab[]>([]);
-  const [activeTabId, setActiveTabId] = useState<string | undefined>(undefined);
+  // Dim pages state (persisted per user)
+  const [dimPages, setDimPages] = useState(() => {
+    return localStorage.getItem('dimPages') === 'true';
+  });
+
+  const toggleDimPages = useCallback(() => {
+    setDimPages(prev => {
+      const next = !prev;
+      localStorage.setItem('dimPages', String(next));
+      return next;
+    });
+  }, []);
+
+  // Central Tab Store
+  const {
+    tabs,
+    activeTabId,
+    activeTab,
+    aliveTabs,
+    addTab,
+    closeTab,
+    setActiveTab,
+    updateTab,
+    updateActiveTab,
+    setTabScroll,
+    setTabPage,
+    setTabScale,
+    setTabRotation,
+    setTabDrawer,
+    toggleTabBookmark,
+  } = useTabStore();
+
   const [recentFiles, setRecentFiles] = useState<RecentFileItem[]>(() => getRecentFiles());
-
-  // Active Renderer Instance
-  const [renderer, setRenderer] = useState<DocumentRenderer | null>(null);
-  const rendererRef = useRef<DocumentRenderer | null>(null);
-
-  // Viewer Display & Interaction State
-  const [scale, setScale] = useState(1.2);
-  const [numPages, setNumPages] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [goToPage, setGoToPage] = useState<number | undefined>(undefined);
-  const [isContinuous, setIsContinuous] = useState(true);
-  const [isDual, setIsDual] = useState(false);
-  const [rotation, setRotation] = useState(0);
-
-  // Navigation Drawer State
-  const [drawerTab, setDrawerTab] = useState<NavDrawerTab>('pages');
-  const [outline, setOutline] = useState<DocumentOutlineItem[]>([]);
-  const [metadata, setMetadata] = useState<DocumentMetadata | null>(null);
-  const [bookmarks, setBookmarks] = useState<number[]>([]);
 
   // Search & Find State
   const [searchQuery, setSearchQuery] = useState('');
@@ -76,21 +88,18 @@ function App() {
   const [isDragging, setIsDragging] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
 
-  // Document Error State
-  const [documentError, setDocumentError] = useState<DocumentErrorInfo | null>(null);
-
-  // Conversion State
-  const [isConverting, setIsConverting] = useState(false);
-  const [conversionProgress, setConversionProgress] = useState<{status: string, percent: number} | null>(null);
-  const [isApproximatePreview, setIsApproximatePreview] = useState(false);
-  const [effectiveFormat, setEffectiveFormat] = useState<DocumentFormat>('unknown');
-  const [effectiveDocumentUrl, setEffectiveDocumentUrl] = useState<string | undefined>(undefined);
-
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const loadingTabsRef = useRef<Set<string>>(new Set());
 
-  // Active Tab Derived
-  const activeTab = tabs.find(t => t.id === activeTabId);
-  const currentFormat: DocumentFormat = effectiveFormat !== 'unknown' ? effectiveFormat : (activeTab?.format || 'unknown');
+  // Active Tab Derived Properties
+  const currentFormat: DocumentFormat = activeTab?.effectiveFormat || activeTab?.format || 'unknown';
+  const scale = activeTab?.scale ?? 1.2;
+  const currentPage = activeTab?.currentPage ?? 1;
+  const numPages = activeTab?.numPages ?? 0;
+  const rotation = activeTab?.rotation ?? 0;
+  const isContinuous = activeTab?.isContinuous ?? true;
+  const isDual = activeTab?.isDual ?? false;
+  const drawerTab = activeTab?.drawerTab ?? 'pages';
 
   // Apply Dark Mode class & Dynamic Window Icon
   useEffect(() => {
@@ -127,174 +136,194 @@ function App() {
     return () => window.removeEventListener('resize', checkMaximized);
   }, []);
 
-  // Instantiate & initialize renderer when active tab changes
-  useEffect(() => {
-    if (!activeTab || !activeTab.fileBytes) {
-      if (rendererRef.current) {
-        rendererRef.current.destroy();
-        rendererRef.current = null;
-      }
-      setRenderer(null);
-      setNumPages(0);
-      setOutline([]);
-      setDocumentError(null);
+  // Async document loader for a specific tab
+  const loadTabDocument = useCallback(async (tab: TabState, password?: string) => {
+    if (!tab || !tab.fileBytes || loadingTabsRef.current.has(tab.id)) {
+      return;
+    }
+    if (tab.renderer !== null && tab.status === 'ready') {
       return;
     }
 
-    let isCancelled = false;
-    setDocumentError(null);
+    loadingTabsRef.current.add(tab.id);
 
-    const loadRenderer = async (password?: string) => {
-      if (rendererRef.current) {
-        rendererRef.current.destroy();
-        rendererRef.current = null;
-      }
-
-      if (activeTab.format === 'unknown') {
-        setDocumentError({
+    if (tab.format === 'unknown') {
+      updateTab(tab.id, {
+        status: 'error',
+        error: {
           type: 'unsupported',
-          message: `The file format could not be identified or is unsupported. Supported formats: PDF, DOCX, XLSX, and PPTX.`,
-        });
-        return;
-      }
+          message: 'The file format could not be identified or is unsupported. Supported formats: PDF, DOCX, XLSX, and PPTX.',
+        },
+      });
+      loadingTabsRef.current.delete(tab.id);
+      return;
+    }
 
-      setIsApproximatePreview(false);
-      let renderFormat = activeTab.format;
-      let finalBytes = activeTab.fileBytes!;
-      let displayUrl = activeTab.url;
+    updateTab(tab.id, { status: 'loading', error: null, isApproximatePreview: false });
 
-      if (['docx', 'xlsx', 'pptx'].includes(activeTab.format)) {
-        setIsConverting(true);
-        let unlisten: any;
-        try {
-          listen('conversion-progress', (event: any) => {
-            setConversionProgress(event.payload);
-          }).then(u => { unlisten = u; });
+    let renderFormat = tab.format;
+    let finalBytes = tab.fileBytes;
+    let displayUrl = tab.url;
+    let cachedPdfPath = tab.cachedPdfPath;
 
-          let cachedPdfPath: string;
-          if (activeTab.path) {
-            cachedPdfPath = await invoke<string>('convert_office_to_pdf', { path: activeTab.path });
-          } else {
-            cachedPdfPath = await invoke<string>('convert_office_bytes_to_pdf', { 
-              bytes: Array.from(activeTab.fileBytes!),
-              filename: activeTab.name
-            });
+    if (['docx', 'xlsx', 'pptx'].includes(tab.format)) {
+      if (tab.convertedBytes && tab.cachedPdfPath) {
+        finalBytes = tab.convertedBytes;
+        renderFormat = 'pdf';
+        const pdfBlob = new Blob([finalBytes as any], { type: 'application/pdf' });
+        displayUrl = URL.createObjectURL(pdfBlob);
+      } else {
+        if (!cachedPdfPath) {
+          try {
+            cachedPdfPath = (await invoke<string | null>('check_office_cache', {
+              path: tab.path,
+              filename: tab.name,
+            })) || undefined;
+          } catch {}
+        }
+
+        if (cachedPdfPath) {
+          try {
+            finalBytes = await invoke<Uint8Array>('read_file_bytes', { path: cachedPdfPath });
+            renderFormat = 'pdf';
+            const pdfBlob = new Blob([finalBytes as any], { type: 'application/pdf' });
+            displayUrl = URL.createObjectURL(pdfBlob);
+            updateTab(tab.id, { cachedPdfPath, convertedBytes: finalBytes });
+          } catch {
+            cachedPdfPath = undefined;
           }
-          finalBytes = await invoke<Uint8Array>('read_file_bytes', { path: cachedPdfPath });
-          renderFormat = 'pdf'; // Render as PDF with high fidelity
-          const pdfBlob = new Blob([finalBytes as any], { type: 'application/pdf' });
-          displayUrl = URL.createObjectURL(pdfBlob);
-        } catch (e) {
-          console.warn('Office conversion failed, falling back to approximate JS renderer', e);
-          setIsApproximatePreview(true);
-        } finally {
-          if (unlisten) unlisten();
-          setIsConverting(false);
-          setConversionProgress(null);
+        }
+
+        if (!cachedPdfPath) {
+          let unlisten: any;
+          try {
+            unlisten = await listen<{ tab_id: string; stage: string; percent: number }>(
+              'conversion-job-progress',
+              (event) => {
+                if (event.payload.tab_id === tab.id) {
+                  updateTab(tab.id, {
+                    progress: {
+                      status: event.payload.stage,
+                      percent: event.payload.percent,
+                    },
+                  });
+                }
+              }
+            );
+
+            cachedPdfPath = await invoke<string>('convert_document_job', {
+              tabId: tab.id,
+              path: tab.path,
+              filename: tab.name,
+              bytes: tab.path ? undefined : (tab.fileBytes ? Array.from(tab.fileBytes) : undefined),
+            });
+
+            finalBytes = await invoke<Uint8Array>('read_file_bytes', { path: cachedPdfPath });
+            renderFormat = 'pdf';
+            const pdfBlob = new Blob([finalBytes as any], { type: 'application/pdf' });
+            displayUrl = URL.createObjectURL(pdfBlob);
+            updateTab(tab.id, { cachedPdfPath, convertedBytes: finalBytes });
+          } catch (e: any) {
+            const errStr = String(e || '');
+            if (errStr.includes('Cancelled')) {
+              console.log(`Conversion for tab ${tab.id} was cancelled.`);
+              return;
+            }
+            console.warn('Office conversion failed, falling back to approximate JS renderer', e);
+            updateTab(tab.id, { isApproximatePreview: true });
+          } finally {
+            if (unlisten) unlisten();
+            updateTab(tab.id, { progress: null });
+          }
         }
       }
+    }
 
-      setEffectiveFormat(renderFormat);
-      setEffectiveDocumentUrl(displayUrl);
+    updateTab(tab.id, { effectiveFormat: renderFormat, effectiveDocumentUrl: displayUrl });
 
-      if (isCancelled) return;
+    let r: DocumentRenderer | null = null;
+    if (renderFormat === 'pdf') {
+      r = new PDFRenderer();
+    } else if (renderFormat === 'docx') {
+      r = new DOCXRenderer();
+    } else if (renderFormat === 'xlsx') {
+      r = new XLSXRenderer();
+    } else if (renderFormat === 'pptx') {
+      r = new PPTXRenderer();
+    }
 
-      let r: DocumentRenderer | null = null;
-      if (renderFormat === 'pdf') {
-        r = new PDFRenderer();
-      } else if (renderFormat === 'docx') {
-        r = new DOCXRenderer();
-      } else if (renderFormat === 'xlsx') {
-        r = new XLSXRenderer();
-      } else if (renderFormat === 'pptx') {
-        r = new PPTXRenderer();
-      }
+    if (r) {
+      try {
+        const meta = await r.open(finalBytes, tab.name, password);
+        const pages = r.getPageCount();
+        const docOutline = await r.getOutline();
 
-      if (r) {
-        try {
-          const meta = await r.open(finalBytes, activeTab.name, password);
-          if (isCancelled) {
-            r.destroy();
-            return;
-          }
-
-          rendererRef.current = r;
-          setRenderer(r);
-          setDocumentError(null);
-
-          const pages = r.getPageCount();
-          setNumPages(pages);
-
-          const docOutline = await r.getOutline();
-          setOutline(docOutline);
-
-          setMetadata({
+        updateTab(tab.id, {
+          renderer: r,
+          status: 'ready',
+          error: null,
+          numPages: pages,
+          outline: docOutline,
+          metadata: {
             ...meta,
-            fileSize: formatBytes(activeTab.fileBytes!.byteLength),
-          });
-        } catch (e: any) {
-          console.error(`Failed to load ${activeTab.format} in engine:`, e);
-          if (isCancelled) return;
-
-          if (e?.name === 'PasswordException' || e?.isPasswordRequired) {
-            setDocumentError({
+            fileSize: formatBytes(tab.fileBytes.byteLength),
+          },
+        });
+      } catch (e: any) {
+        console.error(`Failed to load ${tab.format} in engine:`, e);
+        if (e?.name === 'PasswordException' || e?.isPasswordRequired) {
+          updateTab(tab.id, {
+            status: 'error',
+            error: {
               type: 'password',
               message: e.message || 'Password required',
               isIncorrectPassword: e.isIncorrectPassword,
-            });
-          } else {
-            setDocumentError({
+            },
+          });
+        } else {
+          updateTab(tab.id, {
+            status: 'error',
+            error: {
               type: 'corrupted',
               message: e?.message || 'Could not parse document structure. File may be corrupted or damaged.',
-            });
-          }
+            },
+          });
         }
+      } finally {
+        loadingTabsRef.current.delete(tab.id);
       }
-    };
+    } else {
+      loadingTabsRef.current.delete(tab.id);
+    }
+  }, [updateTab]);
 
-    loadRenderer();
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [activeTab]);
+  // Trigger loading when active tab needs renderer
+  useEffect(() => {
+    if (activeTab && activeTab.status === 'loading' && activeTab.renderer === null) {
+      loadTabDocument(activeTab);
+    }
+  }, [activeTab, loadTabDocument]);
 
   // Unlock password-protected document
   const handleUnlockDocument = useCallback((password: string) => {
-    if (!activeTab || !activeTab.fileBytes) return;
-    if (activeTab.format === 'pdf') {
-      const r = new PDFRenderer();
-      r.open(activeTab.fileBytes, activeTab.name, password).then(async (meta) => {
-        if (rendererRef.current) rendererRef.current.destroy();
-        rendererRef.current = r;
-        setRenderer(r);
-        setDocumentError(null);
-        setNumPages(r.getPageCount());
-        const docOutline = await r.getOutline();
-        setOutline(docOutline);
-        setMetadata({
-          ...meta,
-          fileSize: formatBytes(activeTab.fileBytes!.byteLength),
-        });
-      }).catch(() => {
-        setDocumentError({
-          type: 'password',
-          message: 'Incorrect password',
-          isIncorrectPassword: true,
-        });
-      });
-    }
-  }, [activeTab]);
+    if (!activeTab) return;
+    loadTabDocument(activeTab, password);
+  }, [activeTab, loadTabDocument]);
 
   // Retry loading current document
   const handleRetryDocument = useCallback(() => {
-    const curId = activeTabId;
-    setActiveTabId(undefined);
-    setTimeout(() => setActiveTabId(curId), 20);
-  }, [activeTabId]);
+    if (!activeTab) return;
+    updateTab(activeTab.id, { renderer: null, status: 'loading', error: null });
+  }, [activeTab, updateTab]);
 
   // Open Document File
-  const openDocumentBytes = useCallback(async (name: string, bytes: Uint8Array, filePath?: string) => {
+  const openDocumentBytes = useCallback(async (
+    name: string,
+    bytes: Uint8Array,
+    filePath?: string,
+    lastPage?: number,
+    lastScrollTop?: number
+  ) => {
     const format = detectFormat(name);
     const id = filePath || `${name}-${Date.now()}`;
     const blob = new Blob([bytes as any], {
@@ -302,25 +331,16 @@ function App() {
     });
     const url = URL.createObjectURL(blob);
 
-    const newTab: DocumentTab = {
+    addTab({
       id,
       name,
       path: filePath,
       format,
       fileBytes: bytes,
       url,
-    };
-
-    setTabs(prev => {
-      const existing = prev.find(t => t.id === id);
-      if (existing) return prev;
-      return [...prev, newTab];
+      lastPage,
+      lastScrollTop,
     });
-    setActiveTabId(id);
-    setCurrentPage(1);
-    setGoToPage(1);
-    setRotation(0);
-    setOutline([]);
 
     // Record in Recent Files
     const updated = addRecentFile({
@@ -329,10 +349,11 @@ function App() {
       format,
       size: bytes.byteLength,
       lastOpened: Date.now(),
-      lastPage: 1,
+      lastPage: lastPage || 1,
+      lastScrollTop: lastScrollTop || 0,
     });
     setRecentFiles(updated);
-  }, []);
+  }, [addTab]);
 
   // Handle Startup File (CLI arg or Windows double click)
   useEffect(() => {
@@ -387,11 +408,7 @@ function App() {
     if (item.path && !item.path.startsWith('blob:')) {
       try {
         const fileBytes = await invoke<Uint8Array>('read_file_bytes', { path: item.path });
-        await openDocumentBytes(item.name, fileBytes, item.path);
-        if (item.lastPage) {
-          setCurrentPage(item.lastPage);
-          setGoToPage(item.lastPage);
-        }
+        await openDocumentBytes(item.name, fileBytes, item.path, item.lastPage, item.lastScrollTop);
         return;
       } catch (e) {
         console.warn('Could not open file from path, prompting selection:', e);
@@ -399,17 +416,6 @@ function App() {
     }
     fileInputRef.current?.click();
   }, [openDocumentBytes]);
-
-  const handleCloseTab = (id: string) => {
-    setTabs(prev => {
-      const nextTabs = prev.filter(t => t.id !== id);
-      if (activeTabId === id) {
-        const newActive = nextTabs[nextTabs.length - 1]?.id;
-        setActiveTabId(newActive);
-      }
-      return nextTabs;
-    });
-  };
 
   // Drag and drop handlers
   const handleDragOver = (e: React.DragEvent) => {
@@ -439,24 +445,18 @@ function App() {
     }
   };
 
-  // Bookmarking toggle
-  const handleToggleBookmark = (pageNum: number) => {
-    setBookmarks(prev => 
-      prev.includes(pageNum) ? prev.filter(p => p !== pageNum) : [...prev, pageNum].sort((a, b) => a - b)
-    );
-  };
-
-  // Track page change to update position in recents
+  // Track page change to update position in recents and store
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    setGoToPage(page);
-    if (activeTab?.path) {
+    if (!activeTab) return;
+    setTabPage(activeTab.id, page);
+    if (activeTab.path) {
       updateFilePosition(activeTab.path, page);
     }
   };
 
   // Debounced in-document search runner
   useEffect(() => {
+    const renderer = activeTab?.renderer;
     if (!renderer || !searchQuery.trim()) {
       setSearchResults([]);
       setActiveSearchIndex(0);
@@ -478,8 +478,7 @@ function App() {
           if (results.length > 0) {
             const firstResult = results[0];
             const targetPage = firstResult.pageIndex + 1;
-            setCurrentPage(targetPage);
-            setGoToPage(targetPage);
+            handlePageChange(targetPage);
           }
         }
       } catch (err) {
@@ -492,15 +491,14 @@ function App() {
       isCancelled = true;
       clearTimeout(timer);
     };
-  }, [renderer, searchQuery]);
+  }, [activeTab?.renderer, searchQuery]);
 
   const handleNextSearch = useCallback(() => {
     if (searchResults.length === 0) return;
     const nextIdx = (activeSearchIndex + 1) % searchResults.length;
     setActiveSearchIndex(nextIdx);
     const targetPage = searchResults[nextIdx].pageIndex + 1;
-    setCurrentPage(targetPage);
-    setGoToPage(targetPage);
+    handlePageChange(targetPage);
   }, [searchResults, activeSearchIndex]);
 
   const handlePrevSearch = useCallback(() => {
@@ -508,8 +506,7 @@ function App() {
     const prevIdx = (activeSearchIndex - 1 + searchResults.length) % searchResults.length;
     setActiveSearchIndex(prevIdx);
     const targetPage = searchResults[prevIdx].pageIndex + 1;
-    setCurrentPage(targetPage);
-    setGoToPage(targetPage);
+    handlePageChange(targetPage);
   }, [searchResults, activeSearchIndex]);
 
   // Automated Scroll Benchmark Runner
@@ -520,7 +517,7 @@ function App() {
 
     const startTime = performance.now();
     const maxScroll = Math.max(0, container.scrollHeight - container.clientHeight);
-    const duration = 2500; // 2.5s rapid continuous scroll down & up
+    const duration = 2500;
 
     return new Promise<void>((resolve) => {
       const scrollStep = (time: number) => {
@@ -647,17 +644,23 @@ function App() {
       }
       if (e.ctrlKey && (e.key === '=' || e.key === '+')) {
         e.preventDefault();
-        setScale(s => Math.min(5.0, s + 0.15));
+        if (stateRef.current.activeTabId) {
+          setTabScale(stateRef.current.activeTabId, Math.min(5.0, scale + 0.15));
+        }
         return;
       }
       if (e.ctrlKey && e.key === '-') {
         e.preventDefault();
-        setScale(s => Math.max(0.2, s - 0.15));
+        if (stateRef.current.activeTabId) {
+          setTabScale(stateRef.current.activeTabId, Math.max(0.2, scale - 0.15));
+        }
         return;
       }
       if (e.ctrlKey && e.key === '0') {
         e.preventDefault();
-        setScale(1.0);
+        if (stateRef.current.activeTabId) {
+          setTabScale(stateRef.current.activeTabId, 1.0);
+        }
         return;
       }
       if (e.key === 'F11') {
@@ -667,63 +670,69 @@ function App() {
       }
       if (e.key === 'F9') {
         e.preventDefault();
-        setDrawerTab(t => t === 'none' ? 'pages' : 'none');
+        if (stateRef.current.activeTabId) {
+          setTabDrawer(stateRef.current.activeTabId, drawerTab === 'none' ? 'pages' : 'none');
+        }
         return;
       }
       if (!isTyping && (e.key === 'c' || e.key === 'C')) {
-        setIsContinuous(c => !c);
+        if (stateRef.current.activeTabId) {
+          updateActiveTab({ isContinuous: !isContinuous });
+        }
         return;
       }
       if (!isTyping && (e.key === 'd' || e.key === 'D')) {
-        setIsDual(d => !d);
+        if (stateRef.current.activeTabId) {
+          updateActiveTab({ isDual: !isDual });
+        }
         return;
       }
       if (e.ctrlKey && e.key === 'ArrowRight') {
         e.preventDefault();
-        setRotation(r => (r + 90) % 360);
+        if (stateRef.current.activeTabId) {
+          setTabRotation(stateRef.current.activeTabId, (rotation + 90) % 360);
+        }
         return;
       }
       if (e.ctrlKey && e.key === 'ArrowLeft') {
         e.preventDefault();
-        setRotation(r => (r + 270) % 360);
+        if (stateRef.current.activeTabId) {
+          setTabRotation(stateRef.current.activeTabId, (rotation + 270) % 360);
+        }
         return;
       }
 
       // Single-page navigation
       const st = stateRef.current;
-      if (!st.isContinuous && st.numPages > 0) {
+      if (!st.isContinuous && st.numPages > 0 && st.activeTabId) {
         if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') {
           e.preventDefault();
           const step = st.isDual ? 2 : 1;
           const next = Math.min(st.currentPage + step, st.numPages);
-          setCurrentPage(next);
-          setGoToPage(next);
+          handlePageChange(next);
         }
         if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
           e.preventDefault();
           const step = st.isDual ? 2 : 1;
           const prev = Math.max(st.currentPage - step, 1);
-          setCurrentPage(prev);
-          setGoToPage(prev);
+          handlePageChange(prev);
         }
         if (e.key === 'Home') {
           e.preventDefault();
-          setCurrentPage(1);
-          setGoToPage(1);
+          handlePageChange(1);
         }
         if (e.key === 'End') {
           e.preventDefault();
-          setCurrentPage(st.numPages);
-          setGoToPage(st.numPages);
+          handlePageChange(st.numPages);
         }
       }
     };
 
     const handleWheel = (e: WheelEvent) => {
-      if (e.ctrlKey) {
+      if (e.ctrlKey && stateRef.current.activeTabId) {
         e.preventDefault();
         const delta = e.deltaY > 0 ? -0.1 : 0.1;
-        setScale(s => Math.min(5.0, Math.max(0.2, s + delta)));
+        setTabScale(stateRef.current.activeTabId, Math.min(5.0, Math.max(0.2, scale + delta)));
       }
     };
 
@@ -733,7 +742,7 @@ function App() {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('wheel', handleWheel);
     };
-  }, []);
+  }, [scale, isContinuous, isDual, rotation, drawerTab, updateActiveTab, setTabScale, setTabRotation, setTabDrawer]);
 
   return (
     <div
@@ -746,8 +755,8 @@ function App() {
       <TitleBar
         tabs={tabs}
         activeTabId={activeTabId}
-        onSelectTab={setActiveTabId}
-        onCloseTab={handleCloseTab}
+        onSelectTab={setActiveTab}
+        onCloseTab={closeTab}
         onOpenFileClick={() => fileInputRef.current?.click()}
         searchQuery={searchQuery}
         onSearchChange={(q) => {
@@ -759,7 +768,7 @@ function App() {
         onToggleDarkMode={() => setDarkMode(d => !d)}
       />
 
-      {/* 2. Command Ribbon (when a document is open) */}
+      {/* 2. Command Ribbon (when active document is open) */}
       {activeTab && (
         <CommandRibbon
           format={currentFormat}
@@ -767,20 +776,22 @@ function App() {
           numPages={numPages}
           onPageChange={handlePageChange}
           scale={scale}
-          onZoomIn={() => setScale(s => Math.min(5.0, s + 0.15))}
-          onZoomOut={() => setScale(s => Math.max(0.2, s - 0.15))}
-          onResetZoom={() => setScale(1.0)}
-          onFitWidth={() => setScale(1.2)}
+          onZoomIn={() => setTabScale(activeTab.id, Math.min(5.0, scale + 0.15))}
+          onZoomOut={() => setTabScale(activeTab.id, Math.max(0.2, scale - 0.15))}
+          onResetZoom={() => setTabScale(activeTab.id, 1.0)}
+          onFitWidth={() => setTabScale(activeTab.id, 1.2)}
           isContinuous={isContinuous}
-          onToggleContinuous={() => setIsContinuous(c => !c)}
+          onToggleContinuous={() => updateActiveTab({ isContinuous: !isContinuous })}
           isDual={isDual}
-          onToggleDual={() => setIsDual(d => !d)}
+          onToggleDual={() => updateActiveTab({ isDual: !isDual })}
           rotation={rotation}
-          onRotate={() => setRotation(r => (r + 90) % 360)}
+          onRotate={() => setTabRotation(activeTab.id, (rotation + 90) % 360)}
           onOpenFileClick={() => fileInputRef.current?.click()}
           onPrint={() => window.print()}
-          wordCount={metadata?.wordCount}
+          wordCount={activeTab.metadata?.wordCount}
           onStartPresentation={() => setIsPresentationMode(true)}
+          dimPages={dimPages}
+          onToggleDimPages={toggleDimPages}
         />
       )}
 
@@ -791,7 +802,7 @@ function App() {
             {/* Left Navigation Rail (48px) */}
             <NavigationRail
               activeTab={drawerTab}
-              onTabChange={setDrawerTab}
+              onTabChange={(tab) => setTabDrawer(activeTab.id, tab)}
               format={currentFormat}
               onOpenShortcuts={() => setShowShortcuts(true)}
             />
@@ -799,110 +810,126 @@ function App() {
             {/* Expandable Navigation Drawer (240px) */}
             <NavigationDrawer
               activeTab={drawerTab}
-              onClose={() => setDrawerTab('none')}
+              onClose={() => setTabDrawer(activeTab.id, 'none')}
               format={currentFormat}
               numPages={numPages}
               currentPage={currentPage}
               onPageSelect={handlePageChange}
-              outline={outline}
-              metadata={metadata || undefined}
-              documentUrl={effectiveDocumentUrl || activeTab.url}
+              outline={activeTab.outline}
+              metadata={activeTab.metadata || undefined}
+              documentUrl={activeTab.effectiveDocumentUrl || activeTab.url}
               filePath={activeTab.path}
-              bookmarks={bookmarks}
-              onToggleBookmark={handleToggleBookmark}
+              bookmarks={activeTab.bookmarks}
+              onToggleBookmark={(pageNum) => toggleTabBookmark(activeTab.id, pageNum)}
             />
 
-            {/* Document Canvas / Grid Bed */}
+            {/* Document Canvas / Grid Bed (keeps up to 5 recently used tab views mounted) */}
             <div className="flex-1 min-w-0 relative h-full bg-background">
-              {documentError ? (
-                <DocumentErrorView
-                  fileName={activeTab.name}
-                  format={currentFormat}
-                  error={documentError}
-                  onRetry={handleRetryDocument}
-                  onUnlock={handleUnlockDocument}
-                  onOpenFile={() => fileInputRef.current?.click()}
-                  onCloseTab={() => handleCloseTab(activeTab.id)}
-                />
-              ) : (
-                <>
-                  {isConverting && (
-                    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-                      <div className="bg-white dark:bg-[#1E1E1E] p-8 rounded-lg shadow-2xl text-center max-w-sm w-full mx-4 border border-black/10 dark:border-white/10">
-                        <div className="mb-4 inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#0078D4] border-t-transparent"></div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Converting Document</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{conversionProgress?.status || 'Processing...'}</p>
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                          <div className="bg-[#0078D4] h-2 rounded-full transition-all duration-300" style={{ width: `${conversionProgress?.percent || 0}%` }}></div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  {isApproximatePreview && (
-                    <div className="absolute top-0 left-0 right-0 z-40 bg-amber-100 dark:bg-amber-900/40 text-amber-900 dark:text-amber-200 text-xs px-4 py-2 text-center border-b border-amber-200 dark:border-amber-700 shadow-sm flex items-center justify-center gap-2">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                      <strong>Approximate Preview Mode:</strong> Native conversion failed or file was dropped without a path. Formatting may not be perfect.
-                    </div>
-                  )}
-                  {/* Floating In-Document Find Bar */}
-                  <SearchBar
-                    isOpen={isSearchOpen}
-                    onClose={() => setIsSearchOpen(false)}
-                    query={searchQuery}
-                    onQueryChange={setSearchQuery}
-                    matchIndex={activeSearchIndex}
-                    totalMatches={searchResults.length}
-                    onNext={handleNextSearch}
-                    onPrev={handlePrevSearch}
-                    matchCase={matchCase}
-                    onToggleMatchCase={() => setMatchCase(v => !v)}
-                    isSearching={isSearching}
-                  />
+              {aliveTabs.map((tab) => {
+                const isTabActive = tab.id === activeTabId;
+                return (
+                  <div
+                    key={tab.id}
+                    className={isTabActive ? 'h-full w-full relative' : 'hidden'}
+                    style={{ display: isTabActive ? 'block' : 'none' }}
+                  >
+                    {tab.error ? (
+                      <DocumentErrorView
+                        fileName={tab.name}
+                        format={tab.effectiveFormat}
+                        error={tab.error}
+                        onRetry={handleRetryDocument}
+                        onUnlock={handleUnlockDocument}
+                        onOpenFile={() => fileInputRef.current?.click()}
+                        onCloseTab={() => closeTab(tab.id)}
+                      />
+                    ) : (
+                      <>
+                        {tab.status === 'loading' && (
+                          <DocumentLoadingView
+                            fileName={tab.name}
+                            format={tab.effectiveFormat}
+                            statusText={tab.progress?.status || 'Loading document...'}
+                            percent={tab.progress?.percent || 15}
+                            onCancel={() => closeTab(tab.id)}
+                          />
+                        )}
 
-                  {currentFormat === 'xlsx' && renderer instanceof XLSXRenderer ? (
-                    <XlsxGridView
-                      renderer={renderer}
-                      darkMode={darkMode}
-                      scale={scale}
-                      searchQuery={isSearchOpen ? searchQuery : ''}
-                      activeMatchCell={
-                        searchResults[activeSearchIndex]
-                          ? {
-                              sheetIndex: searchResults[activeSearchIndex].pageIndex,
-                              r: searchResults[activeSearchIndex].row || 0,
-                              c: searchResults[activeSearchIndex].col || 0,
+                        {tab.isApproximatePreview && (
+                          <div className="absolute top-0 left-0 right-0 z-40 bg-amber-100 dark:bg-amber-900/40 text-amber-900 dark:text-amber-200 text-xs px-4 py-2 text-center border-b border-amber-200 dark:border-amber-700 shadow-sm flex items-center justify-center gap-2">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                            <strong>Approximate Preview Mode:</strong> Native conversion failed or file was dropped without a path. Formatting may not be perfect.
+                          </div>
+                        )}
+
+                        {/* Floating In-Document Find Bar */}
+                        {isTabActive && (
+                          <SearchBar
+                            isOpen={isSearchOpen}
+                            onClose={() => setIsSearchOpen(false)}
+                            query={searchQuery}
+                            onQueryChange={setSearchQuery}
+                            matchIndex={activeSearchIndex}
+                            totalMatches={searchResults.length}
+                            onNext={handleNextSearch}
+                            onPrev={handlePrevSearch}
+                            matchCase={matchCase}
+                            onToggleMatchCase={() => setMatchCase(v => !v)}
+                            isSearching={isSearching}
+                          />
+                        )}
+
+                        {tab.effectiveFormat === 'xlsx' && tab.renderer instanceof XLSXRenderer ? (
+                          <XlsxGridView
+                            renderer={tab.renderer}
+                            darkMode={darkMode}
+                            scale={tab.scale}
+                            searchQuery={isSearchOpen && isTabActive ? searchQuery : ''}
+                            activeMatchCell={
+                              searchResults[activeSearchIndex]
+                                ? {
+                                    sheetIndex: searchResults[activeSearchIndex].pageIndex,
+                                    r: searchResults[activeSearchIndex].row || 0,
+                                    c: searchResults[activeSearchIndex].col || 0,
+                                  }
+                                : undefined
                             }
-                          : undefined
-                      }
-                    />
-                  ) : (
-                    <VirtualScrollContainer
-                      renderer={renderer}
-                      scale={scale}
-                      rotation={rotation}
-                      isContinuous={isContinuous}
-                      isDual={isDual}
-                      currentPage={currentPage}
-                      goToPage={goToPage}
-                      onPageChange={handlePageChange}
-                      darkMode={darkMode}
-                      searchQuery={isSearchOpen ? searchQuery : ''}
-                      activeMatchPageIndex={searchResults[activeSearchIndex]?.pageIndex}
-                      activeMatchIndex={searchResults[activeSearchIndex]?.matchIndex}
-                    />
-                  )}
+                          />
+                        ) : (
+                          <VirtualScrollContainer
+                            renderer={tab.renderer}
+                            scale={tab.scale}
+                            rotation={tab.rotation}
+                            isContinuous={tab.isContinuous}
+                            isDual={tab.isDual}
+                            currentPage={tab.currentPage}
+                            goToPage={tab.goToPage}
+                            initialScrollTop={tab.scrollTop}
+                            onScrollPositionChange={(top) => setTabScroll(tab.id, top)}
+                            onPageChange={(page) => handlePageChange(page)}
+                            darkMode={darkMode}
+                            isVisible={isTabActive}
+                            dimPages={dimPages}
+                            searchQuery={isSearchOpen && isTabActive ? searchQuery : ''}
+                            activeMatchPageIndex={searchResults[activeSearchIndex]?.pageIndex}
+                            activeMatchIndex={searchResults[activeSearchIndex]?.matchIndex}
+                          />
+                        )}
 
-                  {currentFormat !== 'xlsx' && (
-                    <FloatingActionButtons
-                      onZoomIn={() => setScale(s => Math.min(5.0, s + 0.15))}
-                      onZoomOut={() => setScale(s => Math.max(0.2, s - 0.15))}
-                      canZoomIn={scale < 4.9}
-                      canZoomOut={scale > 0.25}
-                      darkMode={darkMode}
-                    />
-                  )}
-                </>
-              )}
+                        {tab.effectiveFormat !== 'xlsx' && isTabActive && (
+                          <FloatingActionButtons
+                            onZoomIn={() => setTabScale(tab.id, Math.min(5.0, tab.scale + 0.15))}
+                            onZoomOut={() => setTabScale(tab.id, Math.max(0.2, tab.scale - 0.15))}
+                            canZoomIn={tab.scale < 4.9}
+                            canZoomOut={tab.scale > 0.25}
+                            darkMode={darkMode}
+                          />
+                        )}
+                      </>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </>
         ) : (
@@ -927,10 +954,10 @@ function App() {
           currentPage={currentPage}
           numPages={numPages}
           scale={scale}
-          onScaleChange={setScale}
-          fileSize={metadata?.fileSize}
+          onScaleChange={(s) => setTabScale(activeTab.id, s)}
+          fileSize={activeTab.metadata?.fileSize}
           isContinuous={isContinuous}
-          onToggleContinuous={() => setIsContinuous(c => !c)}
+          onToggleContinuous={() => updateActiveTab({ isContinuous: !isContinuous })}
           isDual={isDual}
           onToggleFpsOverlay={() => setShowFpsOverlay(v => !v)}
           showFpsOverlay={showFpsOverlay}
@@ -966,9 +993,9 @@ function App() {
       />
 
       {/* Fullscreen PPTX Slideshow Mode */}
-      {isPresentationMode && currentFormat === 'pptx' && renderer instanceof PPTXRenderer && (
+      {isPresentationMode && currentFormat === 'pptx' && activeTab?.renderer instanceof PPTXRenderer && (
         <PresentationView
-          renderer={renderer}
+          renderer={activeTab.renderer}
           initialSlide={currentPage}
           onExit={() => setIsPresentationMode(false)}
         />
