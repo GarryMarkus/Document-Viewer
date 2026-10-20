@@ -143,6 +143,55 @@ export default function VirtualScrollContainer({
     };
   }, [scale, onScaleChange]);
 
+  // Middle-Click Drag to Pan (Hand tool gesture)
+  const isPanningRef = useRef(false);
+  const panStartRef = useRef({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0 });
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const handleMouseDown = (e: MouseEvent) => {
+      if (e.button === 1) {
+        e.preventDefault();
+        isPanningRef.current = true;
+        panStartRef.current = {
+          x: e.clientX,
+          y: e.clientY,
+          scrollLeft: el.scrollLeft,
+          scrollTop: el.scrollTop,
+        };
+        el.style.cursor = 'grabbing';
+      }
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isPanningRef.current) return;
+      e.preventDefault();
+      const dx = e.clientX - panStartRef.current.x;
+      const dy = e.clientY - panStartRef.current.y;
+      el.scrollLeft = panStartRef.current.scrollLeft - dx;
+      el.scrollTop = panStartRef.current.scrollTop - dy;
+    };
+
+    const handleMouseUp = (e: MouseEvent) => {
+      if (e.button === 1 && isPanningRef.current) {
+        isPanningRef.current = false;
+        el.style.cursor = '';
+      }
+    };
+
+    el.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      el.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, []);
+
   // Compute row layout (exact height & top coordinates up-front)
   const { rows, totalHeight } = useMemo(() => {
     if (!renderer) return { rows: [], totalHeight: 0 };

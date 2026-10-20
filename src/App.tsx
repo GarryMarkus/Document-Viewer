@@ -940,7 +940,7 @@ function App() {
     };
 
     // Mouse Side Navigation Buttons (Button 3 = Back, Button 4 = Forward)
-    const handleMouseUp = (e: MouseEvent) => {
+    const handleMouseNav = (e: MouseEvent) => {
       if (e.button === 3) {
         e.preventDefault();
         const st = stateRef.current;
@@ -958,11 +958,13 @@ function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mouseup', handleMouseNav);
+    window.addEventListener('auxclick', handleMouseNav);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('mouseup', handleMouseNav);
+      window.removeEventListener('auxclick', handleMouseNav);
     };
   }, [
     scale,
