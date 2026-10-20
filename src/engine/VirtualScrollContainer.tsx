@@ -17,6 +17,7 @@ interface VirtualScrollContainerProps {
   activeMatchIndex?: number;
   initialScrollTop?: number;
   onScrollPositionChange?: (scrollTop: number) => void;
+  onScaleChange?: (scale: number) => void;
   isVisible?: boolean;
   dimPages?: boolean;
 }
@@ -44,6 +45,7 @@ export default function VirtualScrollContainer({
   activeMatchIndex = 0,
   initialScrollTop = 0,
   onScrollPositionChange,
+  onScaleChange,
   isVisible = true,
   dimPages = false,
 }: VirtualScrollContainerProps) {
@@ -75,6 +77,54 @@ export default function VirtualScrollContainer({
     }, 150);
     return () => clearTimeout(timer);
   }, [scale]);
+
+  // Touchscreen 2-finger pinch-to-zoom gesture
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || !onScaleChange) return;
+
+    let touchStartDist: number | null = null;
+    let initialScale = scale;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        const t1 = e.touches[0];
+        const t2 = e.touches[1];
+        touchStartDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        initialScale = scale;
+      } else {
+        touchStartDist = null;
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 2 && touchStartDist !== null) {
+        e.preventDefault();
+        const t1 = e.touches[0];
+        const t2 = e.touches[1];
+        const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        const ratio = dist / touchStartDist;
+        const newScale = Math.min(5.0, Math.max(0.2, Math.round(initialScale * ratio * 100) / 100));
+        onScaleChange(newScale);
+      }
+    };
+
+    const handleTouchEnd = () => {
+      touchStartDist = null;
+    };
+
+    el.addEventListener('touchstart', handleTouchStart, { passive: true });
+    el.addEventListener('touchmove', handleTouchMove, { passive: false });
+    el.addEventListener('touchend', handleTouchEnd);
+    el.addEventListener('touchcancel', handleTouchEnd);
+
+    return () => {
+      el.removeEventListener('touchstart', handleTouchStart);
+      el.removeEventListener('touchmove', handleTouchMove);
+      el.removeEventListener('touchend', handleTouchEnd);
+      el.removeEventListener('touchcancel', handleTouchEnd);
+    };
+  }, [scale, onScaleChange]);
 
   // Compute row layout (exact height & top coordinates up-front)
   const { rows, totalHeight } = useMemo(() => {
@@ -324,6 +374,14 @@ export default function VirtualScrollContainer({
       }`}
       style={{
         backgroundColor: 'var(--doc-bed)',
+      }}
+      onDoubleClick={(e) => {
+        const target = e.target as HTMLElement;
+        if (target.tagName !== 'CANVAS' && !target.closest('.textLayer') && !target.closest('button')) {
+          if (onScaleChange) {
+            onScaleChange(scale >= 1.15 ? 1.0 : 1.2);
+          }
+        }
       }}
     >
       {/* Phantom Scroll Spacer for 100% stable scrollbar geometry */}

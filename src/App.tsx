@@ -537,7 +537,7 @@ function App() {
     });
   };
 
-  // Global Keyboard Shortcuts
+  // Global Keyboard Shortcuts & Gestures
   const stateRef = useRef({
     isContinuous,
     isDual,
@@ -550,6 +550,9 @@ function App() {
     showGoToPageModal,
     handleNextSearch,
     handlePrevSearch,
+    tabs,
+    scale,
+    activeTab,
   });
   useEffect(() => {
     stateRef.current = {
@@ -564,6 +567,9 @@ function App() {
       showGoToPageModal,
       handleNextSearch,
       handlePrevSearch,
+      tabs,
+      scale,
+      activeTab,
     };
   }, [
     isContinuous,
@@ -577,6 +583,9 @@ function App() {
     showGoToPageModal,
     handleNextSearch,
     handlePrevSearch,
+    tabs,
+    scale,
+    activeTab,
   ]);
 
   useEffect(() => {
@@ -584,21 +593,67 @@ function App() {
       const tag = (e.target as HTMLElement)?.tagName;
       const isTyping = tag === 'INPUT' || tag === 'TEXTAREA' || (e.target as HTMLElement)?.isContentEditable;
 
+      // PPTX Slideshow
       if (e.key === 'F5' && stateRef.current.currentFormat === 'pptx') {
         e.preventDefault();
         setIsPresentationMode(true);
         return;
       }
+
+      // FPS Overlay
       if (e.ctrlKey && e.shiftKey && e.key.toUpperCase() === 'D') {
         e.preventDefault();
         setShowFpsOverlay(v => !v);
         return;
       }
-      if (e.ctrlKey && e.key.toLowerCase() === 'o') {
+
+      // ===== 1. Standard Tab & Window Shortcuts =====
+      // Ctrl + W / Ctrl + F4: Close current active tab
+      if ((e.ctrlKey && e.key.toLowerCase() === 'w') || (e.ctrlKey && e.key === 'F4')) {
+        e.preventDefault();
+        if (stateRef.current.activeTabId) {
+          closeTab(stateRef.current.activeTabId);
+        }
+        return;
+      }
+
+      // Ctrl + T / Ctrl + O: New Tab / Open file dialog
+      if (e.ctrlKey && !e.shiftKey && (e.key.toLowerCase() === 't' || e.key.toLowerCase() === 'o')) {
         e.preventDefault();
         fileInputRef.current?.click();
         return;
       }
+
+      // Ctrl + Tab / Ctrl + Shift + Tab / Ctrl + PageDown / Ctrl + PageUp: Cycle tabs
+      if (e.ctrlKey && (e.key === 'Tab' || e.key === 'PageDown' || e.key === 'PageUp')) {
+        const currentTabs = stateRef.current.tabs;
+        if (currentTabs.length > 1) {
+          e.preventDefault();
+          const currentIndex = currentTabs.findIndex(t => t.id === stateRef.current.activeTabId);
+          const isBack = e.shiftKey || e.key === 'PageUp';
+          const nextIndex = isBack
+            ? (currentIndex - 1 + currentTabs.length) % currentTabs.length
+            : (currentIndex + 1) % currentTabs.length;
+          setActiveTab(currentTabs[nextIndex].id);
+          return;
+        }
+      }
+
+      // Ctrl + 1..9: Direct tab switching (1-8 first tabs, 9 last tab)
+      if (e.ctrlKey && !e.shiftKey && !e.altKey && e.key >= '1' && e.key <= '9') {
+        const currentTabs = stateRef.current.tabs;
+        if (currentTabs.length > 0) {
+          e.preventDefault();
+          const digit = parseInt(e.key, 10);
+          const targetIndex = digit === 9 ? currentTabs.length - 1 : Math.min(digit - 1, currentTabs.length - 1);
+          if (currentTabs[targetIndex]) {
+            setActiveTab(currentTabs[targetIndex].id);
+          }
+          return;
+        }
+      }
+
+      // ===== 2. Search & Modals =====
       if (e.ctrlKey && e.key.toLowerCase() === 'f') {
         e.preventDefault();
         setIsSearchOpen(true);
@@ -637,32 +692,78 @@ function App() {
         setShowShortcuts(v => !v);
         return;
       }
+
+      // ===== 3. Standard Document Tools & Actions =====
+      // Ctrl + P: Print document
       if (e.ctrlKey && e.key.toLowerCase() === 'p') {
         e.preventDefault();
         window.print();
         return;
       }
-      if (e.ctrlKey && (e.key === '=' || e.key === '+')) {
+
+      // Ctrl + B: Toggle navigation sidebar drawer (Pages / Outline / Bookmarks)
+      if (e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'b') {
+        e.preventDefault();
+        if (stateRef.current.activeTabId) {
+          setTabDrawer(stateRef.current.activeTabId, drawerTab === 'none' ? 'pages' : 'none');
+        }
+        return;
+      }
+
+      // Ctrl + D: Toggle bookmark for current page
+      if (e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'd') {
+        e.preventDefault();
+        const st = stateRef.current;
+        if (st.activeTabId && st.currentPage) {
+          toggleTabBookmark(st.activeTabId, st.currentPage);
+        }
+        return;
+      }
+
+      // Ctrl + R: Reload current document
+      if (e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'r') {
+        e.preventDefault();
+        if (stateRef.current.activeTab) {
+          loadTabDocument(stateRef.current.activeTab);
+        }
+        return;
+      }
+
+      // Ctrl + Shift + L: Toggle Dark / Light theme
+      if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'l') {
+        e.preventDefault();
+        setDarkMode(d => !d);
+        return;
+      }
+
+      // ===== 4. Zoom Controls (Keyboard + Numpad) =====
+      const isZoomIn = e.ctrlKey && (e.key === '=' || e.key === '+' || e.code === 'NumpadAdd');
+      const isZoomOut = e.ctrlKey && (e.key === '-' || e.code === 'NumpadSubtract');
+      const isZoomReset = e.ctrlKey && (e.key === '0' || e.code === 'Numpad0');
+
+      if (isZoomIn) {
         e.preventDefault();
         if (stateRef.current.activeTabId) {
           setTabScale(stateRef.current.activeTabId, Math.min(5.0, scale + 0.15));
         }
         return;
       }
-      if (e.ctrlKey && e.key === '-') {
+      if (isZoomOut) {
         e.preventDefault();
         if (stateRef.current.activeTabId) {
           setTabScale(stateRef.current.activeTabId, Math.max(0.2, scale - 0.15));
         }
         return;
       }
-      if (e.ctrlKey && e.key === '0') {
+      if (isZoomReset) {
         e.preventDefault();
         if (stateRef.current.activeTabId) {
           setTabScale(stateRef.current.activeTabId, 1.0);
         }
         return;
       }
+
+      // Fullscreen & Drawer legacy shortcuts
       if (e.key === 'F11') {
         e.preventDefault();
         document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
@@ -702,6 +803,49 @@ function App() {
         return;
       }
 
+      // ===== 5. Document Navigation Shortcuts =====
+      // Ctrl + Home: Jump to page 1
+      if (e.ctrlKey && e.key === 'Home') {
+        e.preventDefault();
+        handlePageChange(1);
+        const viewport = document.querySelector('.virtual-scroll-viewport');
+        if (viewport) viewport.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      // Ctrl + End: Jump to last page
+      if (e.ctrlKey && e.key === 'End') {
+        e.preventDefault();
+        if (stateRef.current.numPages > 0) {
+          handlePageChange(stateRef.current.numPages);
+        }
+        const viewport = document.querySelector('.virtual-scroll-viewport');
+        if (viewport) viewport.scrollTo({ top: viewport.scrollHeight, behavior: 'smooth' });
+        return;
+      }
+
+      // Space / Shift + Space: Scroll down / up one page screen
+      if (!isTyping && e.key === ' ' && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        const st = stateRef.current;
+        if (e.shiftKey) {
+          if (!st.isContinuous && st.numPages > 0) {
+            handlePageChange(Math.max(st.currentPage - 1, 1));
+          } else {
+            const viewport = document.querySelector('.virtual-scroll-viewport');
+            if (viewport) viewport.scrollBy({ top: -viewport.clientHeight * 0.8, behavior: 'smooth' });
+          }
+        } else {
+          if (!st.isContinuous && st.numPages > 0) {
+            handlePageChange(Math.min(st.currentPage + 1, st.numPages));
+          } else {
+            const viewport = document.querySelector('.virtual-scroll-viewport');
+            if (viewport) viewport.scrollBy({ top: viewport.clientHeight * 0.8, behavior: 'smooth' });
+          }
+        }
+        return;
+      }
+
       // Single-page navigation
       const st = stateRef.current;
       if (!st.isContinuous && st.numPages > 0 && st.activeTabId) {
@@ -728,21 +872,77 @@ function App() {
       }
     };
 
+    // Smooth Touchpad Pinch-to-Zoom & Ctrl + Wheel Zoom, plus Shift + Wheel horizontal scroll
     const handleWheel = (e: WheelEvent) => {
+      // Shift + Wheel: horizontal scroll
+      if (e.shiftKey && !e.ctrlKey) {
+        const viewport = (e.target as HTMLElement)?.closest('.virtual-scroll-viewport') as HTMLElement | null;
+        if (viewport && e.deltaY !== 0) {
+          viewport.scrollLeft += e.deltaY;
+          e.preventDefault();
+          return;
+        }
+      }
+
+      // Pinch to Zoom (Touchpads emit ctrlKey with small fractional deltaY)
+      // and physical mouse wheel zoom (ctrlKey with larger ±100 deltaY)
       if (e.ctrlKey && stateRef.current.activeTabId) {
         e.preventDefault();
-        const delta = e.deltaY > 0 ? -0.1 : 0.1;
-        setTabScale(stateRef.current.activeTabId, Math.min(5.0, Math.max(0.2, scale + delta)));
+        const activeId = stateRef.current.activeTabId;
+        const currentScale = stateRef.current.scale;
+
+        // Proportional exponential zooming for buttery smooth touchpad pinches
+        const zoomSensitivity = 0.0025;
+        const factor = Math.exp(-e.deltaY * zoomSensitivity);
+        const newScale = Math.min(5.0, Math.max(0.2, Math.round(currentScale * factor * 100) / 100));
+
+        if (Math.abs(newScale - currentScale) >= 0.01) {
+          setTabScale(activeId, newScale);
+        }
+      }
+    };
+
+    // Mouse Side Navigation Buttons (Button 3 = Back, Button 4 = Forward)
+    const handleMouseUp = (e: MouseEvent) => {
+      if (e.button === 3) {
+        e.preventDefault();
+        const st = stateRef.current;
+        if (st.currentPage > 1) {
+          handlePageChange(st.currentPage - 1);
+        }
+      } else if (e.button === 4) {
+        e.preventDefault();
+        const st = stateRef.current;
+        if (st.currentPage < st.numPages) {
+          handlePageChange(st.currentPage + 1);
+        }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('mouseup', handleMouseUp);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [scale, isContinuous, isDual, rotation, drawerTab, updateActiveTab, setTabScale, setTabRotation, setTabDrawer]);
+  }, [
+    scale,
+    isContinuous,
+    isDual,
+    rotation,
+    drawerTab,
+    activeTab,
+    updateActiveTab,
+    setTabScale,
+    setTabRotation,
+    setTabDrawer,
+    toggleTabBookmark,
+    closeTab,
+    setActiveTab,
+    loadTabDocument,
+  ]);
 
   return (
     <div
@@ -907,6 +1107,7 @@ function App() {
                             initialScrollTop={tab.scrollTop}
                             onScrollPositionChange={(top) => setTabScroll(tab.id, top)}
                             onPageChange={(page) => handlePageChange(page)}
+                            onScaleChange={(s) => setTabScale(tab.id, s)}
                             darkMode={darkMode}
                             isVisible={isTabActive}
                             dimPages={dimPages}
