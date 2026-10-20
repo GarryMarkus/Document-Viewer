@@ -78,6 +78,23 @@ export default function VirtualScrollContainer({
     return () => clearTimeout(timer);
   }, [scale]);
 
+  // Preserve focal center during zoom transitions (pinch-to-zoom / wheel zoom)
+  const prevScaleRef = useRef(scale);
+  useEffect(() => {
+    if (containerRef.current && prevScaleRef.current > 0 && prevScaleRef.current !== scale) {
+      const el = containerRef.current;
+      const ratio = scale / prevScaleRef.current;
+      const centerY = el.scrollTop + el.clientHeight / 2;
+      el.scrollTop = Math.max(0, centerY * ratio - el.clientHeight / 2);
+
+      if (el.scrollWidth > el.clientWidth) {
+        const centerX = el.scrollLeft + el.clientWidth / 2;
+        el.scrollLeft = Math.max(0, centerX * ratio - el.clientWidth / 2);
+      }
+    }
+    prevScaleRef.current = scale;
+  }, [scale]);
+
   // Touchscreen 2-finger pinch-to-zoom gesture
   useEffect(() => {
     const el = containerRef.current;

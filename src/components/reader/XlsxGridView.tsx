@@ -6,6 +6,7 @@ interface XlsxGridViewProps {
   renderer: XLSXRenderer;
   darkMode: boolean;
   scale: number;
+  onScaleChange?: (scale: number) => void;
   searchQuery?: string;
   activeMatchCell?: { sheetIndex: number; r: number; c: number };
 }
@@ -14,6 +15,7 @@ export default function XlsxGridView({
   renderer,
   darkMode,
   scale,
+  onScaleChange,
   searchQuery = '',
   activeMatchCell,
 }: XlsxGridViewProps) {
@@ -48,6 +50,68 @@ export default function XlsxGridView({
       setSelectedCellText('');
     }
   }, [sheet, selectedCell]);
+
+  // Preserve viewport center during zoom scale transitions
+  const prevScaleRef = useRef(scale);
+  useEffect(() => {
+    if (containerRef.current && prevScaleRef.current > 0 && prevScaleRef.current !== scale) {
+      const el = containerRef.current;
+      const ratio = scale / prevScaleRef.current;
+      const centerY = el.scrollTop + el.clientHeight / 2;
+      const centerX = el.scrollLeft + el.clientWidth / 2;
+      el.scrollTop = Math.max(0, centerY * ratio - el.clientHeight / 2);
+      el.scrollLeft = Math.max(0, centerX * ratio - el.clientWidth / 2);
+    }
+    prevScaleRef.current = scale;
+  }, [scale]);
+
+  // Touchscreen 2-finger pinch-to-zoom gesture on spreadsheets
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || !onScaleChange) return;
+
+    let touchStartDist: number | null = null;
+    let initialScale = scale;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        const t1 = e.touches[0];
+        const t2 = e.touches[1];
+        touchStartDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        initialScale = scale;
+      } else {
+        touchStartDist = null;
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 2 && touchStartDist !== null) {
+        e.preventDefault();
+        const t1 = e.touches[0];
+        const t2 = e.touches[1];
+        const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        const ratio = dist / touchStartDist;
+        const newScale = Math.min(5.0, Math.max(0.2, Math.round(initialScale * ratio * 100) / 100));
+        onScaleChange(newScale);
+      }
+    };
+
+    const handleTouchEnd = () => {
+      touchStartDist = null;
+    };
+
+    el.addEventListener('touchstart', handleTouchStart, { passive: true });
+    el.addEventListener('touchmove', handleTouchMove, { passive: false });
+    el.addEventListener('touchend', handleTouchEnd);
+    el.addEventListener('touchcancel', handleTouchEnd);
+
+    return () => {
+      el.removeEventListener('touchstart', handleTouchStart);
+      el.removeEventListener('touchmove', handleTouchMove);
+      el.removeEventListener('touchend', handleTouchEnd);
+      el.removeEventListener('touchcancel', handleTouchEnd);
+    };
+  }, [scale, onScaleChange]);
 
   const rowHeight = Math.round(28 * scale);
   const headerHeight = Math.round(30 * scale);

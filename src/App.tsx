@@ -1121,6 +1121,7 @@ function App() {
                             renderer={tab.renderer}
                             darkMode={darkMode}
                             scale={tab.scale}
+                            onScaleChange={(s) => setTabScale(tab.id, s)}
                             searchQuery={isSearchOpen && isTabActive ? searchQuery : ''}
                             activeMatchCell={
                               searchResults[activeSearchIndex]
