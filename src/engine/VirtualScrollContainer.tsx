@@ -96,38 +96,40 @@ export default function VirtualScrollContainer({
   }, [scale]);
 
   // Touchscreen 2-finger pinch-to-zoom gesture
+  const scaleRef = useRef(scale);
+  scaleRef.current = scale;
+  const touchStartDistRef = useRef<number | null>(null);
+  const touchInitialScaleRef = useRef(scale);
+
   useEffect(() => {
     const el = containerRef.current;
     if (!el || !onScaleChange) return;
-
-    let touchStartDist: number | null = null;
-    let initialScale = scale;
 
     const handleTouchStart = (e: TouchEvent) => {
       if (e.touches.length === 2) {
         const t1 = e.touches[0];
         const t2 = e.touches[1];
-        touchStartDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
-        initialScale = scale;
+        touchStartDistRef.current = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        touchInitialScaleRef.current = scaleRef.current;
       } else {
-        touchStartDist = null;
+        touchStartDistRef.current = null;
       }
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (e.touches.length === 2 && touchStartDist !== null) {
+      if (e.touches.length === 2 && touchStartDistRef.current !== null && touchStartDistRef.current > 0) {
         e.preventDefault();
         const t1 = e.touches[0];
         const t2 = e.touches[1];
         const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
-        const ratio = dist / touchStartDist;
-        const newScale = Math.min(5.0, Math.max(0.2, Math.round(initialScale * ratio * 100) / 100));
+        const ratio = dist / touchStartDistRef.current;
+        const newScale = Math.min(5.0, Math.max(0.2, Math.round(touchInitialScaleRef.current * ratio * 100) / 100));
         onScaleChange(newScale);
       }
     };
 
     const handleTouchEnd = () => {
-      touchStartDist = null;
+      touchStartDistRef.current = null;
     };
 
     el.addEventListener('touchstart', handleTouchStart, { passive: true });
@@ -141,7 +143,7 @@ export default function VirtualScrollContainer({
       el.removeEventListener('touchend', handleTouchEnd);
       el.removeEventListener('touchcancel', handleTouchEnd);
     };
-  }, [scale, onScaleChange]);
+  }, [onScaleChange]);
 
   // Middle-Click Drag to Pan (Hand tool gesture)
   const isPanningRef = useRef(false);

@@ -179,12 +179,17 @@ html, body, #root {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  touch-action: pan-x pan-y;
   font-family: 'Geist', 'Segoe UI Variable', 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   background-color: var(--background);
   color: var(--on-surface);
+}
+
+.virtual-scroll-viewport {
+  touch-action: pan-x pan-y;
 }
 
 .window-frame {

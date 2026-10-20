@@ -538,6 +538,11 @@ function App() {
   };
 
   // Global Keyboard Shortcuts & Gestures
+  const liveScaleRef = useRef(scale);
+  useEffect(() => {
+    liveScaleRef.current = scale;
+  }, [scale]);
+
   const stateRef = useRef({
     isContinuous,
     isDual,
@@ -921,21 +926,46 @@ function App() {
         }
       }
 
-      // Pinch to Zoom (Touchpads emit ctrlKey with small fractional deltaY)
+      // Pinch to Zoom (Touchpads emit ctrlKey with fine fractional deltaY)
       // and physical mouse wheel zoom (ctrlKey with larger ±100 deltaY)
-      if (e.ctrlKey && stateRef.current.activeTabId) {
+      if (e.ctrlKey) {
         e.preventDefault();
+        e.stopPropagation();
+
         const activeId = stateRef.current.activeTabId;
-        const currentScale = stateRef.current.scale;
+        if (!activeId) return;
 
-        // Proportional exponential zooming for buttery smooth touchpad pinches
-        const zoomSensitivity = 0.0025;
-        const factor = Math.exp(-e.deltaY * zoomSensitivity);
-        const newScale = Math.min(5.0, Math.max(0.2, Math.round(currentScale * factor * 100) / 100));
-
-        if (Math.abs(newScale - currentScale) >= 0.01) {
-          setTabScale(activeId, newScale);
+        // Normalize delta across deltaMode (0 = pixels, 1 = lines, 2 = pages)
+        let delta = e.deltaY;
+        if (e.deltaMode === 1) {
+          delta *= 33;
+        } else if (e.deltaMode === 2) {
+          delta *= 600;
         }
+
+        // Distinguish precision trackpad fine pinch (|delta| < 40) vs physical notched wheel (|delta| >= 40)
+        const isNotchedWheel = Math.abs(delta) >= 40;
+        const sensitivity = isNotchedWheel ? 0.0018 : 0.008;
+        const factor = Math.exp(-delta * sensitivity);
+
+        const currentScale = liveScaleRef.current;
+        const newScale = Math.min(5.0, Math.max(0.2, currentScale * factor));
+        liveScaleRef.current = newScale;
+
+        setTabScale(activeId, Math.round(newScale * 1000) / 1000);
+      }
+    };
+
+    // Support WebKit/Trackpad gesture events where supported
+    const handleGesture = (e: any) => {
+      e.preventDefault();
+      const activeId = stateRef.current.activeTabId;
+      if (activeId && e.scale) {
+        const currentScale = liveScaleRef.current;
+        const factor = e.scale > 1 ? 1.025 : 0.975;
+        const newScale = Math.min(5.0, Math.max(0.2, currentScale * factor));
+        liveScaleRef.current = newScale;
+        setTabScale(activeId, Math.round(newScale * 1000) / 1000);
       }
     };
 
@@ -957,17 +987,19 @@ function App() {
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('wheel', handleWheel, { passive: false, capture: true });
     window.addEventListener('mouseup', handleMouseNav);
     window.addEventListener('auxclick', handleMouseNav);
+    window.addEventListener('gesturestart', (e) => e.preventDefault(), { passive: false });
+    window.addEventListener('gesturechange', handleGesture, { passive: false });
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('wheel', handleWheel, true);
       window.removeEventListener('mouseup', handleMouseNav);
       window.removeEventListener('auxclick', handleMouseNav);
+      window.removeEventListener('gesturechange', handleGesture);
     };
   }, [
-    scale,
     isContinuous,
     isDual,
     rotation,
